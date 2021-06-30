@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard',[\App\Http\Controllers\AdminController::class,'index'])->name('dashboard');
+
+
+Route::get('/admin/create',[\App\Http\Controllers\AdminController::class,'create'])->name('admin.create');
