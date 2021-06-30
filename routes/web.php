@@ -20,4 +20,8 @@ Route::get('/', function () {
 Route::get('/dashboard',[\App\Http\Controllers\AdminController::class,'index'])->name('dashboard');
 
 
-Route::get('/admin/create',[\App\Http\Controllers\AdminController::class,'create'])->name('admin.create');
+Route::prefix('admin')->group(function () {
+    Route::get('/create',[\App\Http\Controllers\AdminController::class,'create'])->name('admin.create');
+    Route::get('/store',[\App\Http\Controllers\AdminController::class,'store'])->name('admin.store');
+
+});

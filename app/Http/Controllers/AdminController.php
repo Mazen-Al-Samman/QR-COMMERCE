@@ -34,7 +34,12 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-
+        $validatedData = $request->validate([
+            'username' => ['required', 'unique:admins', 'string'],
+            'email' => ['required','unique:admins','email'],
+            'phone' => ['required','unique:admins','numeric'],
+            'password' => ['required','string'],
+        ]);
     }
 
     /**
