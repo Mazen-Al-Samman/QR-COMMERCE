@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
-class AdminController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +13,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('backend.home');
+        return view('backend.role.create');
     }
 
     /**
@@ -24,7 +23,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('backend.admin.create');
+        //
     }
 
     /**
@@ -35,22 +34,7 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-//        $validator = Validator::make($request->all(), [
-//            'username' => 'required|string|unique:admins',
-//            'email' => 'required|email|unique:admins',
-//            'phone' => 'required|numeric|unique:admins',
-//            'password' => 'required|string|confirmed',
-//        ]);
-//        if($validator->fails()){
-//            $response['response'] = $validator->messages();
-//        }
-//        return $response;
-        $request->validate([
-            'username'=>['required','string','unique:admins'],
-            'email'=>['required','email','unique:admins'],
-            'phone'=>['required','numeric','unique:admins'],
-            'password'=>['required','string','confirmed'],
-        ]);
+        //
     }
 
     /**
