@@ -39,7 +39,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="exampleInputPassword1">Password</label>
-                                                        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="Password">
                                                         @error('password')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
@@ -48,7 +48,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="confirm-password">Confirm Password</label>
-                                                        <input type="password" name="confirm-password" class="form-control" id="confirm-password" placeholder="Password">
+                                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation" required>
                                                         @error('password')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror

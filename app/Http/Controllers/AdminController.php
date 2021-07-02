@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -34,12 +35,16 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'username' => ['required', 'unique:admins', 'string'],
-            'email' => ['required','unique:admins','email'],
-            'phone' => ['required','unique:admins','numeric'],
-            'password' => ['required','string'],
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|unique:admins',
+            'email' => 'required|email|unique:admins',
+            'phone' => 'required|numeric|unique:admins',
+            'password' => 'required|string|confirmed',
         ]);
+        if($validator->fails()){
+            $response['response'] = $validator->messages();
+        }
+        return $response;
     }
 
     /**
