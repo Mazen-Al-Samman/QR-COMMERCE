@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard',[\App\Http\Controllers\AdminController::class,'index'])->name('dashboard');
+Route::get('/backend',[\App\Http\Controllers\AdminController::class,'index'])->name('dashboard');
 
 
 Route::prefix('admin')->group(function () {
