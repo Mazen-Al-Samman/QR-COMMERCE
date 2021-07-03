@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('backend')->middleware(['web','api'])->group(function () {
+    Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
+    Route::get('/create', [\App\Http\Controllers\AdminController::class, 'create'])->name('admin.create');
+});

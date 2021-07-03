@@ -17,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('backend')->middleware('web')->group(function () {
+    Route::get('/store', [\App\Http\Controllers\AdminController::class, 'store'])->name('admin.store');
+});
