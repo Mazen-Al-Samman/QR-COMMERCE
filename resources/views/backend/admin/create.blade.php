@@ -16,7 +16,13 @@
                                     <div class="card-body">
                                         <h5>Admin Control</h5>
                                         <hr>
-                                        <form action="{{route('admin.store')}}">
+                                        @if(session()->has('success'))
+                                            <div class="alert alert-success">
+                                                {{ session()->get('success') }}
+                                            </div>
+                                        @endif
+                                        <form action="{{route('admin.store')}}" method="post">
+                                            @csrf
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
@@ -48,7 +54,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="confirm-password">Confirm Password</label>
-                                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation" required>
+                                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation">
                                                         @error('password')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
@@ -68,10 +74,7 @@
                                                         <label for="phone">Role</label>
                                                         <select name="role" class="form-control" id="">
                                                             <option value="">Select..</option>
-                                                            <option value="">1</option>
-                                                            <option value="">2</option>
-                                                            <option value="">3</option>
-                                                            <option value="">4</option>
+                                                            <option value="1">1</option>
                                                         </select>
                                                         @error('phone')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
@@ -96,10 +99,9 @@
                                     </div>
                                     <div class="card-body table-border-style">
                                         <div class="table-responsive">
-                                            <table class="table table-hover">
+                                            <table class="table table-hover text-center">
                                                 <thead>
                                                 <tr>
-                                                    <th>#</th>
                                                     <th>Username</th>
                                                     <th>Email</th>
                                                     <th>phone</th>
@@ -109,6 +111,23 @@
                                                 </thead>
                                                 <tbody>
 
+                                                @foreach($admins as $admin)
+                                                    <tr>
+                                                        <td>{{$admin->username}}</td>
+                                                        <td>{{$admin->email}}</td>
+                                                        <td>{{$admin->phone}}</td>
+                                                        <td>{{$admin->role->role_title}}</td>
+                                                        <td class="d-flex align-items-center justify-content-center">
+                                                            <a href="{{route('admin.edit' , $admin->id )}}" class="btn btn-info">View</a>
+                                                            <a href="{{route('admin.edit' , $admin->id )}}" class="btn btn-primary">Edit</a>
+                                                            <form action="{{route('admin.delete')}}">
+                                                                @method('delete')
+                                                                @csrf
+                                                                <button class="btn btn-danger" type="submit">Delete</button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                                 </tbody>
                                             </table>
                                         </div>

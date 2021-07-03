@@ -18,8 +18,10 @@ class CreateAdminsTable extends Migration
             $table->string('username',255)->nullable(false)->unique();
             $table->string('phone',15)->nullable(false)->unique();
             $table->string('email',255)->nullable(false)->unique();
-            $table->tinyInteger('active')->default(1)->nullable(false)->unique();
+            $table->tinyInteger('active')->default(1)->nullable(false);
             $table->string('password',255)->nullable(false);
+            $table->integer('role_id')->unsigned()->nullable(false);
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->timestamps();
         });
     }
