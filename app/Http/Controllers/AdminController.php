@@ -35,28 +35,6 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        $url = $request->fullUrl();
-        preg_match('/\/api\//',$url,$matches);
-        
-        if(count($matches) > 0){
-            $validator = Validator::make($request->all(), [
-                'username' => 'required|string|unique:admins',
-                'email' => 'required|email|unique:admins',
-                'phone' => 'required|numeric|unique:admins',
-                'password' => 'required|string|confirmed',
-            ]);
-            if($validator->fails()){
-                $response['response'] = $validator->messages();
-            }
-            return $response;
-        }
-
-        $request->validate([
-            'username'=>['required','string','unique:admins'],
-            'email'=>['required','email','unique:admins'],
-            'phone'=>['required','numeric','unique:admins'],
-            'password'=>['required','string','confirmed'],
-        ]);
 
     }
 
