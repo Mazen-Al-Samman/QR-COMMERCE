@@ -74,7 +74,7 @@ class AdminController extends MainController
                 ]);
 
             $request->session()->flash('success', 'User was successful added!');
-            return view('backend.admin.create');
+            return \redirect()->route('admin.create');
         }
 
         return new \Exception('an error occurred');
@@ -89,7 +89,10 @@ class AdminController extends MainController
      */
     public function show($id)
     {
-        //
+        $admin = Admin::find($id);
+        return view('backend.admin.view',[
+            'admin' => $admin
+        ]);
     }
 
     /**
@@ -133,10 +136,6 @@ class AdminController extends MainController
                     break;
                 case false :
                     return Redirect::back()->withErrors($validation);
-//
-//                    return view('backend.admin.edit', [
-//                        'admin' => $data
-//                    ])->withErrors($validation);
             }
         }
 
@@ -160,8 +159,11 @@ class AdminController extends MainController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,Request $request)
     {
-        //
+        if(Admin::find($id)->delete()){
+            $request->session()->flash('delete', 'User was successful deleted!');
+            return \redirect()->route('admin.create');
+        }
     }
 }

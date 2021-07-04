@@ -23,8 +23,9 @@ Route::prefix('backend')->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/', [\App\Http\Controllers\AdminController::class, 'create'])->name('admin.create');
         Route::post('/store', [\App\Http\Controllers\AdminController::class, 'store'])->name('admin.store');
-        Route::delete('/delete', [\App\Http\Controllers\AdminController::class, 'delete'])->name('admin.delete');
-        Route::get('/edit/{id}', [\App\Http\Controllers\AdminController::class, 'edit'])->name('admin.edit');
+        Route::delete('/delete/{id}', [\App\Http\Controllers\AdminController::class, 'destroy'])->name('admin.delete');
         Route::put('/update/{id}', [\App\Http\Controllers\AdminController::class, 'update'])->name('admin.update');
+        Route::get('/edit/{id}', [\App\Http\Controllers\AdminController::class, 'edit'])->name('admin.edit');
+        Route::get('/show/{id}', [\App\Http\Controllers\AdminController::class, 'show'])->name('admin.show');
     });
 });

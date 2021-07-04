@@ -91,7 +91,14 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-12">
+                                @if(session()->has('delete'))
+                                    <div class="alert alert-warning">
+                                        {{ session()->get('delete') }}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
                                         <h5>Admin List</h5>
@@ -118,12 +125,12 @@
                                                         <td>{{$admin->phone}}</td>
                                                         <td>{{$admin->role->role_title}}</td>
                                                         <td class="d-flex align-items-center justify-content-center">
-                                                            <a href="{{route('admin.edit' , $admin->id )}}" class="btn btn-info">View</a>
+                                                            <a href="{{route('admin.show' , $admin->id )}}" class="btn btn-info">View</a>
                                                             <a href="{{route('admin.edit' , $admin->id )}}" class="btn btn-primary">Edit</a>
-                                                            <form action="{{route('admin.delete')}}">
+                                                            <form action="{{route('admin.delete', $admin->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
-                                                                <button class="btn btn-danger" type="submit">Delete</button>
+                                                                <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
                                                             </form>
                                                         </td>
                                                     </tr>
