@@ -28,4 +28,14 @@ Route::prefix('backend')->group(function () {
         Route::get('/edit/{id}', [\App\Http\Controllers\AdminController::class, 'edit'])->name('admin.edit');
         Route::get('/show/{id}', [\App\Http\Controllers\AdminController::class, 'show'])->name('admin.show');
     });
+
+    Route::prefix('role')->group(function () {
+        Route::get('/', [\App\Http\Controllers\RoleController::class, 'create'])->name('role.create');
+        Route::post('/store', [\App\Http\Controllers\RoleController::class, 'store'])->name('role.store');
+        Route::delete('/delete/{id}', [\App\Http\Controllers\RoleController::class, 'destroy'])->name('role.delete');
+        Route::put('/update/{id}', [\App\Http\Controllers\RoleController::class, 'update'])->name('role.update');
+        Route::get('/edit/{id}', [\App\Http\Controllers\RoleController::class, 'edit'])->name('role.edit');
+        Route::get('/show/{id}', [\App\Http\Controllers\RoleController::class, 'show'])->name('role.show');
+    });
+
 });
