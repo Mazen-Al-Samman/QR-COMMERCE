@@ -72,11 +72,12 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="phone">Role</label>
-                                                        <select name="role" class="form-control" id="">
-                                                            <option value="">Select..</option>
-                                                            <option value="1">1</option>
+                                                        <select name="role_id" class="form-control" id="">
+                                                            @foreach($roles as $role)
+                                                                <option value="{{$role->id}}">{{$role->role_title}}</option>
+                                                            @endforeach
                                                         </select>
-                                                        @error('phone')
+                                                        @error('role_id')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
                                                     </div>

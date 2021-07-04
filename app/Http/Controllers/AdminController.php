@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -30,9 +31,12 @@ class AdminController extends MainController
     public function create()
     {
         $admin = new Admin();
+        $role = new Role();
         $admins = $admin->getAllAdmins();
+        $roles = $role->getAllRoles();
         return view('backend.admin.create', [
-            'admins' => $admins
+            'admins' => $admins,
+            'roles' => $roles
         ]);
     }
 
@@ -51,6 +55,7 @@ class AdminController extends MainController
             'email' => ['required', 'email', 'unique:admins'],
             'password' => ['required', 'string', 'confirmed'],
             'phone' => ['required', 'numeric', 'unique:admins'],
+            'role_id' => ['required', 'numeric'],
         ]);
 
         if ($validation->fails()) {
@@ -90,7 +95,7 @@ class AdminController extends MainController
     public function show($id)
     {
         $admin = Admin::find($id);
-        return view('backend.admin.view',[
+        return view('backend.admin.view', [
             'admin' => $admin
         ]);
     }
@@ -158,9 +163,9 @@ class AdminController extends MainController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id,Request $request)
+    public function destroy($id, Request $request)
     {
-        if(Admin::find($id)->delete()){
+        if (Admin::find($id)->delete()) {
             $request->session()->flash('delete', 'User was successful deleted!');
             return \redirect()->route('admin.create');
         }
