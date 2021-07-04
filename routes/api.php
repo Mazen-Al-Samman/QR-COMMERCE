@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('backend')->group(function () {
 
     Route::prefix('admin')->group(function () {
-        Route::post('/store', [\App\Http\Controllers\AdminController::class, 'store'])->name('admin.store');
+        Route::get('/show/{id}', [\App\Http\Controllers\AdminController::class, 'show'])->name('admin.show');
+        Route::post('/update/{id}', [\App\Http\Controllers\AdminController::class, 'update'])->name('admin.update');
     });
 });
