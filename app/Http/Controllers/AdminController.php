@@ -49,7 +49,6 @@ class AdminController extends MainController
     public function store(Request $request)
     {
 
-        $checkUrl = parent::checkUrl($request);
         $validation = Validator::make($request->all(), [
             'username' => ['required', 'string', 'unique:admins'],
             'email' => ['required', 'email', 'unique:admins'],
@@ -59,25 +58,11 @@ class AdminController extends MainController
         ]);
 
         if ($validation->fails()) {
-            switch ($checkUrl) {
-                case true :
-                    return response()->json([
-                        'error' => 500,
-                        'messages' => $validation->errors()
-                    ]);
-                    break;
-                case false :
-                    return Redirect::route('admin.create')->withErrors($validation);
-            }
+            return Redirect::route('admin.create')->withErrors($validation);
         }
 
         $admin = new Admin();
         if ($admin->createAdmin($request)) {
-            if ($checkUrl)
-                return response()->json([
-                    'status' => 'success',
-                ]);
-
             $request->session()->flash('success', 'User was successful added!');
             return \redirect()->route('admin.create');
         }
@@ -92,9 +77,10 @@ class AdminController extends MainController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $admin = Admin::find($id);
+
         return view('backend.admin.view', [
             'admin' => $admin
         ]);
@@ -123,7 +109,6 @@ class AdminController extends MainController
      */
     public function update(Request $request, $id)
     {
-        $checkUrl = parent::checkUrl($request);
         $validation = Validator::make($request->all(), [
             'username' => ['required', 'string', Rule::unique('admins')->ignore($id, 'id')],
             'email' => ['required', 'email', Rule::unique('admins')->ignore($id, 'id')],
@@ -131,25 +116,11 @@ class AdminController extends MainController
         ]);
 
         if ($validation->fails()) {
-            switch ($checkUrl) {
-                case true :
-                    return response()->json([
-                        'error' => 500,
-                        'messages' => $validation->errors()
-                    ]);
-                    break;
-                case false :
                     return Redirect::back()->withErrors($validation);
-            }
         }
 
         $admin = new Admin();
         if ($admin->updateAdmin($id, $request)) {
-            if ($checkUrl)
-                return response()->json([
-                    'status' => 'success',
-                ]);
-
             $request->session()->flash('update', 'User was successful updated!');
             return Redirect::back();
         }

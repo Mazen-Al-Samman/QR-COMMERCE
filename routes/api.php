@@ -19,8 +19,5 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::prefix('backend')->group(function () {
-
-    Route::prefix('admin')->group(function () {
-        Route::post('/store', [\App\Http\Controllers\AdminController::class, 'store'])->name('admin.store');
-    });
+    
 });
