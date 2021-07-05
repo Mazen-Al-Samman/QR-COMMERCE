@@ -191,21 +191,19 @@
                                     <div class="card-header">
                                         <h5>Site visitors session log</h5>
                                     </div>
-                                    <div class="card-body px-0 py-0">
-                                        <div class="table-responsive">
 
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             <!-- sessions-section end -->
                             <div class="col-md-6 col-xl-4">
                                 <div class="card user-card">
                                     <div class="card-header">
-                                        <h5></h5>
+                                        <h5>Chart</h5>
                                     </div>
                                     <div class="card-body  text-center">
-
+                                        <div class="card-body px-0 py-0">
+                                            <div id="morris-donut-chart" style=""></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -220,3 +218,35 @@
 </div>
 <!-- [ Main Content ] end -->
 @include ('backend.layouts.footer')
+<script>
+    var graph = Morris.Donut({
+        element: 'morris-donut-chart',
+        data: [{
+            value: 60,
+            label: 'Data 1'
+        },
+            {
+                value: 20,
+                label: 'Data 1'
+            },
+            {
+                value: 10,
+                label: 'Data 1'
+            },
+            {
+                value: 5,
+                label: 'Data 1'
+            }
+        ],
+        colors: [
+            '#3949AB',
+            '#463699',
+            '#e52d27',
+            '#f57c00',
+        ],
+        resize: true,
+        formatter: function(x) {
+            return "val : " + x
+        }
+    });
+</script>
