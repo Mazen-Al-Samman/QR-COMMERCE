@@ -18,7 +18,6 @@
     <meta name="keywords"
           content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, Flash Able, Flash Able bootstrap admin template">
     <meta name="author" content="Codedthemes" />
-
     <!-- Favicon icon -->
     <link rel="icon" href="{{'/assets/images/favicon.ico'}}" type="image/x-icon">
     <!-- fontawesome icon -->
@@ -28,6 +27,7 @@
 
     <!-- vendor css -->
     <link rel="stylesheet" href="{{'/assets/css/style.css'}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body class="">
@@ -63,7 +63,10 @@
                     <a href="{{route('admin.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Admin</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('role.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Role</span></a>
+                    <a href="{{route('role.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-tasks"></i></span><span class="pcoded-mtext">Role</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('permission.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-lock"></i></span><span class="pcoded-mtext">Permission</span></a>
                 </li>
                 <li class="nav-item pcoded-hasmenu">
                     <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Componant</span></a>

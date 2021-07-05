@@ -38,4 +38,13 @@ Route::prefix('backend')->group(function () {
         Route::get('/show/{id}', [\App\Http\Controllers\RoleController::class, 'show'])->name('role.show');
     });
 
+    Route::prefix('permission')->group(function () {
+        Route::get('/', [\App\Http\Controllers\PermissionController::class, 'create'])->name('permission.create');
+        Route::post('/store', [\App\Http\Controllers\PermissionController::class, 'store'])->name('permission.store');
+        Route::delete('/delete/{id}', [\App\Http\Controllers\PermissionController::class, 'destroy'])->name('permission.delete');
+        Route::put('/update/{id}', [\App\Http\Controllers\PermissionController::class, 'update'])->name('permission.update');
+        Route::get('/edit/{id}', [\App\Http\Controllers\PermissionController::class, 'edit'])->name('permission.edit');
+        Route::get('/show/{id}', [\App\Http\Controllers\PermissionController::class, 'show'])->name('permission.show');
+    });
+
 });

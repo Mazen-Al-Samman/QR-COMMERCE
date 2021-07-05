@@ -9,14 +9,14 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Admin Information</h5>
+                                        <h5>Permission Information</h5>
                                     </div>
                                     <div class="card-body">
                                         <ul>
-                                            <li><span class="font-weight-bold">Title: </span>{{$role->role_title}}</li>
-                                            <li><span class="font-weight-bold">Description: </span>{{$role->role_description}}</li>
+                                            <li><span class="font-weight-bold">Permission: </span>{{$permission->permission}}</li>
+                                            <li><span class="font-weight-bold">Description: </span>{{$permission->description}}</li>
                                         </ul>
-                                        <a href="{{route('role.create')}}" class="btn btn-primary">Back</a>
+                                        <a href="{{route('permission.create')}}" class="btn btn-primary">Back</a>
                                     </div>
                                 </div>
                             </div>
