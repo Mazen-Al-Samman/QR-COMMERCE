@@ -34,7 +34,7 @@ class Admin extends Model
         $admin->email = $request->email;
         $admin->password = Hash::make($request->password);
         $admin->phone = $request->phone;
-        $admin->role_id = 1 ;
+        $admin->role_id = $request->role_id ;
         return $admin->save();
     }
 
@@ -44,6 +44,7 @@ class Admin extends Model
         $admin->username = $request->username;
         $admin->email = $request->email;
         $admin->phone = $request->phone;
+        $admin->role_id = $request->role_id ;
         return $admin->save();
     }
 

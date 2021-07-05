@@ -95,8 +95,11 @@ class AdminController extends MainController
     public function edit($id)
     {
         $admin = Admin::find($id);
+        $role = new Role();
+        $roles = $role->getAllRoles();
         return view('backend.admin.edit', [
-            'admin' => $admin
+            'admin' => $admin,
+            'roles' => $roles
         ]);
     }
 

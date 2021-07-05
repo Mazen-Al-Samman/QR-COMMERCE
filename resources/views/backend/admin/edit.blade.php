@@ -55,9 +55,10 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="phone">Role</label>
-                                                        <select name="role" class="form-control" id="">
-                                                            <option value="">Select..</option>
-                                                            <option selected value="1">1</option>
+                                                        <select name="role_id" class="form-control" id="role_id">
+                                                            @foreach($roles as $role)
+                                                                <option value="{{$role->id}}" {{$admin->role_id == $role->id ? 'selected' : ''}}>{{$role->role_title}}</option>
+                                                            @endforeach
                                                         </select>
                                                         @error('phone')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
