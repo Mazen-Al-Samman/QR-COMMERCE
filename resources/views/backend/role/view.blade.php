@@ -13,8 +13,8 @@
                                     </div>
                                     <div class="card-body">
                                         <ul>
-                                            <li><span class="font-weight-bold">Username: </span>{{$role->role_title}}</li>
-                                            <li><span class="font-weight-bold">Email: </span>{{$role->role_description}}</li>
+                                            <li><span class="font-weight-bold">Title: </span>{{$role->role_title}}</li>
+                                            <li><span class="font-weight-bold">Description: </span>{{$role->role_description}}</li>
                                         </ul>
                                         <a href="{{route('role.create')}}" class="btn btn-primary">Back</a>
                                     </div>

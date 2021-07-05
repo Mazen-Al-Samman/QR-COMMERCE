@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class PermissionController extends Controller
 {
@@ -39,7 +43,22 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            'permission' => ['required', 'string'],
+            'description' => ['required', 'string'],
+        ]);
+
+        if ($validation->fails()) {
+            return Redirect::route('permission.create')->withErrors($validation);
+        }
+
+        $admin = new Permission();
+        if ($admin->createPermission($request)) {
+            $request->session()->flash('alert-success', 'Permission was successful added!');
+            return \redirect()->route('permission.create');
+        }
+
+        return new \Exception('an error occurred');
     }
 
     /**
@@ -50,7 +69,11 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
-        //
+        $permission = Permission::find($id);
+
+        return view('backend.permission.view', [
+            'permission' => $permission
+        ]);
     }
 
     /**
@@ -61,7 +84,10 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $permission = Permission::find($id);
+        return view('backend.permission.edit', [
+            'permission' => $permission,
+        ]);
     }
 
     /**
@@ -73,7 +99,22 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            'permission' => ['required', 'string'],
+            'description' => ['required', 'string'],
+        ]);
+
+        if ($validation->fails()) {
+            return Redirect::back()->withErrors($validation);
+        }
+
+        $permission = new Permission();
+        if ($permission->updatePermission($id, $request)) {
+            $request->session()->flash('alert-update', 'Permission was successful updated!');
+            return Redirect::back();
+        }
+
+        return new \Exception('an error occurred');
     }
 
     /**
@@ -82,8 +123,11 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,Request $request)
     {
-        //
+        if (Permission::find($id)->delete()) {
+            $request->session()->flash('alert-delete', 'Permission was successful deleted!');
+            return \redirect()->route('permission.create');
+        }
     }
 }
