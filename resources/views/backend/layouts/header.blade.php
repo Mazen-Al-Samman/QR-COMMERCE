@@ -68,6 +68,9 @@
                 <li class="nav-item">
                     <a href="{{route('permission.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-lock"></i></span><span class="pcoded-mtext">Permission</span></a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('rolePermission.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-lock"></i></span><span class="pcoded-mtext">Permission</span></a>
+                </li>
                 <li class="nav-item pcoded-hasmenu">
                     <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Componant</span></a>
                     <ul class="pcoded-submenu">
