@@ -80,14 +80,6 @@ class AdminController extends MainController
     public function show($id, Request $request)
     {
         $admin = Admin::find($id);
-        $checkUrl = parent::checkUrl($request);
-
-        if ($checkUrl) {
-            return response()->json([
-                'status' => true,
-                'data' => $admin
-            ]);
-        }
 
         return view('backend.admin.view', [
             'admin' => $admin
@@ -117,7 +109,6 @@ class AdminController extends MainController
      */
     public function update(Request $request, $id)
     {
-        $checkUrl = parent::checkUrl($request);
         $validation = Validator::make($request->all(), [
             'username' => ['required', 'string', Rule::unique('admins')->ignore($id, 'id')],
             'email' => ['required', 'email', Rule::unique('admins')->ignore($id, 'id')],
@@ -125,25 +116,11 @@ class AdminController extends MainController
         ]);
 
         if ($validation->fails()) {
-            switch ($checkUrl) {
-                case true :
-                    return response()->json([
-                        'status' => false,
-                        'messages' => $validation->errors()
-                    ]);
-                    break;
-                case false :
                     return Redirect::back()->withErrors($validation);
-            }
         }
 
         $admin = new Admin();
         if ($admin->updateAdmin($id, $request)) {
-            if ($checkUrl)
-                return response()->json([
-                    'status' => true,
-                ]);
-
             $request->session()->flash('update', 'User was successful updated!');
             return Redirect::back();
         }
