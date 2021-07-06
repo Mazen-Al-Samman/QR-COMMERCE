@@ -9,14 +9,21 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Admin Information</h5>
+                                        <h5>{{$role->role_title}}</h5>
                                     </div>
                                     <div class="card-body">
+                                        <p><span class="font-weight-bold">Description: </span>{{$role->role_description}}</p>
+                                        @if(empty($permissions[0]))
+                                            <div class="alert alert-danger" role="alert">
+                                                There is no Permissions
+                                            </div>
+                                        @endif
                                         <ul>
-                                            <li><span class="font-weight-bold">Title: </span>{{$role->role_title}}</li>
-                                            <li><span class="font-weight-bold">Description: </span>{{$role->role_description}}</li>
+                                            @foreach($permissions as $permission)
+                                                <li><span class="font-weight-bold"></span>{{$permission->permission->permission}}</li>
+                                            @endforeach
                                         </ul>
-                                        <a href="{{route('role.create')}}" class="btn btn-primary">Back</a>
+                                        <a href="{{route('rolePermission.index')}}" class="btn btn-primary">Back</a>
                                     </div>
                                 </div>
                             </div>

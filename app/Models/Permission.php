@@ -13,7 +13,12 @@ class Permission extends Model
     {
         return Permission::all();
     }
-
+    public function getUnselectedPermissions()
+    {
+        return Permission::leftJoin('role_permissions', 'id', '=', 'role_permissions.permission_id')
+                           ->whereNull('role_permissions.permission_id')
+                           ->get();
+    }
     public function createPermission($request)
     {
         $permission = new Permission();
@@ -29,4 +34,5 @@ class Permission extends Model
         $permission->description = $request->description;
         return $permission->save();
     }
+
 }

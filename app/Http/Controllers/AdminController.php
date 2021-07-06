@@ -20,7 +20,9 @@ class AdminController extends MainController
      */
     public function index()
     {
-        return view('backend.home');
+        return view('backend.home',[
+            'test' => 75
+        ]);
     }
 
     /**

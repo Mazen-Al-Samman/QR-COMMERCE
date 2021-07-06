@@ -6,6 +6,8 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\RolePermission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class RolePermissionController extends Controller
 {
@@ -16,50 +18,72 @@ class RolePermissionController extends Controller
      */
     public function index()
     {
-        //
+        $role = new Role();
+        $roles = $role->getAllRoles();
+        return view('backend.rolePermission.index',[
+            'roles' => $roles
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
-     *
+     * @param int $role_id
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($role_id)
     {
-        $rolePermission = new RolePermission();
+        $permission = new Permission();
+        $role = Role::find($role_id);
+        $permissions = $permission->getUnselectedPermissions();
+        $role_permission = new RolePermission();
+        $roles_permissions = $role_permission->getAllRolesPermissions();
 
         return view('backend.rolePermission.create', [
+            'role' => $role,
             'permissions' => $permissions,
-            'roles' => $roles
+            'roles_permissions' => $roles_permissions
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $rolePermission = new RolePermission();
+        if ($rolePermission->addRolePermissions($request)) {
+            $request->session()->flash('alert-success', 'Process was succeeded!');
+            return \redirect()->route('rolePermission.show',['role_id' => $request->role_id]);
+        }
+
+        return new \Exception('an error occurred');
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $role_id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($role_id)
     {
-        //
+        $role = Role::find($role_id);
+        $rolePermission = new RolePermission();
+        $permissions = $rolePermission->getPermissionsByRoleID($role->id);
+        return view('backend.rolePermission.view', [
+            'role' => $role,
+            'permissions' => $permissions
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -70,8 +94,8 @@ class RolePermissionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -82,11 +106,14 @@ class RolePermissionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
+        if (RolePermission::where(['role_id' => $id])->delete()) {
+            $request->session()->flash('alert-delete', 'User was successful deleted!');
+            return \redirect()->route('rolePermission.create');
+        }
     }
 }
