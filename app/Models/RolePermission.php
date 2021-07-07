@@ -24,20 +24,6 @@ class RolePermission extends Model
         return RolePermission::all();
     }
 
-    public function addRolePermissions($request)
-    {
-        $status = true;
-        if($request->permissions){
-            foreach ($request->permissions as $permission) {
-                $role_premission = new RolePermission();
-                $role_premission->role_id = $request->role_id;
-                $role_premission->permission_id = $permission;
-                if (!$role_premission->save())
-                    $status = false;
-            }
-        }
-        return $status;
-    }
 
     public function updateRolePermission($request) {
         RolePermission::where(['role_id' => $request->role_id])->delete();

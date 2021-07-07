@@ -23,7 +23,7 @@
                                                 <li><span class="font-weight-bold"></span>{{$permission->permission->permission}}</li>
                                             @endforeach
                                         </ul>
-                                        <a href="{{route('rolePermission.index')}}" class="btn btn-primary">Back</a>
+                                        <a href="{{route('rolePermission.index')}}" class="btn btn-secondary">Back</a>
                                     </div>
                                 </div>
                             </div>

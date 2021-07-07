@@ -54,13 +54,6 @@ class RolePermissionController extends Controller
      */
     public function store(Request $request)
     {
-        $rolePermission = new RolePermission();
-        if ($rolePermission->addRolePermissions($request)) {
-            $request->session()->flash('alert-success', 'Process was succeeded!');
-            return \redirect()->route('rolePermission.show',['role_id' => $request->role_id]);
-        }
-
-        return new \Exception('an error occurred');
 
     }
 
@@ -84,17 +77,19 @@ class RolePermissionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param int $role_id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($role_id)
     {
-        $permissions = DB::table('role_permissions')
+        $permissions = DB::table('permissions')
                         ->select(['role_permissions.role_id','role_permissions.permission_id As RolePermission_per_id','permissions.permission','permissions.id AS permission_id','permissions.description'])
-                        ->rightJoin('permissions', 'role_permissions.permission_id', '=', 'permissions.id')
-                        ->get();
+            ->leftJoin('role_permissions',function($join) use ($role_id) {
+                $join->on('role_permissions.permission_id','=','permissions.id')
+                    ->where('role_permissions.role_id',$role_id);
+            })->get();
 
-        $role = Role::find($id);
+        $role = Role::find($role_id);
 
         return view('backend.rolePermission.edit',[
             'role' => $role,
@@ -106,15 +101,14 @@ class RolePermissionController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $rolePermission = new RolePermission();
         if($rolePermission->UpdateRolePermission($request)) {
             $request->session()->flash('alert-update', 'Process was succeeded!');
-            return \redirect()->route('rolePermission.edit',['role_id' => $request->role_id]);
+            return \redirect()->route('rolePermission.manage',['role_id' => $request->role_id]);
         }
         return new \Exception('an error occurred');
     }

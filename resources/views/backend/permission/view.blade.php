@@ -16,7 +16,7 @@
                                             <li><span class="font-weight-bold">Permission: </span>{{$permission->permission}}</li>
                                             <li><span class="font-weight-bold">Description: </span>{{$permission->description}}</li>
                                         </ul>
-                                        <a href="{{route('permission.create')}}" class="btn btn-primary">Back</a>
+                                        <a href="{{route('permission.create')}}" class="btn btn-secondary">Back</a>
                                     </div>
                                 </div>
                             </div>

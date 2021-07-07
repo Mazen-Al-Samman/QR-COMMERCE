@@ -19,7 +19,7 @@
                                             <li><span class="font-weight-bold">Active: </span>{{$admin->active}}</li>
                                             <li><span class="font-weight-bold">Role: </span>{{$admin->role_id}}</li>
                                         </ul>
-                                        <a href="{{route('admin.create')}}" class="btn btn-primary">Back</a>
+                                        <a href="{{route('admin.create')}}" class="btn btn-secondary">Back</a>
                                     </div>
                                 </div>
                             </div>

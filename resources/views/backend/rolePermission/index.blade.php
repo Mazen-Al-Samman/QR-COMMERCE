@@ -14,10 +14,8 @@
                                         <h5>Manage Roles</h5>
                                     </div>
                                     <div class="card-body">
-                                        <h5>Select Role</h5>
-                                        <hr>
                                         <div class=" table-responsive">
-                                            <table class="table table-striped">
+                                            <table class="table table-striped text-center">
                                                 <tbody>
                                                 <?php $i=0; ?>
                                                 @foreach($roles as $role)
@@ -29,8 +27,7 @@
                                                         <span class="font-weight-bold" style="font-size: 20px">{{$role->role_title}}</span>
                                                         </th>
                                                         <td>
-                                                            <a href="{{ route('rolePermission.create',['role_id'=> $role->id]) }}" class="btn btn-primary">Add Permissions</a>
-                                                            <a href="{{ route('rolePermission.edit',['role_id'=> $role->id]) }}" class="btn btn-warning">Edit</a>
+                                                            <a href="{{ route('rolePermission.manage',['role_id'=> $role->id]) }}" class="btn btn-primary">Manage Permissions</a>
                                                             <a href="{{ route('rolePermission.show',['role_id'=> $role->id]) }}" class="btn btn-info">View</a>
                                                         </td>
                                                     </tr>

@@ -21,7 +21,7 @@
                                             </div>
                                         @endif
                                         <hr>
-                                        <form action="{{route('rolePermission.update',['id' => $role->id])}}" method="post">
+                                        <form action="{{route('rolePermission.update',['role_id' => $role->id])}}" method="post">
                                             @method('put')
                                             @csrf
                                             <input type="hidden" value="{{$role->id}}" name="role_id">
@@ -32,8 +32,8 @@
                                                     </div>
                                                 @endforeach
                                                 <div class="col-md-12 mt-3">
-                                                    <button type="submit" class="btn btn-warning">Update</button>
-                                                    <a href="{{route('rolePermission.index')}}" class="btn btn-primary">Back to home</a>
+                                                    <button type="submit" class="btn btn-primary">Save Permissions</button>
+                                                    <a href="{{route('rolePermission.index')}}" class="btn btn-secondary">Back to home</a>
                                                 </div>
                                             </div>
                                         </form>
