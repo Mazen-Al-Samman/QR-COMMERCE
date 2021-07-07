@@ -50,6 +50,11 @@
 <script src="{{ asset('assets/js/vendor-all.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/js/pcoded.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/chart-morris/js/raphael.min.js')}}"></script>
+<script src="{{ asset('assets/plugins/chart-morris/js/morris.min.js')}}"></script>
+<script src="{{ asset('assets/js/pages/chart-morris-custom.js')}}"></script>
+<!-- animation css -->
+<link rel="stylesheet" href="../assets/plugins/animation/css/animate.min.css">
 
 </body>
 

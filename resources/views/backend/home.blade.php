@@ -25,7 +25,6 @@
                         <!-- [ breadcrumb ] end -->
                         <!-- [ Main Content ] start -->
                         <div class="row">
-
                             <!-- product profit start -->
                             <div class="col-xl-3 col-md-6">
                                 <div class="card prod-p-card bg-c-red">
@@ -185,27 +184,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- sessions-section start -->
-                            <div class="col-xl-8 col-md-6">
-                                <div class="card table-card">
+                            <!-- [ bar-simple Chart ] start -->
+                            <div class="col-xl-8">
+                                <div class="card">
                                     <div class="card-header">
-                                        <h5>Site visitors session log</h5>
+                                        <h5>Bar [ Simple ] Chart</h5>
                                     </div>
-                                    <div class="card-body px-0 py-0">
-                                        <div class="table-responsive">
-
-                                        </div>
+                                    <div class="card-body">
+                                        <div id="morris-bar-chart" style="height:300px"></div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- sessions-section end -->
+                            <!-- [ bar-simple Chart ] end -->
                             <div class="col-md-6 col-xl-4">
                                 <div class="card user-card">
                                     <div class="card-header">
-                                        <h5></h5>
+                                        <h5>Chart</h5>
                                     </div>
                                     <div class="card-body  text-center">
-
+                                        <div class="card-body px-0 py-0">
+                                            <div id="morris-donut-chart" style=""></div>
+                                        </div>
+                                    </div>
+                                    <div class="footer">
                                     </div>
                                 </div>
                             </div>
@@ -220,3 +221,85 @@
 </div>
 <!-- [ Main Content ] end -->
 @include ('backend.layouts.footer')
+<script>
+    var graph = Morris.Donut({
+        element: 'morris-donut-chart',
+        data: [{
+            value:25,
+            label: 'Data 1'
+        },
+            {
+                value: 20,
+                label: 'Data 1'
+            },
+            {
+                value: 10,
+                label: 'Data 1'
+            },
+            {
+                value: 5,
+                label: 'Data 1'
+            }
+        ],
+        colors: [
+            '#3949AB',
+            '#463699',
+            '#e52d27',
+            '#f57c00',
+        ],
+        resize: true,
+        formatter: function(x) {
+            return "val : " + x
+        }
+    });
+    // [ line-angle-chart ] Start
+    Morris.Line({
+        element: 'morris-line-chart',
+        data: [{
+            y: '2006',
+            a: 20,
+            b: 10
+        },
+            {
+                y: '2007',
+                a: 55,
+                b: 45
+            },
+            {
+                y: '2008',
+                a: 45,
+                b: 35
+            },
+            {
+                y: '2009',
+                a: 75,
+                b: 65
+            },
+            {
+                y: '2010',
+                a: 50,
+                b: 40
+            },
+            {
+                y: '2011',
+                a: 75,
+                b: 65
+            },
+            {
+                y: '2012',
+                a: 100,
+                b: 90
+            }
+        ],
+        xkey: 'y',
+        redraw: true,
+        resize: true,
+        smooth: false,
+        ykeys: ['a', 'b'],
+        hideHover: 'auto',
+        responsive: true,
+        labels: ['Series A', 'Series B'],
+        lineColors: ['#463699', '#3949AB']
+    });
+    // [ line-angle-chart ] end
+</script>

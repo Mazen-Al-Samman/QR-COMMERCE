@@ -24,6 +24,8 @@
     <link rel="stylesheet" href="{{'/assets/fonts/fontawesome/css/fontawesome-all.min.css'}}">
     <!-- animation css -->
     <link rel="stylesheet" href="{{'/assets/plugins/animation/css/animate.min.css'}}">
+    <!-- Chart JS -->
+    <link rel="stylesheet" href="{{asset('/assets/plugins/chart-morris/css/morris.css')}}">
 
     <!-- vendor css -->
     <link rel="stylesheet" href="{{'/assets/css/style.css'}}">
@@ -62,22 +64,12 @@
                 <li class="nav-item">
                     <a href="{{route('admin.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Admin</span></a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{route('role.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-tasks"></i></span><span class="pcoded-mtext">Role</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{route('permission.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-lock"></i></span><span class="pcoded-mtext">Permission</span></a>
-                </li>
                 <li class="nav-item pcoded-hasmenu">
-                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Componant</span></a>
+                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-star"></i></span><span class="pcoded-mtext">Roles & Permissions</span></a>
                     <ul class="pcoded-submenu">
-                        <li class=""><a href="bc_button.html" class="">Button</a></li>
-                        <li class=""><a href="bc_badges.html" class="">Badges</a></li>
-                        <li class=""><a href="bc_breadcrumb-pagination.html" class="">Breadcrumb & paggination</a></li>
-                        <li class=""><a href="bc_collapse.html" class="">Collapse</a></li>
-                        <li class=""><a href="bc_progress.html" class="">Progress</a></li>
-                        <li class=""><a href="bc_tabs.html" class="">Tabs & pills</a></li>
-                        <li class=""><a href="bc_typography.html" class="">Typography</a></li>
+                        <li class=""><a href="{{route('role.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-tasks"></i></span><span class="pcoded-mtext">Role</span></a></li>
+                        <li class=""><a href="{{route('permission.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-lock"></i></span><span class="pcoded-mtext">Permission</span></a></li>
+                        <li class=""><a href="{{route('rolePermission.index')}}" class="nav-link"><span class="pcoded-micon"><i class="fas fa-user-lock"></i></span><span class="pcoded-mtext">Role Permissions</span></a></li>
                     </ul>
                 </li>
                 <li class="nav-item pcoded-menu-caption">

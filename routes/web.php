@@ -47,4 +47,11 @@ Route::prefix('backend')->group(function () {
         Route::get('/show/{id}', [\App\Http\Controllers\PermissionController::class, 'show'])->name('permission.show');
     });
 
+    Route::prefix('rolePermission')->group(function () {
+        Route::get('/', [\App\Http\Controllers\RolePermissionController::class, 'index'])->name('rolePermission.index');
+        Route::get('/manage/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'edit'])->name('rolePermission.manage');
+        Route::put('/update/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'update'])->name('rolePermission.update');
+        Route::get('/show/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'show'])->name('rolePermission.show');
+    });
+
 });

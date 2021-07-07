@@ -16,7 +16,7 @@
                                             <li><span class="font-weight-bold">Title: </span>{{$role->role_title}}</li>
                                             <li><span class="font-weight-bold">Description: </span>{{$role->role_description}}</li>
                                         </ul>
-                                        <a href="{{route('role.create')}}" class="btn btn-primary">Back</a>
+                                        <a href="{{route('role.create')}}" class="btn btn-secondary">Back</a>
                                     </div>
                                 </div>
                             </div>
