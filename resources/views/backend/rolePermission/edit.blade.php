@@ -15,36 +15,25 @@
                                     </div>
                                     <div class="card-body">
                                         <h5>Edit Role</h5>
-                                        <hr>
                                         @if(session()->has('alert-update'))
                                             <div class="alert alert-success">
                                                 {{ session()->get('alert-update') }}
                                             </div>
                                         @endif
-                                        <form action="{{route('role.update',['id' => $role->id])}}" method="post">
+                                        <hr>
+                                        <form action="{{route('rolePermission.update',['id' => $role->id])}}" method="post">
                                             @method('put')
                                             @csrf
+                                            <input type="hidden" value="{{$role->id}}" name="role_id">
                                             <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="title">Title</label>
-                                                        <input type="text" name="role_title" class="form-control" id="title" placeholder="Enter Title" value="{{$role->role_title}}">
-                                                        @error('role_title')
-                                                        <small id="titleHelp" class="form-text text-muted text-danger">{{$message}}</small>
-                                                        @enderror
+                                                @foreach($permissions as $permission)
+                                                    <div class="col-auto m-1">
+                                                        <input type="checkbox" value="{{$permission->permission_id}}" name="permissions[]" @if($role->id == $permission->role_id) checked @endif> <span class="font-weight-bold ml-1" style="font-size: 18px">{{$permission->permission}}</span>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="description">Description</label>
-                                                        <textarea class="form-control" name="role_description" id="description">{{$role->role_description}}</textarea>
-                                                        @error('role_description')
-                                                        <small id="descriptionHelp" class="form-text text-muted text-danger">{{$message}}</small>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                @endforeach
+                                                <div class="col-md-12 mt-3">
+                                                    <button type="submit" class="btn btn-warning">Update</button>
+                                                    <a href="{{route('rolePermission.index')}}" class="btn btn-primary">Back to home</a>
                                                 </div>
                                             </div>
                                         </form>

@@ -53,7 +53,7 @@ Route::prefix('backend')->group(function () {
         Route::post('/store', [\App\Http\Controllers\RolePermissionController::class, 'store'])->name('rolePermission.store');
         Route::delete('/delete/{id}', [\App\Http\Controllers\RolePermissionController::class, 'destroy'])->name('rolePermission.delete');
         Route::put('/update/{id}', [\App\Http\Controllers\RolePermissionController::class, 'update'])->name('rolePermission.update');
-        Route::get('/edit/{id}', [\App\Http\Controllers\RolePermissionController::class, 'edit'])->name('rolePermission.edit');
+        Route::get('/edit/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'edit'])->name('rolePermission.edit');
         Route::get('/show/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'show'])->name('rolePermission.show');
     });
 

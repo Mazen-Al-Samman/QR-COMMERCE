@@ -12,11 +12,16 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <h5>Add Permissions For "{{$role->role_title}}"</h5>
+                                        @if(session()->has('alert-success'))
+                                            <div class="alert alert-success">
+                                                {{ session()->get('alert-success') }}
+                                            </div>
+                                        @endif
                                     </div>
                                     <div class="card-body">
                                         <form action="{{route('rolePermission.store')}}" method="post">
-                                            <input type="hidden" value="{{$role->id}}" name="role_id">
                                             @csrf
+                                            <input type="hidden" value="{{$role->id}}" name="role_id">
                                             <div class="row">
                                                     @foreach($permissions as $permission)
                                                     <div class="col-auto m-1">

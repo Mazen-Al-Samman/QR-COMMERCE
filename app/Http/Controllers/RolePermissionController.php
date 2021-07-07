@@ -6,6 +6,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\RolePermission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
@@ -88,7 +89,17 @@ class RolePermissionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $permissions = DB::table('role_permissions')
+                        ->select(['role_permissions.role_id','role_permissions.permission_id As RolePermission_per_id','permissions.permission','permissions.id AS permission_id','permissions.description'])
+                        ->rightJoin('permissions', 'role_permissions.permission_id', '=', 'permissions.id')
+                        ->get();
+
+        $role = Role::find($id);
+
+        return view('backend.rolePermission.edit',[
+            'role' => $role,
+            'permissions' => $permissions
+        ]);
     }
 
     /**
@@ -100,7 +111,12 @@ class RolePermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rolePermission = new RolePermission();
+        if($rolePermission->UpdateRolePermission($request)) {
+            $request->session()->flash('alert-update', 'Process was succeeded!');
+            return \redirect()->route('rolePermission.edit',['role_id' => $request->role_id]);
+        }
+        return new \Exception('an error occurred');
     }
 
     /**

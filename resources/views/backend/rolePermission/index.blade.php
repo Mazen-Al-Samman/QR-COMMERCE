@@ -30,6 +30,8 @@
                                                         </th>
                                                         <td>
                                                             <a href="{{ route('rolePermission.create',['role_id'=> $role->id]) }}" class="btn btn-primary">Add Permissions</a>
+                                                            <a href="{{ route('rolePermission.edit',['role_id'=> $role->id]) }}" class="btn btn-warning">Edit</a>
+                                                            <a href="{{ route('rolePermission.show',['role_id'=> $role->id]) }}" class="btn btn-info">View</a>
                                                         </td>
                                                     </tr>
                                                     <?php $i++; ?>
