@@ -33,17 +33,7 @@ class RolePermissionController extends Controller
      */
     public function create($role_id)
     {
-        $permission = new Permission();
-        $role = Role::find($role_id);
-        $permissions = $permission->getUnselectedPermissions();
-        $role_permission = new RolePermission();
-        $roles_permissions = $role_permission->getAllRolesPermissions();
 
-        return view('backend.rolePermission.create', [
-            'role' => $role,
-            'permissions' => $permissions,
-            'roles_permissions' => $roles_permissions
-        ]);
     }
 
     /**
@@ -82,13 +72,8 @@ class RolePermissionController extends Controller
      */
     public function edit($role_id)
     {
-        $permissions = DB::table('permissions')
-                        ->select(['role_permissions.role_id','role_permissions.permission_id As RolePermission_per_id','permissions.permission','permissions.id AS permission_id','permissions.description'])
-            ->leftJoin('role_permissions',function($join) use ($role_id) {
-                $join->on('role_permissions.permission_id','=','permissions.id')
-                    ->where('role_permissions.role_id',$role_id);
-            })->get();
-
+        $permission = new Permission();
+        $permissions = $permission->getPermissionsWithSelected($role_id);
         $role = Role::find($role_id);
 
         return view('backend.rolePermission.edit',[

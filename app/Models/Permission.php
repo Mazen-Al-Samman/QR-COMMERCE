@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Permission extends Model
 {
@@ -13,12 +14,23 @@ class Permission extends Model
     {
         return Permission::all();
     }
-    public function getUnselectedPermissions()
+
+    public function getPermissionsWithSelected($role_id)
     {
-        return Permission::leftJoin('role_permissions', 'id', '=', 'role_permissions.permission_id')
-                           ->whereNull('role_permissions.permission_id')
-                           ->get();
+        return DB::table('permissions')
+                    ->select([
+                        'role_permissions.role_id',
+                        'role_permissions.permission_id As RolePermission_per_id',
+                        'permissions.permission',
+                        'permissions.id AS permission_id',
+                        'permissions.description'
+                    ])
+                    ->leftJoin('role_permissions', function ($join) use ($role_id) {
+                        $join->on('role_permissions.permission_id', '=', 'permissions.id')
+                            ->where('role_permissions.role_id', $role_id);
+                    })->get();
     }
+
     public function createPermission($request)
     {
         $permission = new Permission();
@@ -27,7 +39,7 @@ class Permission extends Model
         return $permission->save();
     }
 
-    public function updatePermission($id,$request)
+    public function updatePermission($id, $request)
     {
         $permission = Permission::find($id);
         $permission->permission = $request->permission;
