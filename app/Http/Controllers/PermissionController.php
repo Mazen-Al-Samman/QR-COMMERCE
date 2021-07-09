@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
-class PermissionController extends Controller
+class PermissionController extends MainController
 {
     /**
      * Display a listing of the resource.

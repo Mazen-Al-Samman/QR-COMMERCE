@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
-class RolePermissionController extends Controller
+class RolePermissionController extends MainController
 {
     /**
      * Display a listing of the resource.
