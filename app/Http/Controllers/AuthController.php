@@ -38,7 +38,7 @@ class AuthController extends Controller
             ]);
         }
 
-        if (! $token = auth('api')->attempt($credentials)) {
+        if (! $token = auth('web')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
