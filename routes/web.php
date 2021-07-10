@@ -54,4 +54,13 @@ Route::prefix('backend')->group(function () {
         Route::get('/show/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'show'])->name('rolePermission.show');
     });
 
+    Route::prefix('vendor')->group(function () {
+        Route::get('/', [\App\Http\Controllers\VendorsController::class, 'create'])->name('vendor.create');
+        Route::post('/store', [\App\Http\Controllers\VendorsController::class, 'store'])->name('vendor.store');
+        Route::delete('/delete/{id}', [\App\Http\Controllers\VendorsController::class, 'destroy'])->name('vendor.delete');
+        Route::get('/edit/{id}', [\App\Http\Controllers\VendorsController::class, 'edit'])->name('vendor.edit');
+        Route::get('/show/{id}', [\App\Http\Controllers\VendorsController::class, 'show'])->name('vendor.show');
+        Route::put('/update/{id}', [\App\Http\Controllers\VendorsController::class, 'update'])->name('vendor.update');
+    });
+
 });
