@@ -17,7 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('backend')->group(function () {
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+
+Route::prefix('backend')->middleware('auth')->group(function () {
+
     Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
 
     Route::prefix('admin')->group(function () {

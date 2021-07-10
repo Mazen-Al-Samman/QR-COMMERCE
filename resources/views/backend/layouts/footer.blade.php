@@ -54,7 +54,7 @@
 <script src="{{ asset('assets/plugins/chart-morris/js/morris.min.js')}}"></script>
 <script src="{{ asset('assets/js/pages/chart-morris-custom.js')}}"></script>
 <!-- animation css -->
-<link rel="stylesheet" href="../assets/plugins/animation/css/animate.min.css">
+<link rel="stylesheet" href="{{ asset('assets/plugins/animation/css/animate.min.css')}}">
 
 </body>
 
