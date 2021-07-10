@@ -53,7 +53,7 @@
                                 </div>
                                 <input type="email" name="email"
                                        class="form-control @error('email') is-invalid @enderror"
-                                       placeholder="Email address" required autofocus autocomplete="false">
+                                       placeholder="Email address" autofocus autocomplete="false">
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -64,7 +64,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="feather icon-lock"></i></span>
                                 </div>
-                                <input type="password" name="password" class="form-control" placeholder="Password" @error('password') is-invalid @enderror>
+                                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password">
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -80,12 +80,12 @@
                             </div>
                             <button class="btn btn-primary mb-4">Login</button>
                             <p class="mb-2 text-muted">Forgot password? <a href="auth-reset-password.html" class="f-w-400">Reset</a></p>
-                            <p class="mb-0 text-muted">Don’t have an account? <a href="auth-signup.html" class="f-w-400">Signup</a></p>
+{{--                            <p class="mb-0 text-muted">Don’t have an account? <a href="{{route('register')}}" class="f-w-400">Signup</a></p>--}}
                         </form>
                     </div>
                 </div>
                 <div class="col-md-6 d-none d-md-block">
-                    <img src="../assets/images/auth-bg.jpg" alt="" class="img-fluid">
+                    <img src="https://media.qrtiger.com/blog/2021/01/Header_83.jpg" alt="" class="img-fluid">
                 </div>
             </div>
         </div>

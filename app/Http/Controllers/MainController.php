@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class MainController extends Controller
 {
@@ -21,5 +26,44 @@ class MainController extends Controller
         $url = $request->fullUrl();
         preg_match('/\/api\//',$url,$matches);
         return count($matches) > 0;
+    }
+
+    public function profile()
+    {
+        if (\auth()->user()) {
+            return view('backend.auth.profile');
+        }
+        return redirect()->route('login');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfile(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'username' => ['required', 'string', Rule::unique('admins')->ignore(Auth::user()->id, 'id')],
+            'email' => ['required', 'email', Rule::unique('admins')->ignore(Auth::user()->id, 'id')],
+            'phone' => ['required', 'numeric', Rule::unique('admins')->ignore(Auth::user()->id, 'id')],
+        ]);
+
+        if ($validation->fails()) {
+            return Redirect::back()->withErrors($validation);
+        }
+
+        $update = Admin::find(Auth::user()->id);
+        $update->username = $request->username;
+        $update->email = $request->email;
+        $update->phone = $request->phone;
+        $update->save();
+
+            $request->session()->flash('update', 'User was successful updated!');
+            return Redirect::back();
+
+
+        return new \Exception('an error occurred');
     }
 }

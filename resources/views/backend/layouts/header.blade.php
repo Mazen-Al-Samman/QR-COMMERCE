@@ -145,7 +145,7 @@
                                 <div class="media">
                                     <img class="img-radius" src="../assets/images/user/avatar-1.jpg" alt="Generic placeholder image">
                                     <div class="media-body">
-                                        <p><strong>John Doe</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>5 min</span></p>
+                                        <p><strong>{{auth('web')->user()->username}}</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>5 min</span></p>
                                         <p>New ticket Added</p>
                                     </div>
                                 </div>
@@ -212,17 +212,15 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right profile-notification">
                         <div class="pro-head">
-                            <img src="../assets/images/user/avatar-1.jpg" class="img-radius" alt="User-Profile-Image">
-                            <span>John Doe</span>
-                            <a href="auth-signin.html" class="dud-logout" title="Logout">
-                                <i class="feather icon-log-out"></i>
-                            </a>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/2048px-User_icon_2.svg.png" class="img-radius" alt="User-Profile-Image">
+                            <span>{{auth()->user()->username}}</span>
+                            <form action="{{route('logout')}}" method="post">
+                                @csrf
+                                <button type="submit" class="bg-transparent border-0 dud-logout"><i class="feather icon-log-out"></i></button>
+                            </form>
                         </div>
                         <ul class="pro-body">
-                            <li><a href="#!" class="dropdown-item"><i class="feather icon-settings"></i> Settings</a></li>
-                            <li><a href="#!" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
-                            <li><a href="message.html" class="dropdown-item"><i class="feather icon-mail"></i> My Messages</a></li>
-                            <li><a href="auth-signin.html" class="dropdown-item"><i class="feather icon-lock"></i> Lock Screen</a></li>
+                            <li><a href="{{route('profile')}}" class="dropdown-item"><i class="feather icon-user"></i> Profile</a></li>
                         </ul>
                     </div>
                 </div>
