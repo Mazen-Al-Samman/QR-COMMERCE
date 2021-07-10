@@ -1,8 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
+
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -24,6 +25,18 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['phone', 'password']);
+
+        $validation = Validator::make($credentials,[
+            'phone' => ['required' , 'numeric' , 'min:10'],
+            'password' => ['required' , 'string'],
+        ]);
+
+        if($validation->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => $validation->errors()
+            ]);
+        }
 
         if (! $token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
