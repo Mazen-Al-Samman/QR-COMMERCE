@@ -1,0 +1,83 @@
+[
+    {
+        "governorate": "Amman",
+        "2015": 1812059,
+        "2004": 1036330,
+        "1994": 994199,
+        "arabic_name": "عمان",
+        "name": "Amman",
+        "rank": 1
+    },
+    {
+        "governorate": "Zarqa",
+        "2015": 635160,
+        "2004": 395227,
+        "1994": 350849,
+        "arabic_name": "الزرقاء",
+        "name": "Zarqa",
+        "rank": 2
+    },
+    {
+        "governorate": "Irbid",
+        "2015": 502714,
+        "2004": 250645,
+        "1994": 208329,
+        "arabic_name": "إربد",
+        "name": "Irbid",
+        "rank": 3
+    },
+    {
+        "governorate": "Aqaba",
+        "2015": 148398,
+        "2004": 80059,
+        "1994": 62773,
+        "arabic_name": "العقبة",
+        "name": "Aqaba",
+        "rank": 13
+    },
+    {
+        "governorate": "Mafraq",
+        "2015": 106008,
+        "2004": 47764,
+        "1994": 38393,
+        "arabic_name": "المفرق",
+        "name": "Mafraq",
+        "rank": 15
+    },
+    {
+        "governorate": "Madaba",
+        "2015": 105353,
+        "2004": 70338,
+        "1994": 55749,
+        "arabic_name": "مأدبا",
+        "name": "Madaba",
+        "rank": 16
+    },
+    {
+        "governorate": "Ma'an",
+        "2015": 41055,
+        "2004": 26461,
+        "1994": 22989,
+        "arabic_name": "معان",
+        "name": "Ma'an",
+        "rank": 30
+    },
+    {
+        "governorate": "Karak",
+        "2015": 32216,
+        "2004": 20280,
+        "1994": 18633,
+        "arabic_name": "الكرك",
+        "name": "Karak",
+        "rank": 37
+    },
+    {
+        "governorate": "Tafilah",
+        "2015": 27559,
+        "2004": 23512,
+        "1994": 20881,
+        "arabic_name": "الطفيلة",
+        "name": "Tafilah",
+        "rank": 42
+    }
+]

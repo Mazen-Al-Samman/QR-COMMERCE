@@ -35,6 +35,9 @@ class Vendor extends Model
         $vendor->phone = $request->phone;
         $vendor->country = $request->country;
         $vendor->city = $request->city;
+        $vendor->subscribe = "0000";
+        $vendor->start_subscription = "2020-01-01"; 
+        $vendor->end_subscription = "2020-01-01"; 
         return $vendor->save();
     }
 

@@ -59,7 +59,7 @@
                                                         <label for="city">City</label>
                                                         <select name="city" class="form-control" id="">
                                                             @foreach($jordanian_cities as $city)
-                                                                <option {{$city['governorate'] == $vendor->city ? 'selected' : ''}} value="{{$city['governorate']}}">{{$city['governorate']}}</option>
+                                                                <option {{$city['name'] == $vendor->city ? 'selected' : ''}} value="{{$city['name']}}">{{$city['name']}}</option>
                                                             @endforeach
                                                         </select>
                                                         @error('city')
