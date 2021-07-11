@@ -23,7 +23,7 @@ class LoginController extends Controller
     |
     */
 
-    use RedirectsUsers, ThrottlesLogins;
+    use ThrottlesLogins;
 
     /**
      * Create a new controller instance.
@@ -219,6 +219,15 @@ class LoginController extends Controller
     protected function guard()
     {
         return Auth::guard();
+    }
+
+    public function redirectPath()
+    {
+        if (method_exists($this, 'redirectTo')) {
+            return $this->redirectTo();
+        }
+
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/backend';
     }
 
 }
