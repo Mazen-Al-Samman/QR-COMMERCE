@@ -66,4 +66,8 @@ class MainController extends Controller
 
         return new \Exception('an error occurred');
     }
+
+    public function getUserPermissionns($request) {
+        return $request->get('permissions');
+    }
 }
