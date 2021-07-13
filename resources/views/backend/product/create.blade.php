@@ -37,8 +37,8 @@
                                                     <div class="form-group">
                                                         <label for="category">Category</label>
                                                         <select name="category_id" id="category_id" class="form-control">
-                                                            @foreach([1,2,3] as $item)
-                                                                <option value="{{$item}}">{{$item}}</option>
+                                                            @foreach($categories as $category)
+                                                                <option value="{{$category->id}}">{{$category->title}}</option>
                                                             @endforeach
                                                         </select>
                                                         @error('category_id')
@@ -86,8 +86,8 @@
                                                     <div class="form-group">
                                                         <label for="vendor_id">Vendor</label>
                                                         <select name="vendor_id" id="vendor_id" class="form-control">
-                                                            @foreach([1,2,3] as $item)
-                                                                <option value="{{$item}}">{{$item}}</option>
+                                                            @foreach($vendors as $vendor)
+                                                                <option value="{{$vendor->id}}">{{$vendor->name}}</option>
                                                             @endforeach
                                                         </select>
                                                         @error('vendor_id')

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 
 class ProductController extends MainController
@@ -23,7 +25,14 @@ class ProductController extends MainController
      */
     public function create()
     {
-        return view('backend.product.create');
+        $category = new Category();
+        $vendor = new Vendor();
+        $categories = $category->getallCategories();
+        $vendors = $vendor->getAllVendors();
+        return view('backend.product.create',[
+            'categories' => $categories,
+            'vendors' => $vendors
+        ]);
     }
 
     /**
