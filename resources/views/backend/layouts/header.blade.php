@@ -77,6 +77,9 @@
                         <li class=""><a href="{{route('rolePermission.index')}}" class="nav-link"><span class="pcoded-micon"><i class="fas fa-user-lock"></i></span><span class="pcoded-mtext">Role Permissions</span></a></li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('product.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-product-hunt"></i></span><span class="pcoded-mtext">Product</span></a>
+                </li>
                 <li class="nav-item pcoded-menu-caption">
                     <label>Forms &amp; table</label>
                 </li>
