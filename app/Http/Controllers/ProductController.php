@@ -30,11 +30,14 @@ class ProductController extends MainController
     {
         $category = new Category();
         $vendor = new Vendor();
+        $product = new Product();
         $categories = $category->getallCategories();
         $vendors = $vendor->getAllVendors();
+        $products = $product->getAllProducts();
         return view('backend.product.create',[
             'categories' => $categories,
-            'vendors' => $vendors
+            'vendors' => $vendors,
+            'products' => $products
         ]);
     }
 
@@ -88,7 +91,16 @@ class ProductController extends MainController
      */
     public function edit($id)
     {
-        //
+        $product = Product::find($id);
+        $category = new Category();
+        $vendor = new Vendor();
+        $categories = $category->getallCategories();
+        $vendors = $vendor->getAllVendors();
+        return view('backend.product.edit', [
+            'product' => $product,
+            'categories' => $categories,
+            'vendors' => $vendors
+        ]);
     }
 
     /**

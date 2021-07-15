@@ -42,6 +42,11 @@ class Product extends Model
         return $this->hasOne(MediaProduct::class);
     }
 
+    public function getAllProducts(){
+
+        return Product::all();
+    }
+
     public function createProduct($request)
     {
         $product = new Product();
@@ -62,13 +67,15 @@ class Product extends Model
         }
 
         if ($request->hasfile('images')) {
+            $i = 0;
             foreach ($request->file('images') as $file) {
-                $name = time() . '_' . $file->getClientOriginalName();
+                $name = time() . $i .'_' . $file->getClientOriginalName();
                 $media = new Media();
                 $media->image = $name;
                 if ($media->save()) {
-                    $file->move(storage_path() . "/app/public/uploads/products/", time() . '_' . $name);
+                    $file->move(storage_path() . "/app/public/uploads/products/", $name);
                 }
+                $i++;
             }
         }
         return $product->save();

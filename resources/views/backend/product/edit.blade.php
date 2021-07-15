@@ -11,14 +11,14 @@
                             <div class="col-sm-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Manage Product</h5>
+                                        <h5>Manage Permission</h5>
                                     </div>
                                     <div class="card-body">
-                                        <h5>Product Control</h5>
+                                        <h5>Edit Permission</h5>
                                         <hr>
-                                        @if(session()->has('alert-success'))
+                                        @if(session()->has('alert-update'))
                                             <div class="alert alert-success">
-                                                {{ session()->get('alert-success') }}
+                                                {{ session()->get('alert-update') }}
                                             </div>
                                         @endif
                                         <form action="{{route('product.store')}}" method="post" enctype="multipart/form-data">
@@ -27,7 +27,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="name">Name</label>
-                                                        <input type="text" name="name" class="form-control" id="name" placeholder="Enter name">
+                                                        <input type="text" name="name" class="form-control" id="name" value="{{$product->name}}" placeholder="Enter name">
                                                         @error('name')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
@@ -38,7 +38,7 @@
                                                         <label for="category">Category</label>
                                                         <select name="category_id" id="category_id" class="form-control">
                                                             @foreach($categories as $category)
-                                                                <option value="{{$category->id}}">{{$category->title}}</option>
+                                                                <option value="{{$category->id}}" {{$product->category_id == $category->id ? 'selected' : ''}}>{{$category->title}}</option>
                                                             @endforeach
                                                         </select>
                                                         @error('category_id')
@@ -49,7 +49,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="old_price">Old Price</label>
-                                                        <input type="text" name="old_price" class="form-control" id="old_price" placeholder="Old Price">
+                                                        <input type="text" name="old_price" class="form-control" id="old_price" value="{{$product->old_price}}" placeholder="Old Price">
                                                         @error('old_price')
                                                         <small id="old_priceHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
@@ -58,7 +58,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="price">Price</label>
-                                                        <input type="text" name="price" class="form-control" id="price" placeholder="Price">
+                                                        <input type="text" name="price" class="form-control" id="price" value="{{$product->price}}" placeholder="Price">
                                                         @error('price')
                                                         <small id="priceHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
@@ -87,7 +87,7 @@
                                                         <label for="vendor_id">Vendor</label>
                                                         <select name="vendor_id" id="vendor_id" class="form-control">
                                                             @foreach($vendors as $vendor)
-                                                                <option value="{{$vendor->id}}">{{$vendor->name}}</option>
+                                                                <option value="{{$vendor->id}}" {{$product->vendor_id == $vendor->id ? 'selected' : ''}}>{{$vendor->name}}</option>
                                                             @endforeach
                                                         </select>
                                                         @error('vendor_id')
@@ -118,61 +118,6 @@
                                                 </div>
                                             </div>
                                         </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                @if(session()->has('alert-delete'))
-                                    <div class="alert alert-warning">
-                                        {{ session()->get('alert-delete') }}
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>Product List</h5>
-                                        <span class="d-block m-t-5">All Products list information</span>
-                                    </div>
-                                    <div class="card-body table-border-style">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover text-center">
-                                                <thead>
-                                                <tr>
-                                                    <th>Image</th>
-                                                    <th>Name</th>
-                                                    <th>Category</th>
-                                                    <th>Old Price</th>
-                                                    <th>Price</th>
-                                                    <th>Vendor</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($products as $product)
-                                                    <tr>
-                                                        <td>{{$product->main_image}}</td>
-                                                        <td>{{$product->name}}</td>
-                                                        <td>{{$product->category->title}}</td>
-                                                        <td>{{$product->old_price}}</td>
-                                                        <td>{{$product->price}}</td>
-                                                        <td>{{$product->vendor->name}}</td>
-                                                        <td class="d-flex align-items-center justify-content-center">
-                                                            <a href="{{route('product.show' , $product->id )}}" class="btn btn-info">View</a>
-                                                            <a href="{{route('product.edit' , $product->id )}}" class="btn btn-primary">Edit</a>
-                                                            <form action="{{route('product.delete', $product->id)}}" method="post">
-                                                                @method('delete')
-                                                                @csrf
-                                                                <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
