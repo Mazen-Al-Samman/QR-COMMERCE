@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends MainController
 {
@@ -43,7 +46,27 @@ class ProductController extends MainController
      */
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            'name' => ['required', 'string'],
+            'category_id' => ['required','exists:categories,id'],
+            'old_price' => ['numeric'],
+            'price' => ['required','numeric'],
+            'main_image' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg','max:2048'],
+            'images.*' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg','max:2048'],
+            'vendor_id' => ['required', 'exists:vendors,id'],
+            'barcode' => ['required', 'string'],
+            'description' => ['required', 'string'],
+        ]);
+
+        if ($validation->fails()) {
+            return Redirect::route('product.create')->withErrors($validation);
+        }
+
+        $product = new Product();
+        if($product->createProduct($request)){
+            return back()->with('alert-success', 'Product has successfully Added!');
+        }
+        return new \Exception('an error occurred');
     }
 
     /**

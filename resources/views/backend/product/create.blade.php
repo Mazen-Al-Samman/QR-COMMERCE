@@ -21,7 +21,7 @@
                                                 {{ session()->get('alert-success') }}
                                             </div>
                                         @endif
-                                        <form action="{{route('product.store')}}" method="post">
+                                        <form action="{{route('product.store')}}" method="post" enctype="multipart/form-data">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -76,13 +76,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="images">Images</label>
-                                                        <input type="file" name="images[]" class="form-control" id="images" placeholder="images">
+                                                        <input type="file" name="images[]" class="form-control" multiple id="images" placeholder="images">
                                                         @error('images')
                                                         <small id="imagesHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="vendor_id">Vendor</label>
                                                         <select name="vendor_id" id="vendor_id" class="form-control">
@@ -92,6 +92,24 @@
                                                         </select>
                                                         @error('vendor_id')
                                                         <small id="vendorHelp" class="form-text text-muted text-danger">{{$message}}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="barcode">Barcode</label>
+                                                        <input type="text" name="barcode" class="form-control" id="barcode" placeholder="Barcode">
+                                                        @error('barcode')
+                                                        <small id="barcodeHelp" class="form-text text-muted text-danger">{{$message}}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="description">Description</label>
+                                                        <textarea name="description" class="form-control" id="description"></textarea>
+                                                        @error('description')
+                                                        <small id="descriptionHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
                                                     </div>
                                                 </div>

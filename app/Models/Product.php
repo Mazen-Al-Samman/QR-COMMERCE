@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Product extends Model
 {
@@ -36,8 +37,41 @@ class Product extends Model
         return $this->hasOne(Vendor::class, 'id', 'vendor_id');
     }
 
-    public function mediaProduct(){
+    public function mediaProduct()
+    {
         return $this->hasOne(MediaProduct::class);
+    }
+
+    public function createProduct($request)
+    {
+        $product = new Product();
+        $product->name = $request->name;
+        $product->category_id = $request->category_id;
+        $product->old_price = isset($request->old_price) ? $request->old_price : null;
+        $product->price = $request->price;
+        $product->vendor_id = $request->vendor_id;
+        $product->barcode = $request->barcode;
+        $product->description = $request->description;
+        $file = $name = null;
+
+        if ($request->hasfile('main_image')) {
+            $file = $request->file('main_image');
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(storage_path() . "/app/public/uploads/products/", $name);
+            $product->main_image = $name;
+        }
+
+        if ($request->hasfile('images')) {
+            foreach ($request->file('images') as $file) {
+                $name = time() . '_' . $file->getClientOriginalName();
+                $media = new Media();
+                $media->image = $name;
+                if ($media->save()) {
+                    $file->move(storage_path() . "/app/public/uploads/products/", time() . '_' . $name);
+                }
+            }
+        }
+        return $product->save();
     }
 
 }
