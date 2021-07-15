@@ -74,6 +74,7 @@ Route::prefix('backend')->group(function () {
             Route::get('/', [\App\Http\Controllers\ProductController::class, 'create'])->name('product.create');
             Route::post('/store', [\App\Http\Controllers\ProductController::class, 'store'])->name('product.store');
             Route::delete('/delete/{id}', [\App\Http\Controllers\ProductController::class, 'destroy'])->name('product.delete');
+            Route::get('/imageDelete/{id}', [\App\Http\Controllers\ProductController::class, 'deleteImage'])->name('product_image.delete');
             Route::get('/edit/{id}', [\App\Http\Controllers\ProductController::class, 'edit'])->name('product.edit');
             Route::get('/show/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
             Route::put('/update/{id}', [\App\Http\Controllers\ProductController::class, 'update'])->name('product.update');

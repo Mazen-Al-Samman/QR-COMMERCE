@@ -65,7 +65,7 @@ class Product extends Model
             $file->move(storage_path() . "/app/public/uploads/products/", $name);
             $product->main_image = $name;
         }
-
+        $media_ids = [];
         if ($request->hasfile('images')) {
             $i = 0;
             foreach ($request->file('images') as $file) {
@@ -73,12 +73,80 @@ class Product extends Model
                 $media = new Media();
                 $media->image = $name;
                 if ($media->save()) {
+                    $media_ids [] = $media->id;
                     $file->move(storage_path() . "/app/public/uploads/products/", $name);
                 }
                 $i++;
             }
         }
-        return $product->save();
+        if($product->save()) {
+            if ($request->hasfile('images')) {
+                $result = true;
+                $i = 0;
+                foreach ($request->file('images') as $file) {
+                    $media_product = new MediaProduct();
+                    $media_product->product_id = $product->id;
+                    $media_product->media_id = $media_ids[$i];
+                    if (!$media_product->save()) {
+                        $result = false;
+                    }
+                    $i++;
+                }
+                return $result;
+            }
+            return true;
+        }
+    }
+
+    public function updateProdcut($id, $request)
+    {
+        $product = Product::find($id);
+        $product->name = $request->name;
+        $product->category_id = $request->category_id;
+        $product->old_price = isset($request->old_price) ? $request->old_price : null;
+        $product->price = $request->price;
+        $product->vendor_id = $request->vendor_id;
+        $product->barcode = $request->barcode;
+        $product->description = $request->description;
+//        $file = $name = null;
+
+        if ($request->hasfile('main_image')) {
+            $file = $request->file('main_image');
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(storage_path() . "/app/public/uploads/products/", $name);
+            $product->main_image = $name;
+        }
+        $media_ids = [];
+        if ($request->hasfile('images')) {
+            $i = 0;
+            foreach ($request->file('images') as $file) {
+                $name = time() . $i .'_' . $file->getClientOriginalName();
+                $media = new Media();
+                $media->image = $name;
+                if ($media->save()) {
+                    $media_ids [] = $media->id;
+                    $file->move(storage_path() . "/app/public/uploads/products/", $name);
+                }
+                $i++;
+            }
+        }
+        if($product->save()) {
+            if ($request->hasfile('images')) {
+                $result = true;
+                $i = 0;
+                foreach ($request->file('images') as $file) {
+                    $media_product = new MediaProduct();
+                    $media_product->product_id = $product->id;
+                    $media_product->media_id = $media_ids[$i];
+                    if (!$media_product->save()) {
+                        $result = false;
+                    }
+                    $i++;
+                }
+                return $result;
+            }
+            return true;
+        }
     }
 
 }
