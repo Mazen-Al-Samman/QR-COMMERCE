@@ -11,10 +11,10 @@
                             <div class="col-sm-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Manage Permission</h5>
+                                        <h5>Manage Products</h5>
                                     </div>
                                     <div class="card-body">
-                                        <h5>Edit Permission</h5>
+                                        <h5>Edit Product</h5>
                                         <hr>
                                         @if(session()->has('alert-update'))
                                             <div class="alert alert-success">
@@ -120,14 +120,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-12 border-bottom">
-                                                    <h3>Main Image</h3>
+                                                    <h5>Main Image</h5>
                                                 </div>
                                                 <div class="col-auto mt-2">
                                                     <a href="{{ route('product_image.delete',['id' => $product->id]) }}" class="bg-danger text-light rounded p-2" onclick="return confirm('Are you sure ?')" style="position: absolute; right: 20px; top: 5px;"><i class="fa fa-trash fa-lg"></i></a>
                                                     <img src="{{ asset('storage/uploads/products/'.$product->main_image)}}" style="box-shadow: 5px 5px 5px darkred; width: 175px; height: 175px" class="rounded" alt="">
                                                 </div>
                                                 <div class="col-12 mt-4 mb-2 border-bottom">
-                                                    <h3>Other Images</h3>
+                                                    <h5>Other Images</h5>
                                                 </div>
                                                 @foreach($images as $image)
                                                     <div class="col-auto">

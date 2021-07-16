@@ -21,10 +21,23 @@
                                             <li><span class="font-weight-bold">Barcode: </span>{{$product->barcode}}</li>
                                             <li><span class="font-weight-bold">Description: </span>{{$product->description}}</li>
                                         </ul>
-                                        @foreach($images as $image)
-                                            <img src="{{ asset('storage/uploads/products/'.$image->image)}}" width="100" height="100" alt="">
-                                        @endforeach
-                                        <a href="{{route('product.create')}}" class="btn btn-secondary">Back</a>
+                                        <div class="row">
+                                            <div class="col-12 border-bottom">
+                                                <h5>Main Image</h5>
+                                            </div>
+                                            <div class="col-auto mt-2">
+                                                <img src="{{ asset('storage/uploads/products/'.$product->main_image)}}" style="box-shadow: 5px 5px 5px darkred; width: 175px; height: 175px" class="rounded" alt="">
+                                            </div>
+                                            <div class="col-12 mt-4 mb-2 border-bottom">
+                                                <h5>Other Images</h5>
+                                            </div>
+                                            @foreach($images as $image)
+                                                <div class="col-auto">
+                                                    <img src="{{ asset('storage/uploads/products/'.$image->image)}}" style="box-shadow: 5px 5px 5px darkred; width: 175px; height: 175px" class="rounded" alt="">
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <a href="{{route('product.create')}}" class="btn btn-secondary mt-5">Back</a>
                                     </div>
                                 </div>
                             </div>
