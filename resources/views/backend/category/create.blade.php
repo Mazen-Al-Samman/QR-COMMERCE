@@ -99,7 +99,7 @@
                                                 <tbody>
                                                 @foreach($categories as $category)
                                                     <tr>
-                                                        <td>{{$category->image}}</td>
+                                                        <td><img src="{{ asset('storage/uploads/categories/'.$category->image)}}" class="rounded" width="75" height="75" alt=""></td>
                                                         <td>{{$category->title}}</td>
                                                         <td>{{$category->vendor->name}}</td>
                                                         <td class="d-flex align-items-center justify-content-center">
