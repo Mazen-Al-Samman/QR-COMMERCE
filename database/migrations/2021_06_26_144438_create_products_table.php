@@ -19,8 +19,8 @@ class CreateProductsTable extends Migration
             $table->string("description", 500)->nullable(false);
             $table->double("price")->nullable(false);
             $table->double("old_price")->nullable(true);
-            $table->text("images")->nullable(true);
             $table->string("barcode")->nullable(false);
+            $table->string("main_image",'500')->nullable(false);
             $table->integer("category_id")->unsigned()->nullable(false);
             $table->integer("vendor_id")->unsigned()->nullable(false);
             $table->integer("posted_by")->unsigned()->nullable(false);
