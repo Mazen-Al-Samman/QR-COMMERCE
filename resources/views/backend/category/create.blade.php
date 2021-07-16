@@ -22,6 +22,12 @@
                                                 <strong>{{ $message }}</strong>
                                             </div>
                                         @endif
+                                        @if ($message = \Illuminate\Support\Facades\Session::get('alert-delete'))
+                                            <div class="alert alert-success alert-block">
+                                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                                <strong>{{ $message }}</strong>
+                                            </div>
+                                        @endif
                                         <form action="{{route('category.store')}}" method="post" enctype="multipart/form-data">
                                             @csrf
                                             <div class="row">
@@ -77,7 +83,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <h5>Roles List</h5>
-                                        <span class="d-block m-t-5">All Roles list information</span>
+                                        <span class="d-block m-t-5">All Categories list information</span>
                                     </div>
                                     <div class="card-body table-border-style">
                                         <div class="table-responsive">

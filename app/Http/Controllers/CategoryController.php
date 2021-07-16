@@ -7,6 +7,7 @@ use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -83,7 +84,12 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::find($id);
+        $vendors = Vendor::getAllVendors();
+        return view('backend.category.edit', [
+            'category' => $category,
+            'vendors' => $vendors
+        ]);
     }
 
     /**
@@ -95,7 +101,23 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            'title' => ['required', 'string'],
+            'vendor' => ['required', 'exists:vendors,id'],
+            'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg','max:2048'],
+        ]);
+
+        if ($validation->fails()) {
+            return Redirect::route('category.create')->withErrors($validation);
+        }
+
+        $category = new Category();
+        if ($category->updateCategory($id, $request)) {
+            $request->session()->flash('alert-update', 'Category was successful updated!');
+            return Redirect::back();
+        }
+
+        return new \Exception('an error occurred');
     }
 
     /**
@@ -104,8 +126,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,Request $request)
     {
-        //
+        if (Category::find($id)->delete()) {
+            $request->session()->flash('alert-delete', 'User was successful deleted!');
+            return \redirect()->route('category.create');
+        }
     }
 }
