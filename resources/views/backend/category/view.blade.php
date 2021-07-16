@@ -13,8 +13,11 @@
                                     </div>
                                     <div class="card-body">
                                         <ul>
-                                            <li><span class="font-weight-bold">Title: </span>{{$role->role_title}}</li>
-                                            <li><span class="font-weight-bold">Description: </span>{{$role->role_description}}</li>
+                                            <li><span class="font-weight-bold">Title: </span>{{$category->title}}</li>
+                                            <li><span class="font-weight-bold">Vendor: </span>{{$category->vendor->name}}</li>
+                                            <li><span class="font-weight-bold">Image: </span>
+                                                <img src="{{ asset('storage/uploads/categories/'.$category->image)}}" class="rounded" width="75" height="75" alt="">
+                                            </li>
                                         </ul>
                                         <a href="{{route('role.create')}}" class="btn btn-secondary">Back</a>
                                     </div>
