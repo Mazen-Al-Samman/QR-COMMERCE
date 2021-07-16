@@ -17,4 +17,38 @@ class Category extends Model
     public function getallCategories(){
         return Category::all();
     }
+
+    public function vendor()
+    {
+        return $this->hasOne(Vendor::class, 'id', 'vendor_id');
+    }
+
+
+    public function createCategory($request)
+    {
+        $category = new Category();
+        $category->title = $request->title;
+        $category->vendor_id = $request->vendor;
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(storage_path() . "/app/public/uploads/categories/", $name);
+            $category->image = $name;
+        }
+        return $category->save();
+    }
+
+    public function updateCategory($id, $request)
+    {
+        $category = Category::find($id);
+        $category->title = $request->title;
+        $category->vendor_id = $request->vendor;
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(storage_path() . "/app/public/uploads/categories/", $name);
+            $category->image = $name;
+        }
+        return $category->save();
+    }
 }

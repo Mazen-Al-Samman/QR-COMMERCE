@@ -22,7 +22,7 @@ Route::get('/', function () {
 
 Route::prefix('backend')->group(function () {
     Auth::routes();
-    Route::group(['middleware' => ['auth','prevent-back-history']], function () {
+    Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
         Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
         Route::get('/profile', [\App\Http\Controllers\MainController::class, 'profile'])->name('profile');
         Route::put('/update/profile', [\App\Http\Controllers\MainController::class, 'updateProfile'])->name('update.profile');
@@ -70,6 +70,16 @@ Route::prefix('backend')->group(function () {
             Route::put('/update/{id}', [\App\Http\Controllers\VendorsController::class, 'update'])->name('vendor.update');
         });
 
+        Route::prefix('category')->group(function () {
+            Route::get('/', [\App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
+            Route::post('/store', [\App\Http\Controllers\CategoryController::class, 'store'])->name('category.store');
+            Route::delete('/delete/{id}', [\App\Http\Controllers\CategoryController::class, 'destroy'])->name('category.delete');
+            Route::get('/delete-category-image/{id}', [\App\Http\Controllers\CategoryController::class, 'deleteCategoryImage'])->name('category_image.delete');
+            Route::get('/edit/{id}', [\App\Http\Controllers\CategoryController::class, 'edit'])->name('category.edit');
+            Route::get('/show/{id}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
+            Route::put('/update/{id}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('category.update');
+        });
+
         Route::prefix('product')->group(function () {
             Route::get('/', [\App\Http\Controllers\ProductController::class, 'create'])->name('product.create');
             Route::post('/store', [\App\Http\Controllers\ProductController::class, 'store'])->name('product.store');
@@ -78,6 +88,7 @@ Route::prefix('backend')->group(function () {
             Route::get('/edit/{id}', [\App\Http\Controllers\ProductController::class, 'edit'])->name('product.edit');
             Route::get('/show/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
             Route::put('/update/{id}', [\App\Http\Controllers\ProductController::class, 'update'])->name('product.update');
+
         });
     });
 
