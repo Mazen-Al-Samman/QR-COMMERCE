@@ -17,4 +17,13 @@ class Category extends Model
     {
         return Category::all();
     }
+
+    public function createCategory($request){
+        $category = new Category();
+        $category->title = $request->title;
+        $category->vendor_id = $request->vendor;
+        if ($request->hasfile('image')) {
+            
+        }
+    }
 }

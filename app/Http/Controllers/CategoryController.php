@@ -48,12 +48,20 @@ class CategoryController extends Controller
         $validation = Validator::make($request->all(), [
             'title' => ['required', 'string'],
             'vendor' => ['required', 'exists:vendors,id'],
-            'image' => ['required', 'file', 'confirmed']
+            'image' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg','max:2048'],
         ]);
 
         if ($validation->fails()) {
-            return Redirect::route('admin.create')->withErrors($validation);
+            return Redirect::route('category.create')->withErrors($validation);
         }
+
+        $category = new Category();
+        if($category->createCategory($request)){
+            $request->session()->flash('success', 'Category was successful added!');
+            return \redirect()->route('category.create');
+        }
+
+        return new \Exception('an error occurred');
     }
 
     /**
