@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Media;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -133,13 +134,16 @@ class CategoryController extends Controller
     public function destroy($id,Request $request)
     {
         if (Category::find($id)->delete()) {
-            $request->session()->flash('alert-delete', 'User was successful deleted!');
+            $request->session()->flash('alert-delete', 'Category was successful deleted!');
             return \redirect()->route('category.create');
         }
     }
 
-    public function deleteCategoryImage()
+    public function deleteCategoryImage($id,Request $request)
     {
-        
+        if (Media::find($id)->delete()) {
+            $request->session()->flash('alert-delete', 'Image was successful deleted!');
+            return \redirect()->back();
+        }
     }
 }
