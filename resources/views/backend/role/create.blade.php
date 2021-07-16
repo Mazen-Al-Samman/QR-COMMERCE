@@ -96,6 +96,11 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <div class="footer">
+                                        <div class="container">
+                                            {!! $roles->links() !!}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

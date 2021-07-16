@@ -126,6 +126,11 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <div class="footer">
+                                        <div class="container">
+                                            {!! $vendors->links() !!}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

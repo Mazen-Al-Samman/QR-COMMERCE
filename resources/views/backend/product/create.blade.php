@@ -174,6 +174,11 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <div class="footer">
+                                        <div class="container">
+                                            {!! $products->links() !!}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

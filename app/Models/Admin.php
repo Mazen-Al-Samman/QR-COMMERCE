@@ -52,6 +52,6 @@ class Admin extends Authenticatable
     public function getAllAdmins(){
         return Admin::where([
             'active' => 1
-        ])->get();
+        ])->paginate(15);
     }
 }

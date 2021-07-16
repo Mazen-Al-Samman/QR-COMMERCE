@@ -44,7 +44,7 @@ class Product extends Model
 
     public function getAllProducts(){
 
-        return Product::all();
+        return Product::paginate(15);
     }
 
     public function createProduct($request)

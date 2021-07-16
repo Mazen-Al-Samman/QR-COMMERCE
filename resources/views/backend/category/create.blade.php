@@ -111,6 +111,11 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <div class="footer">
+                                        <div class="container">
+                                            {!! $categories->links() !!}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

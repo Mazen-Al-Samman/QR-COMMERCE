@@ -30,7 +30,7 @@ class Vendor extends Model
     }
 
     public static function getAllVendors() {
-        return Vendor::where('end_subscription', '>', date('Y-m-d'))->get();
+        return Vendor::where('end_subscription', '>', date('Y-m-d'))->paginate(15);
     }
 
     public function createVendor($request) {

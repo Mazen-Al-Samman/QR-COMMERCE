@@ -140,6 +140,11 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <div class="footer">
+                                        <div class="container">
+                                            {!! $admins->links() !!}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

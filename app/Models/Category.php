@@ -15,7 +15,7 @@ class Category extends Model
     }
 
     public function getallCategories(){
-        return Category::all();
+        return Category::paginate(15);
     }
 
     public function vendor()
