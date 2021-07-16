@@ -12,7 +12,7 @@ class Permission extends Model
 
     public function getAllPermissions()
     {
-        return Permission::paginate(1);
+        return Permission::paginate(15);
     }
 
     public function getPermissionsWithSelected($role_id)
