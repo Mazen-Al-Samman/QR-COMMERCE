@@ -69,6 +69,15 @@ Route::prefix('backend')->group(function () {
             Route::get('/show/{id}', [\App\Http\Controllers\VendorsController::class, 'show'])->name('vendor.show');
             Route::put('/update/{id}', [\App\Http\Controllers\VendorsController::class, 'update'])->name('vendor.update');
         });
+
+        Route::prefix('category')->group(function () {
+            Route::get('/', [\App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
+            Route::post('/store', [\App\Http\Controllers\CategoryController::class, 'store'])->name('category.store');
+            Route::delete('/delete/{id}', [\App\Http\Controllers\CategoryController::class, 'destroy'])->name('category.delete');
+            Route::get('/edit/{id}', [\App\Http\Controllers\CategoryController::class, 'edit'])->name('category.edit');
+            Route::get('/show/{id}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
+            Route::put('/update/{id}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('category.update');
+        });
     });
 
 });

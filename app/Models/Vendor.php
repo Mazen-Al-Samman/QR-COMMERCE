@@ -25,6 +25,10 @@ class Vendor extends Model
         'end_subscription'
     ];
 
+    public function category() {
+        return $this->hasMany(Category::class);
+    }
+
     public static function getAllVendors() {
         return Vendor::where('end_subscription', '>', date('Y-m-d'))->get();
     }
@@ -36,8 +40,8 @@ class Vendor extends Model
         $vendor->country = $request->country;
         $vendor->city = $request->city;
         $vendor->subscribe = "0000";
-        $vendor->start_subscription = "2020-01-01"; 
-        $vendor->end_subscription = "2020-01-01"; 
+        $vendor->start_subscription = "2020-01-01";
+        $vendor->end_subscription = "2020-01-01";
         return $vendor->save();
     }
 
