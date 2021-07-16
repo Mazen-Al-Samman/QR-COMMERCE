@@ -22,12 +22,6 @@
                                                 <strong>{{ $message }}</strong>
                                             </div>
                                         @endif
-                                        @if ($message = \Illuminate\Support\Facades\Session::get('alert-delete'))
-                                            <div class="alert alert-success alert-block">
-                                                <button type="button" class="close" data-dismiss="alert">×</button>
-                                                <strong>{{ $message }}</strong>
-                                            </div>
-                                        @endif
                                         <form action="{{route('category.store')}}" method="post" enctype="multipart/form-data">
                                             @csrf
                                             <div class="row">

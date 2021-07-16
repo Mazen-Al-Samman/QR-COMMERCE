@@ -74,6 +74,7 @@ Route::prefix('backend')->group(function () {
             Route::get('/', [\App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
             Route::post('/store', [\App\Http\Controllers\CategoryController::class, 'store'])->name('category.store');
             Route::delete('/delete/{id}', [\App\Http\Controllers\CategoryController::class, 'destroy'])->name('category.delete');
+            Route::delete('/delete-category-image/{id}', [\App\Http\Controllers\CategoryController::class, 'deleteCategoryImage'])->name('category_image.delete');
             Route::get('/edit/{id}', [\App\Http\Controllers\CategoryController::class, 'edit'])->name('category.edit');
             Route::get('/show/{id}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
             Route::put('/update/{id}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('category.update');
