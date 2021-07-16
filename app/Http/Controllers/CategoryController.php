@@ -139,11 +139,4 @@ class CategoryController extends Controller
         }
     }
 
-    public function deleteCategoryImage($id,Request $request)
-    {
-        if (Media::find($id)->delete()) {
-            $request->session()->flash('alert-delete', 'Image was successful deleted!');
-            return \redirect()->back();
-        }
-    }
 }

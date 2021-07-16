@@ -123,7 +123,6 @@
                                                     <h5>Main Image</h5>
                                                 </div>
                                                 <div class="col-auto mt-2">
-                                                    <a href="{{ route('product_image.delete',['id' => $product->id]) }}" class="bg-danger text-light rounded p-2" onclick="return confirm('Are you sure ?')" style="position: absolute; right: 20px; top: 5px;"><i class="fa fa-trash fa-lg"></i></a>
                                                     <img src="{{ asset('storage/uploads/products/'.$product->main_image)}}" style="box-shadow: 5px 5px 5px darkred; width: 175px; height: 175px" class="rounded" alt="">
                                                 </div>
                                                 <div class="col-12 mt-4 mb-2 border-bottom">

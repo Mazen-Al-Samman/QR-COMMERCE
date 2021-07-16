@@ -58,7 +58,6 @@
                                                 </div>
                                                 <div class="col-6"></div>
                                                 <div class="col-auto">
-                                                    <a href="{{ route('category_image.delete',['id' => $category->id]) }}" class="bg-danger text-light rounded p-2" onclick="return confirm('Are you sure ?')" style="position: absolute; right: 20px; top: 5px;"><i class="fa fa-trash fa-lg"></i></a>
                                                     <img src="{{ asset('storage/uploads/categories/'.$category->image)}}" style="box-shadow: 5px 5px 5px darkred; width: 150px; height: 150px" class="rounded" alt="">
                                                 </div>
                                                 <div class="col-md-12 mt-4">
