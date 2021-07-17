@@ -72,16 +72,16 @@
             <form method="POST" action="{{ route('vendor.login.submit') }}" autocomplete="off">
                 @csrf
                 <div class="form-group">
-                    <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Your Email *" name="email" autofocus autocomplete="false" />
-                    @error('email')
+                    <input type="email" class="form-control @error('vendor-email') is-invalid @enderror" placeholder="Your Email *" name="vendor-email" autofocus autocomplete="false" />
+                    @error('vendor-email')
                     <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
                 </div>
                 <div class="form-group">
-                    <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" />
-                    @error('password')
+                    <input type="password" name="vendor-password" class="form-control @error('vendor-password') is-invalid @enderror" placeholder="Password" />
+                    @error('vendor-password')
                     <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

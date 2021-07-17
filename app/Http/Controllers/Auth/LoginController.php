@@ -67,7 +67,10 @@ class LoginController extends Controller
 
     public function vendorLogin(Request $request)
     {
-        $this->validateLogin($request);
+        $request->validate([
+            'vendor-email' => 'required|string',
+            'vendor-password' => 'required|string',
+        ]);
 
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
@@ -76,12 +79,11 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
 
-        if (Auth::guard('vendor')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+        if (Auth::guard('vendor')->attempt(['email' => $request->input('vendor-email'), 'password' => $request->input('vendor-password')], $request->get('remember'))) {
             return $this->sendLoginResponse($request);
         }
         $this->incrementLoginAttempts($request);
-
-        return $this->sendFailedLoginResponse($request);
+        return $this->sendFailedLoginResponseForVendor($request);
     }
 
     /**
@@ -169,6 +171,13 @@ class LoginController extends Controller
     {
         throw ValidationException::withMessages([
             $this->username() => [trans('auth.failed')],
+        ]);
+    }
+
+    protected function sendFailedLoginResponseForVendor(Request $request)
+    {
+        throw ValidationException::withMessages([
+            'vendor-email' => [trans('auth.failed')],
         ]);
     }
 
