@@ -20,4 +20,14 @@ class Authenticate extends Middleware
             return route('login');
         }
     }
+
+    public function handle($request, Closure $next, ...$guards)
+    {
+        if($jwt = $request->cookie('jwt-token')) {
+            $request->headers->set('Authorization' , 'Bearer '.$jwt);
+        }
+        $this->authenticate($request, $guards);
+
+        return $next($request);
+    }
 }

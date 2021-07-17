@@ -24,4 +24,6 @@ Route::group([
     Route::post('refresh', [\App\Http\Controllers\AuthController::class,'refresh']);
     Route::post('me', [\App\Http\Controllers\AuthController::class,'me']);
 
+    Route::post('vendors' , [\App\Http\Controllers\VendorsController::class,'vendorsApi'])->name('vendor-api');
+
 });

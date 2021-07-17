@@ -138,4 +138,10 @@ class VendorsController extends Controller
             return \redirect()->route('vendor.create');
         }
     }
+
+    public function vendorsApi(){
+        $vendor = new Vendor();
+        $vendors = $vendor->getAllVendorsApi();
+        return $vendors;
+    }
 }

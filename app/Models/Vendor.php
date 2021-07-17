@@ -53,4 +53,9 @@ class Vendor extends Model
         $vendor->city = $request->city;
         return $vendor->save();
     }
+
+    public function getAllVendorsApi()
+    {
+
+    }
 }

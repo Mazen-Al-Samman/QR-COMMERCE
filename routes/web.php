@@ -22,7 +22,7 @@ Route::get('/', function () {
 
 Route::prefix('backend')->group(function () {
     Auth::routes();
-    Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
+    Route::group(['middleware' => ['auth:web', 'prevent-back-history']], function () {
         Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
         Route::get('/profile', [\App\Http\Controllers\MainController::class, 'profile'])->name('profile');
         Route::put('/update/profile', [\App\Http\Controllers\MainController::class, 'updateProfile'])->name('update.profile');
