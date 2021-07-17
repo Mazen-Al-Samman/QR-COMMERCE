@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
+Route::group([
 
-Route::prefix('backend')->group(function () {
-    
+    'middleware' => 'api',
+
+], function ($router) {
+
+    Route::post('login', [\App\Http\Controllers\AuthController::class,'login'])->name('login');
+    Route::post('logout', [\App\Http\Controllers\AuthController::class,'logout']);
+    Route::post('refresh', [\App\Http\Controllers\AuthController::class,'refresh']);
+    Route::post('me', [\App\Http\Controllers\AuthController::class,'me']);
+
+    Route::post('vendors' , [\App\Http\Controllers\VendorsController::class,'vendorsApi'])->name('vendor-api');
+
 });
