@@ -139,4 +139,14 @@ class CategoryController extends Controller
         }
     }
 
+    public function categoriesApi(Request $request){
+        $vendor_id = $request->vendor_id ? $request->vendor_id : null ;
+        $category = new Category();
+        $categories = $category->getCategoriesApi($vendor_id);
+        return response()->json([
+            'status' => true,
+            'data' => $categories
+        ]);
+    }
+
 }

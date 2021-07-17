@@ -51,4 +51,15 @@ class Category extends Model
         }
         return $category->save();
     }
+
+    public function getCategoriesApi($vendor_id = null)
+    {
+        $categories = null;
+        if ($vendor_id) {
+            $categories = Category::where(['vendor_id' => $vendor_id])->get();
+        } else {
+            $categories = Category::all();
+        }
+        return $categories;
+    }
 }

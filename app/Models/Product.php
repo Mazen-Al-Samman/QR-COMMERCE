@@ -134,13 +134,15 @@ class Product extends Model
         return false;
     }
 
-    public function getAllProductsApi($vendor_id, $category_id = null)
+    public function getProductsApi($category_id = null)
     {
-        $category =  Category::all()->where(['vendor_id' => $vendor_id]);
-        if($category_id)
-            $category->where(['category_id' => $category_id]);
-
-
+        $products = null;
+        if ($category_id) {
+            $products = Product::where(['category_id' => $category_id])->get();
+        } else {
+            $products = Product::all();
+        }
+        return $products;
     }
 
 }
