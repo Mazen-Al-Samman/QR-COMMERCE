@@ -24,6 +24,11 @@ Route::group([
     Route::post('refresh', [\App\Http\Controllers\AuthController::class,'refresh']);
     Route::post('me', [\App\Http\Controllers\AuthController::class,'me']);
 
+    /* vendors Routes */
     Route::post('vendors' , [\App\Http\Controllers\VendorsController::class,'vendorsApi'])->name('vendor-api');
+    /* End vendors Routes */
 
+    /* products Routes */
+    Route::post('products' , [\App\Http\Controllers\ProductController::class,'productsApi'])->name('product-api');
+    /* End products Routes */
 });

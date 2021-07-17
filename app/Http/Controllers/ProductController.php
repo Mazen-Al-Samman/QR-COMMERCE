@@ -170,4 +170,12 @@ class ProductController extends MainController
             return \redirect()->back();
         }
     }
+
+    public function productsApi(Request $request)
+    {
+        $vendor_id = $request->vendor_id;
+        $category_id = $request->category_id ? $request->category_id : null ;
+        $product = new Product();
+        $products = $product->getAllProductsApi($vendor_id, $category_id);
+    }
 }

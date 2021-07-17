@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Vendor extends Model
 {
@@ -56,6 +57,8 @@ class Vendor extends Model
 
     public function getAllVendorsApi()
     {
+        return Vendor::all()->where('end_subscription', '>', date('Y-m-d'))
+                    ->groupBy('country');
 
     }
 }

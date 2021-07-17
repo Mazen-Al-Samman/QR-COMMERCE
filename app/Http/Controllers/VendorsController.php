@@ -142,6 +142,9 @@ class VendorsController extends Controller
     public function vendorsApi(){
         $vendor = new Vendor();
         $vendors = $vendor->getAllVendorsApi();
-        return $vendors;
+        return response()->json([
+            'status' => true,
+            'data' => $vendors
+        ]);
     }
 }
