@@ -13,16 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/admin/login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('admin.login.submit');
+Route::post('/vendor/login', [\App\Http\Controllers\Auth\LoginController::class, 'vendorLogin'])->name('vendor.login.submit');
 
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::prefix('backend')->group(function () {
     Auth::routes();
-    Route::group(['middleware' => ['auth', 'prevent-back-history']], function () {
+    Route::group(['middleware' => ['login-auth', 'prevent-back-history']], function () {
         Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
         Route::get('/profile', [\App\Http\Controllers\MainController::class, 'profile'])->name('profile');
         Route::put('/update/profile', [\App\Http\Controllers\MainController::class, 'updateProfile'])->name('update.profile');
