@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<?php
+    $guard = "";
+    $name = "";
+    if (Auth::guard('web')->check()) {
+        $guard = 'web';
+        $name = auth('web')->user()->username;
+    } else if (Auth::guard('vendor')->check()) {
+        $guard = 'web';
+        $name = auth('vendor')->user()->name;
+    }
+?>
 <head>
-
     <title>QR Dashboard</title>
     <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -154,7 +163,7 @@
                                 <div class="media">
                                     <img class="img-radius" src="../assets/images/user/avatar-1.jpg" alt="Generic placeholder image">
                                     <div class="media-body">
-                                        <p><strong>{{auth('web')->user()->username}}</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>5 min</span></p>
+                                        <p><strong>{{$name}}</strong><span class="n-time text-muted"><i class="icon feather icon-clock m-r-10"></i>5 min</span></p>
                                         <p>New ticket Added</p>
                                     </div>
                                 </div>
@@ -222,7 +231,7 @@
                     <div class="dropdown-menu dropdown-menu-right profile-notification">
                         <div class="pro-head">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/2048px-User_icon_2.svg.png" class="img-radius" alt="User-Profile-Image">
-                            <span>{{auth()->user()->username}}</span>
+                            <span>{{$name}}</span>
                             <form action="{{route('logout')}}" method="post">
                                 @csrf
                                 <button type="submit" class="bg-transparent border-0 dud-logout"><i class="feather icon-log-out"></i></button>

@@ -37,57 +37,63 @@
 </head>
 
 <!-- [ auth-signin ] start -->
-<div class="auth-wrapper">
-    <div class="auth-content container">
-        <div class="card">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="card-body">
-                        <img src="../assets/images/logo-dark.png" alt="" class="img-fluid mb-4">
-                        <h4 class="mb-3 f-w-400">Login into your account</h4>
-                        <form method="POST" action="{{ route('login') }}" autocomplete="off">
-                            @csrf
-                            <div class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="feather icon-mail"></i></span>
-                                </div>
-                                <input type="email" name="email"
-                                       class="form-control @error('email') is-invalid @enderror"
-                                       placeholder="Email address" autofocus autocomplete="false">
-                                @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="feather icon-lock"></i></span>
-                                </div>
-                                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password">
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="form-group text-left mt-2">
-                                <div class="checkbox checkbox-primary d-inline">
-                                    <input type="checkbox" name="remember"
-                                           id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                    <label for="checkbox-fill-a1" class="cr"> Save credentials</label>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary mb-4">Login</button>
-                            <p class="mb-2 text-muted">Forgot password? <a href="auth-reset-password.html" class="f-w-400">Reset</a></p>
-{{--                            <p class="mb-0 text-muted">Don’t have an account? <a href="{{route('register')}}" class="f-w-400">Signup</a></p>--}}
-                        </form>
-                    </div>
+<div class="container login-container">
+    <div class="row">
+        <div class="col-md-6 login-form-1">
+            <h3>Login as Admin</h3>
+            <form method="POST" action="{{ route('admin.login.submit') }}" autocomplete="off">
+                @csrf
+                <div class="form-group">
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Your Email *" name="email" autofocus autocomplete="false" />
+                    @error('email')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
-                <div class="col-md-6 d-none d-md-block">
-                    <img src="https://media.qrtiger.com/blog/2021/01/Header_83.jpg" alt="" class="img-fluid">
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" />
+                    @error('password')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
-            </div>
+                <div class="form-group">
+                    <input type="submit" class="btnSubmit" value="Login" />
+                </div>
+                <div class="form-group">
+                    <a href="#" class="ForgetPwd" value="Login">Forget Password?</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 login-form-2">
+            <h3>Login as Vendor</h3>
+            <form method="POST" action="{{ route('vendor.login.submit') }}" autocomplete="off">
+                @csrf
+                <div class="form-group">
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Your Email *" name="email" autofocus autocomplete="false" />
+                    @error('email')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" />
+                    @error('password')
+                    <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btnSubmit" value="Login" />
+                </div>
+                <div class="form-group">
+                    <a href="#" class="ForgetPwd" value="Login">Forget Password?</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>

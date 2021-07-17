@@ -46,6 +46,11 @@ return [
             'provider' => 'admins',
             'hash' => false,
         ],
+
+        'vendor' => [
+            'driver' => 'session',
+            'provider' => 'vendors',
+        ],
     ],
 
     /*
@@ -69,6 +74,11 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+
+        'vendors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\AdminVendor::class,
         ],
 
         // 'users' => [
