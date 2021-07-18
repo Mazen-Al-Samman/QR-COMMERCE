@@ -10,6 +10,7 @@ use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProductController extends MainController
 {
@@ -36,7 +37,7 @@ class ProductController extends MainController
         $categories = $category->getallCategories();
         $vendors = $vendor->getAllVendors();
         $products = $product->getAllProducts();
-        return view('backend.product.create',[
+        return view('backend.product.create', [
             'categories' => $categories,
             'vendors' => $vendors,
             'products' => $products
@@ -46,20 +47,20 @@ class ProductController extends MainController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
             'name' => ['required', 'string'],
-            'category_id' => ['required','exists:categories,id'],
+            'category_id' => ['required', 'exists:categories,id'],
             'old_price' => ['numeric'],
-            'price' => ['required','numeric'],
-            'main_image' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg','max:2048'],
-            'images.*' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg','max:2048'],
+            'price' => ['required', 'numeric'],
+            'main_image' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
+            'images.*' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
             'vendor_id' => ['required', 'exists:vendors,id'],
-            'barcode' => ['required', 'string'],
+            'barcode' => ['required', 'string', 'unique:products,barcode,NULL,id,vendor_id,' . $request->vendor_id],
             'description' => ['required', 'string'],
         ]);
 
@@ -68,7 +69,7 @@ class ProductController extends MainController
         }
 
         $product = new Product();
-        if($product->createProduct($request)){
+        if ($product->createProduct($request)) {
             return back()->with('alert-success', 'Product has successfully Added!');
         }
         return new \Exception('an error occurred');
@@ -77,16 +78,16 @@ class ProductController extends MainController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $product = Product::find($id);
         $images = MediaProduct::where(['product_id' => $id])
-                                ->leftJoin('media','media_products.media_id','=','media.id')
-                                ->get();
-        return view('backend.product.view',[
+            ->leftJoin('media', 'media_products.media_id', '=', 'media.id')
+            ->get();
+        return view('backend.product.view', [
             'product' => $product,
             'images' => $images
         ]);
@@ -95,7 +96,7 @@ class ProductController extends MainController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -106,7 +107,7 @@ class ProductController extends MainController
         $categories = $category->getallCategories();
         $vendors = $vendor->getAllVendors();
         $images = MediaProduct::where(['product_id' => $id])
-            ->leftJoin('media','media_products.media_id','=','media.id')
+            ->leftJoin('media', 'media_products.media_id', '=', 'media.id')
             ->get();
         return view('backend.product.edit', [
             'product' => $product,
@@ -119,30 +120,30 @@ class ProductController extends MainController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $validation = Validator::make($request->all(), [
             'name' => ['required', 'string'],
-            'category_id' => ['required','exists:categories,id'],
+            'category_id' => ['required', 'exists:categories,id'],
             'old_price' => ['numeric'],
-            'price' => ['required','numeric'],
-            'main_image' => ['file', 'mimes:jpg,png,jpeg,gif,svg','max:2048'],
-            'images.*' => ['file', 'mimes:jpg,png,jpeg,gif,svg','max:2048'],
+            'price' => ['required', 'numeric'],
+            'main_image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
+            'images.*' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
             'vendor_id' => ['required', 'exists:vendors,id'],
-            'barcode' => ['required', 'string'],
+            'barcode' => ['required', 'string', 'unique:products,barcode,' . $id . ',id,vendor_id,' . $request->vendor_id],
             'description' => ['required', 'string'],
         ]);
 
         if ($validation->fails()) {
-            return Redirect::route('product.edit')->withErrors($validation);
+            return \redirect()->back()->withErrors($validation);
         }
 
         $product = new Product();
-        if($product->updateProdcut($id, $request)){
+        if ($product->updateProdcut($id, $request)) {
             return back()->with('alert-update', 'Product has successfully Updated!');
         }
         return new \Exception('an error occurred');
@@ -168,6 +169,81 @@ class ProductController extends MainController
         if (Media::find($id)->delete()) {
             $request->session()->flash('alert-delete', 'Image was successful deleted!');
             return \redirect()->back();
+        }
+    }
+
+    public function productsApi(Request $request)
+    {
+        try {
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+            $category_id = $request->category_id ? $request->category_id : null;
+            $product = new Product();
+            $products = $product->getProductsApi($category_id);
+            return response()->json([
+                'status' => true,
+                'data' => $products
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized'
+            ]);
+        }
+    }
+
+    public function vendorProductsApi(Request $request)
+    {
+        try {
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+            $vendor_id = $request->vendor_id ? $request->vendor_id : null;
+            $product = new Product();
+            $products = $product->getVendorProductsApi($vendor_id);
+            return response()->json([
+                'status' => true,
+                'data' => $products
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized'
+            ]);
+        }
+    }
+
+    public function productByBarcodeApi(Request $request)
+    {
+        try {
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+
+            $validation = Validator::make($request->all(), [
+                'vendor_id' => ['required', 'exists:products,vendor_id'],
+                'barcode' => ['required', 'exists:products,barcode']
+            ]);
+
+            if ($validation->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validation->errors()
+                ]);
+            }
+
+            $product = new Product();
+            $products = $product->getProductByBarcodeApi($request);
+            return response()->json([
+                'status' => true,
+                'data' => $products
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized'
+            ]);
         }
     }
 }

@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Media;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CategoryController extends Controller
 {
@@ -42,7 +41,7 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -50,7 +49,7 @@ class CategoryController extends Controller
         $validation = Validator::make($request->all(), [
             'title' => ['required', 'string'],
             'vendor' => ['required', 'exists:vendors,id'],
-            'image' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg','max:2048'],
+            'image' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
         if ($validation->fails()) {
@@ -58,7 +57,7 @@ class CategoryController extends Controller
         }
 
         $category = new Category();
-        if($category->createCategory($request)){
+        if ($category->createCategory($request)) {
             $request->session()->flash('success', 'Category was successful added!');
             return \redirect()->route('category.create');
         }
@@ -69,7 +68,7 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -84,7 +83,7 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -100,8 +99,8 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -109,7 +108,7 @@ class CategoryController extends Controller
         $validation = Validator::make($request->all(), [
             'title' => ['required', 'string'],
             'vendor' => ['required', 'exists:vendors,id'],
-            'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg','max:2048'],
+            'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
         if ($validation->fails()) {
@@ -128,14 +127,35 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id,Request $request)
+    public function destroy($id, Request $request)
     {
         if (Category::find($id)->delete()) {
             $request->session()->flash('alert-delete', 'Category was successful deleted!');
             return \redirect()->route('category.create');
+        }
+    }
+
+    public function categoriesApi(Request $request)
+    {
+        try {
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+            $vendor_id = $request->vendor_id ? $request->vendor_id : null;
+            $category = new Category();
+            $categories = $category->getCategoriesApi($vendor_id);
+            return response()->json([
+                'status' => true,
+                'data' => $categories
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized'
+            ]);
         }
     }
 
