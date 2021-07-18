@@ -42,7 +42,8 @@ class Product extends Model
         return $this->hasOne(MediaProduct::class);
     }
 
-    public function getAllProducts(){
+    public function getAllProducts()
+    {
 
         return Product::paginate(15);
     }
@@ -65,12 +66,12 @@ class Product extends Model
             $product->main_image = $name;
         }
 
-        if($product->save()) {
+        if ($product->save()) {
             if ($request->hasfile('images')) {
                 $result = true;
                 $i = 0;
                 foreach ($request->file('images') as $file) {
-                    $name = time() . $i .'_' . $file->getClientOriginalName();
+                    $name = time() . $i . '_' . $file->getClientOriginalName();
                     $media = new Media();
                     $media->image = $name;
                     if ($media->save()) {
@@ -142,6 +143,23 @@ class Product extends Model
         } else {
             $products = Product::all();
         }
+        return $products;
+    }
+
+    public function getVendorProductsApi($vendor_id)
+    {
+        $products = Product::where(['vendor_id' => $vendor_id])->get();
+
+        return $products;
+    }
+
+    public function getProductByBarcodeApi($request)
+    {
+        $products = Product::where([
+            'vendor_id' => $request->vendor_id,
+            'barcode' => $request->barcode
+        ])->get();
+
         return $products;
     }
 

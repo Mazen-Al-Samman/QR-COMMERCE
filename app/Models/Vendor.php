@@ -26,15 +26,18 @@ class Vendor extends Model
         'end_subscription'
     ];
 
-    public function category() {
+    public function category()
+    {
         return $this->hasMany(Category::class);
     }
 
-    public static function getAllVendors() {
+    public static function getAllVendors()
+    {
         return Vendor::where('end_subscription', '>', date('Y-m-d'))->paginate(15);
     }
 
-    public function createVendor($request) {
+    public function createVendor($request)
+    {
         $vendor = new Vendor();
         $vendor->name = $request->name;
         $vendor->phone = $request->phone;
@@ -46,7 +49,8 @@ class Vendor extends Model
         return $vendor->save();
     }
 
-    public function updateVendor($id, $request) {
+    public function updateVendor($id, $request)
+    {
         $vendor = self::find($id);
         $vendor->name = $request->name;
         $vendor->phone = $request->phone;
@@ -57,7 +61,8 @@ class Vendor extends Model
 
     public function getAllVendorsApi()
     {
-        return Vendor::all()->where('end_subscription', '>', date('Y-m-d'))
+        return Vendor::all()
+                    ->where('end_subscription', '>', date('Y-m-d'))
                     ->groupBy('country');
 
     }
