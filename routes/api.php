@@ -20,9 +20,11 @@ Route::group([
 ], function ($router) {
 
     Route::post('login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login');
+    Route::post('register', [\App\Http\Controllers\AuthController::class, 'register'])->name('register');
     Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout']);
     Route::post('refresh', [\App\Http\Controllers\AuthController::class, 'refresh']);
-    Route::post('me', [\App\Http\Controllers\AuthController::class, 'me']);
+    Route::post('profile', [\App\Http\Controllers\AuthController::class, 'profile']);
+    Route::post('profile/update', [\App\Http\Controllers\AuthController::class, 'updateProfile']);
 
     Route::group(['middleware' => 'auth:api'], function () {
         /* vendors Routes */
