@@ -28,7 +28,7 @@ class AdminController extends MainController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $admin = new Admin();
         $role = new Role();
@@ -36,7 +36,8 @@ class AdminController extends MainController
         $roles = $role->getAllRoles();
         return view('backend.admin.create', [
             'admins' => $admins,
-            'roles' => $roles
+            'roles' => $roles,
+            'userAuthPermission' => $this->getUserPermissionns($request)
         ]);
     }
 
@@ -82,7 +83,8 @@ class AdminController extends MainController
         $admin = Admin::find($id);
 
         return view('backend.admin.view', [
-            'admin' => $admin
+            'admin' => $admin,
+            'userAuthPermission' => $this->getUserPermissionns($request)
         ]);
     }
 

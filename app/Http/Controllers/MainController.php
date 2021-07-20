@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\RolePermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -65,5 +66,19 @@ class MainController extends Controller
 
 
         return new \Exception('an error occurred');
+    }
+
+    public function getUserPermissionns($request) {
+        $permissions = $request->get('permissions');
+        $subset = $permissions->map(function ($permissions) {
+            return collect($permissions->toArray())
+                ->only(['permission'])
+                ->all();
+        });
+        $arr = [];
+        foreach ($subset as $item) {
+            $arr[]= $item['permission'];
+        }
+        return $arr;
     }
 }
