@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class CategoryController extends Controller
+class CategoryController extends MainController
 {
     /**
      * Display a listing of the resource.
@@ -26,7 +26,7 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $category = new Category();
         $categories = $category->getAllCategories();
@@ -34,7 +34,8 @@ class CategoryController extends Controller
         return view('backend.category.create', [
             'category' => $category,
             'vendors' => $vendors,
-            'categories' => $categories
+            'categories' => $categories,
+            'userAuthPermission' => $this->getUserPermissionns($request)
         ]);
     }
 

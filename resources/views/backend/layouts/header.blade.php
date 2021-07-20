@@ -7,7 +7,7 @@
         $guard = 'web';
         $name = auth('web')->user()->username;
     } else if (Auth::guard('vendor')->check()) {
-        $guard = 'web';
+        $guard = 'vendor';
         $name = auth('vendor')->user()->name;
     }
 ?>
@@ -75,10 +75,12 @@
                 <li class="nav-item">
                     <a href="{{route('admin.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Admin</span></a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{route('vendor.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-map"></i></span><span class="pcoded-mtext">Vendor</span></a>
-                </li>
-                @if(auth()->user()->role->role_title == \App\Models\Role::SUPER_ADMIN)
+                @if(in_array('vendor.create',$userAuthPermission))
+                    <li class="nav-item">
+                        <a href="{{route('vendor.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-map"></i></span><span class="pcoded-mtext">Vendor</span></a>
+                    </li>
+                @endif
+                @if(auth($guard)->user()->role->role_title == \App\Models\Role::SUPER_ADMIN)
                 <li class="nav-item pcoded-hasmenu">
                     <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-star"></i></span><span class="pcoded-mtext">Roles & Permissions</span></a>
                     <ul class="pcoded-submenu">

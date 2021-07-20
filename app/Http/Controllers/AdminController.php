@@ -16,10 +16,10 @@ class AdminController extends MainController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('backend.home',[
-            'test' => 75
+            'userAuthPermission' => $this->getUserPermissionns($request)
         ]);
     }
 

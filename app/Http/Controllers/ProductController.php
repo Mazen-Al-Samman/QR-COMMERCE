@@ -29,7 +29,7 @@ class ProductController extends MainController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $category = new Category();
         $vendor = new Vendor();
@@ -40,7 +40,8 @@ class ProductController extends MainController
         return view('backend.product.create', [
             'categories' => $categories,
             'vendors' => $vendors,
-            'products' => $products
+            'products' => $products,
+            'userAuthPermission' => $this->getUserPermissionns($request)
         ]);
     }
 
