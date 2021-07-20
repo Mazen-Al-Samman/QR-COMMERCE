@@ -70,15 +70,18 @@ class MainController extends Controller
 
     public function getUserPermissionns($request) {
         $permissions = $request->get('permissions');
-        $subset = $permissions->map(function ($permissions) {
-            return collect($permissions->toArray())
-                ->only(['permission'])
-                ->all();
-        });
-        $arr = [];
-        foreach ($subset as $item) {
-            $arr[]= $item['permission'];
+        if(!empty($permissions)) {
+            $subset = $permissions->map(function ($permissions) {
+                return collect($permissions->toArray())
+                    ->only(['permission'])
+                    ->all();
+            });
+            $arr = [];
+            foreach ($subset as $item) {
+                $arr[] = $item['permission'];
+            }
+            return $arr;
         }
-        return $arr;
+        return [];
     }
 }

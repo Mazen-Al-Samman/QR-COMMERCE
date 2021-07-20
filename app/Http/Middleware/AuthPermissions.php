@@ -13,22 +13,25 @@ class AuthPermissions
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
-        $currentAction = Route::current()->getName();
-        $permissions = RolePermission::select("permission")->where(['role_id' => Auth::user()->role_id])->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')->get();
-        $request->attributes->add(['permissions' => $permissions]);
-        if (!$this->hasPermission($permissions, $currentAction)) {
-            return redirect()->route('dashboard');
+        if (\auth()->user()->role_id != 1) {
+            $currentAction = Route::current()->getName();
+            $permissions = RolePermission::select("permission")->where(['role_id' => Auth::user()->role_id])->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')->get();
+            $request->attributes->add(['permissions' => $permissions]);
+            if (!$this->hasPermission($permissions, $currentAction)) {
+                return redirect()->route('dashboard');
+            }
         }
         return $next($request);
     }
 
-    public function hasPermission($permissions, $current_action) {
+    public function hasPermission($permissions, $current_action)
+    {
         foreach ($permissions as $permission) {
             if ($permission->permission == $current_action) {
                 return true;
