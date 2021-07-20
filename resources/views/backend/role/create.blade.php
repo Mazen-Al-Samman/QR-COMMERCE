@@ -83,12 +83,14 @@
                                                         <td>{{$role->role_description}}</td>
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('role.show' , $role->id )}}" class="btn btn-info">View</a>
-                                                            <a href="{{route('role.edit' , $role->id )}}" class="btn btn-primary">Edit</a>
-                                                            <form action="{{route('role.delete', $role->id)}}" method="post">
-                                                                @method('delete')
-                                                                @csrf
-                                                                <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
-                                                            </form>
+                                                            @if($role->role_title != \App\Models\Role::SUPER_ADMIN && $role->role_title != \App\Models\Role::ADMIN)
+                                                                <a href="{{route('role.edit' , $role->id )}}" class="btn btn-primary">Edit</a>
+                                                                <form action="{{route('role.delete', $role->id)}}" method="post">
+                                                                    @method('delete')
+                                                                    @csrf
+                                                                    <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
+                                                                </form>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach

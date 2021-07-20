@@ -15,10 +15,21 @@ class CreateRolesTable extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->integerIncrements("id")->unsigned();
-            $table->string('role_title','255')->nullable(false);
+            $table->string('role_title','255')->unique()->nullable(false);
             $table->string('role_description',255)->nullable(false);
             $table->timestamps();
         });
+
+        \App\Models\Role::insert([
+            [
+                'role_title' => 'super admin',
+                'role_description' => 'Can make everything in system'
+            ],
+            [
+                'role_title' => 'admin',
+                'role_description' => 'can make many things in system'
+            ]
+        ]);
     }
 
     /**

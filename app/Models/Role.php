@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    const SUPER_ADMIN = 'super admin';
+    const ADMIN = 'admin';
     use HasFactory;
 
     public function admin(){

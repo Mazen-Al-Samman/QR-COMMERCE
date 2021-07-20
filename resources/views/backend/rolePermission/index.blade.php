@@ -26,9 +26,15 @@
                                                         <th>
                                                         <span class="font-weight-bold" style="font-size: 20px">{{$role->role_title}}</span>
                                                         </th>
-                                                        <td>
-                                                            <a href="{{ route('rolePermission.manage',['role_id'=> $role->id]) }}" class="btn btn-primary">Manage Permissions</a>
-                                                            <a href="{{ route('rolePermission.show',['role_id'=> $role->id]) }}" class="btn btn-info">View</a>
+                                                        <td class="d-flex justify-content-center">
+                                                            @if($role->role_title == \App\Models\Role::SUPER_ADMIN)
+                                                                <div class="min-vw-50 alert alert-dark" role="alert">
+                                                                    Can make everything
+                                                                </div>
+                                                            @else
+                                                                <a href="{{ route('rolePermission.manage',['role_id'=> $role->id]) }}" class="btn btn-primary">Manage Permissions</a>
+                                                                <a href="{{ route('rolePermission.show',['role_id'=> $role->id]) }}" class="btn btn-info">View</a>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                     <?php $i++; ?>

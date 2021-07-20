@@ -24,6 +24,14 @@ class CreateAdminsTable extends Migration
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->timestamps();
         });
+
+        \App\Models\Admin::create([
+            'username' => 'Super Admin',
+            'phone' => '0790790799',
+            'email' => 'superadmin@gmail.com',
+            'role_id' => 1,
+            'password' => \Illuminate\Support\Facades\Hash::make('admin1234')
+        ]);
     }
 
     /**

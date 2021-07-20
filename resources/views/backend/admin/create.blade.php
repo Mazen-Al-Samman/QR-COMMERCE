@@ -6,6 +6,7 @@
             <div class="pcoded-inner-content">
                 <div class="main-body">
                     <div class="page-wrapper">
+                        @if(auth()->user()->role->role_title == \App\Models\Role::SUPER_ADMIN)
                         <div class="row">
                             <!-- [ form-element ] start -->
                             <div class="col-sm-12">
@@ -91,6 +92,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                         <div class="row">
                             <div class="col-12">
                                 @if(session()->has('delete'))
@@ -127,14 +129,14 @@
                                                         <td>{{$admin->role->role_title}}</td>
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('admin.show' , $admin->id )}}" class="btn btn-info">View</a>
-                                                            @if(in_array('admin.edit',$userAuthPermission) || auth()->user()->role_id == 1)
+                                                            @if(auth()->user()->role->role_title == \App\Models\Role::SUPER_ADMIN)
                                                                 <a href="{{route('admin.edit' , $admin->id )}}" class="btn btn-primary">Edit</a>
+                                                                <form action="{{route('admin.delete', $admin->id)}}" method="post">
+                                                                    @method('delete')
+                                                                    @csrf
+                                                                    <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
+                                                                </form>
                                                             @endif
-                                                            <form action="{{route('admin.delete', $admin->id)}}" method="post">
-                                                                @method('delete')
-                                                                @csrf
-                                                                <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
-                                                            </form>
                                                         </td>
                                                     </tr>
                                                 @endforeach
