@@ -78,6 +78,7 @@
                 <li class="nav-item">
                     <a href="{{route('vendor.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-map"></i></span><span class="pcoded-mtext">Vendor</span></a>
                 </li>
+                @if(auth()->user()->role->role_title == \App\Models\Role::SUPER_ADMIN)
                 <li class="nav-item pcoded-hasmenu">
                     <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-star"></i></span><span class="pcoded-mtext">Roles & Permissions</span></a>
                     <ul class="pcoded-submenu">
@@ -86,6 +87,7 @@
                         <li class=""><a href="{{route('rolePermission.index')}}" class="nav-link"><span class="pcoded-micon"><i class="fas fa-user-lock"></i></span><span class="pcoded-mtext">Role Permissions</span></a></li>
                     </ul>
                 </li>
+                @endif
                 <li class="nav-item">
                     <a href="{{route('category.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-list-alt"></i></span><span class="pcoded-mtext">Category</span></a>
                 </li>

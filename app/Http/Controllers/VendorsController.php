@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class VendorsController extends Controller
+class VendorsController extends MainController
 {
     /**
      * Display a listing of the resource.
@@ -26,7 +26,7 @@ class VendorsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $vendorModel = new Vendor();
         $vendors = $vendorModel->getAllVendors();
@@ -35,6 +35,7 @@ class VendorsController extends Controller
         return view('backend.vendor.create', [
             'vendors' => $vendors,
             'jordanian_cities' => $jordanian_cities,
+            'userAuthPermission' => $this->getUserPermissionns($request)
         ]);
     }
 

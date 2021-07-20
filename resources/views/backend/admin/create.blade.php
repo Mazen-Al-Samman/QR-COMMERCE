@@ -130,12 +130,16 @@
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('admin.show' , $admin->id )}}" class="btn btn-info">View</a>
                                                             @if(auth()->user()->role->role_title == \App\Models\Role::SUPER_ADMIN)
+                                                                @if($admin->id == auth()->user()->id)
                                                                 <a href="{{route('admin.edit' , $admin->id )}}" class="btn btn-primary">Edit</a>
-                                                                <form action="{{route('admin.delete', $admin->id)}}" method="post">
-                                                                    @method('delete')
-                                                                    @csrf
-                                                                    <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
-                                                                </form>
+                                                                @endif
+                                                                @if($admin->id != auth()->user()->id && $admin->role->role_title != \App\Models\Role::SUPER_ADMIN)
+                                                                    <form action="{{route('admin.delete', $admin->id)}}" method="post">
+                                                                        @method('delete')
+                                                                        @csrf
+                                                                        <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
+                                                                    </form>
+                                                                @endif
                                                             @endif
                                                         </td>
                                                     </tr>
