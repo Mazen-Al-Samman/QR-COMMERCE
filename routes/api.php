@@ -40,5 +40,10 @@ Route::group([
         Route::post('product/details',[\App\Http\Controllers\ProductController::class,'productByBarcodeApi'])->name('barcode-products-api');
         Route::post('products', [\App\Http\Controllers\ProductController::class, 'productsApi'])->name('product-api');
         /* End products Routes */
+
+        /* feedback Routes */
+        Route::post('feedback/store',[\App\Http\Controllers\FeedbackController::class,'storeApi']);
+        /* End feedback Routes */
+
     });
 });
