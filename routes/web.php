@@ -73,6 +73,18 @@ Route::prefix('backend')->group(function () {
                 Route::get('/show/{id}', [\App\Http\Controllers\VendorsController::class, 'show'])->name('vendor.show');
                 Route::put('/update/{id}', [\App\Http\Controllers\VendorsController::class, 'update'])->name('vendor.update');
             });
+
+            Route::prefix('admin/vendor')->group(function () {
+                Route::group(['middleware' => ['vendor-auth']], function (){
+                    Route::get('/', [\App\Http\Controllers\AdminVendorController::class, 'create'])->name('admin-vendor.create');
+                    Route::post('/store', [\App\Http\Controllers\AdminVendorController::class, 'store'])->name('admin-vendor.store');
+                    Route::delete('/delete/{id}', [\App\Http\Controllers\AdminVendorController::class, 'destroy'])->name('admin-vendor.delete');
+                    Route::get('/show/{id}', [\App\Http\Controllers\AdminVendorController::class, 'show'])->name('admin-vendor.show');
+                    Route::get('/edit/{id}', [\App\Http\Controllers\AdminVendorController::class, 'edit'])->name('admin-vendor.edit');
+                    Route::put('/update/{id}', [\App\Http\Controllers\AdminVendorController::class, 'update'])->name('admin-vendor.update');
+                });
+
+            });
         });
 
         Route::prefix('category')->group(function () {

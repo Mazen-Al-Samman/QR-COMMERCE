@@ -19,14 +19,23 @@ class AuthPermissions
      */
     public function handle(Request $request, Closure $next)
     {
-        if (\auth()->user()->role_id != 1) {
-            $currentAction = Route::current()->getName();
-            $permissions = RolePermission::select("permission")->where(['role_id' => Auth::user()->role_id])->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')->get();
-            $request->attributes->add(['permissions' => $permissions]);
-            if (!$this->hasPermission($permissions, $currentAction)) {
-                return redirect()->route('dashboard');
-            }
+        $guardName = "";
+        if (Auth::guard('web')->check()) {
+            $guardName = "web";
+        } else if (Auth::guard('vendor')->check()) {
+            $guardName = "vendor";
         }
+
+        $auth_obj = Auth::guard($guardName)->user();
+
+        $currentAction = Route::current()->getName();
+        $permissions = RolePermission::select("permission")->where(['role_id' => $auth_obj->role_id])->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')->get();
+        $request->attributes->add(['permissions' => $permissions]);
+
+        if (!$this->hasPermission($permissions, $currentAction) && $auth_obj->role_id != 1) {
+            return redirect()->route('dashboard');
+        }
+
         return $next($request);
     }
 

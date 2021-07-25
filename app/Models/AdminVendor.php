@@ -30,4 +30,8 @@ class AdminVendor extends Authenticatable
     public function vendor(){
         return $this->hasOne(Vendor::class,'id','vendor_id');
     }
+
+    public function getAllAdmins($vendor_id){
+        return self::where(['vendor_id' => $vendor_id])->get();
+    }
 }
