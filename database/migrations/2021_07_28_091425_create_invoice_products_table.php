@@ -14,7 +14,10 @@ class CreateInvoiceProductsTable extends Migration
     public function up()
     {
         Schema::create('invoice_products', function (Blueprint $table) {
-            $table->id();
+            $table->integer('invoice_id')->unsigned();
+            $table->integer('product_id')->unsigned();
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -14,8 +14,7 @@ $(document).ready(function () {
                 'quantity': quantity
             },
             success:function(data){
-                alert('success');
-                console.log(data)
+                $('#cart-content').html(data);
             }
         });
     });

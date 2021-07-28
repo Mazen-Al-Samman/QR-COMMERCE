@@ -97,7 +97,7 @@ Route::prefix('backend')->group(function () {
 
         Route::prefix('invoice')->group(function () {
             Route::get('/', [\App\Http\Controllers\InvoiceController::class, 'create'])->name('invoice.create');
-            Route::post('/store', [\App\Http\Controllers\InvoiceController::class, 'store'])->name('invoice.store');
+            Route::get('/store', [\App\Http\Controllers\InvoiceController::class, 'store'])->name('invoice.store');
             Route::post('/add-to-cart', [\App\Http\Controllers\InvoiceController::class, 'addToCart'])->name('invoice.addToCart');
             Route::delete('/delete/{id}', [\App\Http\Controllers\InvoiceController::class, 'destroy'])->name('invoice.delete');
             Route::get('/imageDelete/{id}', [\App\Http\Controllers\InvoiceController::class, 'deleteImage'])->name('invoice.delete');

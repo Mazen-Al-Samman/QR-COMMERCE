@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InvoiceProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -40,7 +41,10 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-
+        $in_procuts = new InvoiceProduct();
+        if ($invoice = $in_procuts->storeInvoiceProducts()) {
+            
+        }
     }
 
     public function addToCart(Request $request)
@@ -54,6 +58,7 @@ class InvoiceController extends Controller
             }else{
                 $cart[$request->product_id] = array(
                     'id' => $product[0]->id,
+                    'main_image' => $product[0]->main_image,
                     'name' => $product[0]->name,
                     'category' => $product[0]->category->title,
                     'category_id' => $product[0]->category_id,
@@ -62,7 +67,9 @@ class InvoiceController extends Controller
                 );
             }
             \session(['cart'=>$cart]);
-            return ['data'=>$cart,'msg' => 'success'];
+            return view('backend.invoice.productsAjax',[
+                    'data'=>$cart
+            ]);
         }
 
     }

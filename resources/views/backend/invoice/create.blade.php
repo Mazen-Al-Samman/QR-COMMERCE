@@ -20,7 +20,7 @@
                                             </div>
                                         @endif
                                             <div class="row">
-                                                <div class="col-6">
+                                                <div class="col-8">
                                                     <div class="row">
                                                         @foreach($products as $product)
                                                             <div class="col-4">
@@ -35,7 +35,51 @@
                                                         @endforeach
                                                     </div>
                                                 </div>
+                                                <div class="col-4 d-flex align-items-center ">
+                                                        <a href="{{route('invoice.store')}}" data-method="POST" class="btn btn-secondary btn-block">Generate QR</a>
+                                                </div>
                                             </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                @if(session()->has('alert-delete'))
+                                    <div class="alert alert-warning">
+                                        {{ session()->get('alert-delete') }}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Product Cart</h5>
+                                        <span class="d-block m-t-5">All Products Inside Cart</span>
+                                    </div>
+                                    <div class="card-body table-border-style">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover text-center">
+                                                <thead>
+                                                <tr>
+                                                    <th>Image</th>
+                                                    <th>Name</th>
+                                                    <th>Category</th>
+                                                    <th>quantity</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="cart-content">
+                                                    <tr>
+                                                        <td colspan="5">
+                                                            <div class="alert alert-warning">
+                                                               There is no products
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
