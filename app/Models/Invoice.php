@@ -15,6 +15,18 @@ class Invoice extends Model
         'vendor_id'
     ];
 
+    public function user(){
+        return $this->hasOne(User::class,'id','user_id');
+    }
+
+    public function vendor(){
+        return $this->hasOne(Vendor::class,'id','vendor_id');
+    }
+
+    public function invoiceProduct(){
+        return $this->hasOne(InvoiceProduct::class);
+    }
+
     public static function storeInvoice($data)
     {
         $invoice = new Invoice();

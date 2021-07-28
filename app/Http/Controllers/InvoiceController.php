@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use App\Models\InvoiceProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class InvoiceController extends Controller
 {
@@ -43,7 +46,9 @@ class InvoiceController extends Controller
     {
         $in_procuts = new InvoiceProduct();
         if ($invoice = $in_procuts->storeInvoiceProducts()) {
-            
+            QrCode::size(500)
+                ->format('png')
+                ->generate(route('invoice.show',['invoice_id' => $invoice->id]), storage_path() . "/app/public/uploads/qr/qrcode_".$invoice->id.".png");
         }
     }
 
@@ -82,7 +87,23 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        //
+        $invoice = Invoice::find($id);
+        $products =  DB::table('products')
+            ->select([
+                'invoice_products.invoice_id',
+                'products.id As product_id',
+                'products.*',
+                'categories.title As category_name'
+            ])
+            ->join('invoice_products', function ($join) use ($id) {
+                $join->on('invoice_products.product_id', '=', 'products.id')
+                    ->where('invoice_products.invoice_id', $id);
+            })->join('categories','products.category_id','=','categories.id')->get();
+
+        return view('backend.invoice.view',[
+            'invoice_data' => $invoice,
+            'invoice_products' => $products
+        ]);
     }
 
     /**

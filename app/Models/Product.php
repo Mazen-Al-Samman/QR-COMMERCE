@@ -41,6 +41,10 @@ class Product extends Model
         return $this->hasOne(MediaProduct::class);
     }
 
+    public function invoiceProduct(){
+        return $this->hasOne(InvoiceProduct::class);
+    }
+
     public function getAllProducts()
     {
 

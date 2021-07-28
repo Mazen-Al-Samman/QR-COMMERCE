@@ -19,6 +19,16 @@ class InvoiceProduct extends Model
         'product_id'
     ];
 
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class, 'id', 'invoice_id');
+    }
+
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
+
     public function storeInvoiceProducts()
     {
         $cart = session()->get('cart');
