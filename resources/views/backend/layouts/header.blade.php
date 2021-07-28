@@ -27,6 +27,7 @@
     <meta name="keywords"
           content="admin templates, bootstrap admin templates, bootstrap 4, dashboard, dashboard templets, sass admin templets, html admin templates, responsive, bootstrap admin templates free download,premium bootstrap admin templates, Flash Able, Flash Able bootstrap admin template">
     <meta name="author" content="Codedthemes" />
+    <meta name="_token" content="{{ csrf_token() }}">
     <!-- Favicon icon -->
     <link rel="icon" href="{{'/assets/images/favicon.ico'}}" type="image/x-icon">
     <!-- fontawesome icon -->
@@ -91,6 +92,9 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{route('product.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-product-hunt"></i></span><span class="pcoded-mtext">Product</span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('invoice.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fas fa-file-invoice"></i></span><span class="pcoded-mtext">Invoice</span></a>
                 </li>
                 <li class="nav-item pcoded-menu-caption">
                     <label>Forms &amp; table</label>

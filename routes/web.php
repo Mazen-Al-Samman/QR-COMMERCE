@@ -92,7 +92,19 @@ Route::prefix('backend')->group(function () {
             Route::get('/edit/{id}', [\App\Http\Controllers\ProductController::class, 'edit'])->name('product.edit');
             Route::get('/show/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
             Route::put('/update/{id}', [\App\Http\Controllers\ProductController::class, 'update'])->name('product.update');
-
         });
+
+
+        Route::prefix('invoice')->group(function () {
+            Route::get('/', [\App\Http\Controllers\InvoiceController::class, 'create'])->name('invoice.create');
+            Route::post('/store', [\App\Http\Controllers\InvoiceController::class, 'store'])->name('invoice.store');
+            Route::post('/add-to-cart', [\App\Http\Controllers\InvoiceController::class, 'addToCart'])->name('invoice.addToCart');
+            Route::delete('/delete/{id}', [\App\Http\Controllers\InvoiceController::class, 'destroy'])->name('invoice.delete');
+            Route::get('/imageDelete/{id}', [\App\Http\Controllers\InvoiceController::class, 'deleteImage'])->name('invoice.delete');
+            Route::get('/edit/{id}', [\App\Http\Controllers\InvoiceController::class, 'edit'])->name('invoice.edit');
+            Route::get('/show/{id}', [\App\Http\Controllers\InvoiceController::class, 'show'])->name('invoice.show');
+            Route::put('/update/{id}', [\App\Http\Controllers\InvoiceController::class, 'update'])->name('invoice.update');
+        });
+
     });
 });
