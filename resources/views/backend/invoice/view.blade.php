@@ -37,7 +37,7 @@
                                                 <tbody id="cart-content">
                                                     @foreach($invoice_products as $product)
                                                         <tr>
-                                                            <td>{{$product->main_image}}</td>
+                                                            <td><img src="{{ asset('storage/uploads/products/'.$product->main_image)}}" class="rounded" width="75" height="75" alt=""></td>
                                                             <td>{{$product->name}}</td>
                                                             <td>{{$product->category_name}}</td>
                                                             <td>2</td>

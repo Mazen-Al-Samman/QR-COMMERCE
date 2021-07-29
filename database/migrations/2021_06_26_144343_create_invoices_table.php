@@ -15,7 +15,7 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->integerIncrements("id")->unsigned();
-            $table->text("products")->nullable(false);
+//            $table->text("products")->nullable(false);
             $table->double("total_price")->nullable(false);
             $table->integer("user_id")->unsigned()->nullable(false);
             $table->integer("vendor_id")->unsigned()->nullable(false);

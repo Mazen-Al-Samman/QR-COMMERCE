@@ -32,17 +32,21 @@ class InvoiceProduct extends Model
     public function storeInvoiceProducts()
     {
         $cart = session()->get('cart');
-        $total_price = 0;
-        foreach ($cart as $item) {
-            $total_price += $item['price'] * $item['quantity'];
-        }
+        if ($cart) {
+            $total_price = 0;
+            foreach ($cart as $item) {
+                $total_price += $item['price'] * $item['quantity'];
+            }
 
-        $invoice_data = ['total_price' => $total_price, 'user_id'=>1, 'vendor_id' => 1];
+            $invoice_data = ['total_price' => $total_price, 'user_id' => 1, 'vendor_id' => 1];
 
 
-        $data = Invoice::storeInvoice($invoice_data);
-        if($data['status']){
-            return $data['data'];
+            $data = Invoice::storeInvoice($invoice_data);
+            if ($data['status']) {
+                return $data['data'];
+            }
+        } else {
+            return null;
         }
 
     }

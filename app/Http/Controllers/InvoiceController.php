@@ -48,8 +48,12 @@ class InvoiceController extends Controller
         if ($invoice = $in_procuts->storeInvoiceProducts()) {
             QrCode::size(500)
                 ->format('png')
-                ->generate(route('invoice.show',['invoice_id' => $invoice->id]), storage_path() . "/app/public/uploads/qr/qrcode_".$invoice->id.".png");
+                ->generate(route('invoice.show',['invoice_id' => $invoice->id]), storage_path() . "/app/public/uploads/qr/".$invoice->qr_code);
+
+            return redirect()->route('invoice.show',['invoice_id' => $invoice->id]);
         }
+        $request->session()->flash('alert-empty-cart', 'Cart is empty!');
+        return redirect()->back();
     }
 
     public function addToCart(Request $request)

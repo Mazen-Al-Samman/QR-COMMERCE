@@ -9,6 +9,11 @@
                         <div class="row">
                             <!-- [ form-element ] start -->
                             <div class="col-sm-12">
+                                @if(session()->has('alert-empty-cart'))
+                                <div class="alert alert-danger">
+                                    {{ session()->get('alert-empty-cart') }}
+                                </div>
+                                @endif
                                 <div class="card">
                                     <div class="card-header">
                                         <h5>Manage Invoice</h5>
@@ -45,7 +50,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                @if(session()->has('alert-delete'))
+                                @if(session()->has('alert-delete'))alert-empty-cart
                                     <div class="alert alert-warning">
                                         {{ session()->get('alert-delete') }}
                                     </div>
