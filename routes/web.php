@@ -103,6 +103,7 @@ Route::prefix('backend')->group(function () {
             Route::get('/imageDelete/{id}', [\App\Http\Controllers\InvoiceController::class, 'deleteImage'])->name('invoice.delete');
             Route::get('/edit/{id}', [\App\Http\Controllers\InvoiceController::class, 'edit'])->name('invoice.edit');
             Route::get('/show/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'show'])->name('invoice.show');
+            Route::get('/download-pdf/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'downloadPDF'])->name('invoice.pdf');
             Route::put('/update/{id}', [\App\Http\Controllers\InvoiceController::class, 'update'])->name('invoice.update');
         });
 

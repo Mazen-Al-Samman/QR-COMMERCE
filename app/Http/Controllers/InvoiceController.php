@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoiceProduct;
 use App\Models\Product;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -95,6 +96,7 @@ class InvoiceController extends Controller
         $products =  DB::table('products')
             ->select([
                 'invoice_products.invoice_id',
+                'invoice_products.quantity',
                 'products.id As product_id',
                 'products.*',
                 'categories.title As category_name'
@@ -108,6 +110,12 @@ class InvoiceController extends Controller
             'invoice_data' => $invoice,
             'invoice_products' => $products
         ]);
+    }
+
+    public function downloadPDF($invoice_id)
+    {
+        $pdf = PDF::loadView(route('invoice.show',['invoice_id' => $invoice_id]), compact('Invoice'));
+        return $pdf->download('report.pdf');
     }
 
     /**
