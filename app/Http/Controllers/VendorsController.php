@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vendor;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class VendorsController extends Controller
 {
@@ -41,7 +41,7 @@ class VendorsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -69,7 +69,7 @@ class VendorsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -83,7 +83,7 @@ class VendorsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -100,8 +100,8 @@ class VendorsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -128,7 +128,7 @@ class VendorsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id, Request $request)
@@ -136,6 +136,26 @@ class VendorsController extends Controller
         if (Vendor::find($id)->delete()) {
             $request->session()->flash('delete', 'User was successful deleted!');
             return \redirect()->route('vendor.create');
+        }
+    }
+
+    public function vendorsApi()
+    {
+        try {
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+            $vendor = new Vendor();
+            $vendors = $vendor->getAllVendorsApi();
+            return response()->json([
+                'status' => true,
+                'data' => $vendors
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthorized'
+            ]);
         }
     }
 }

@@ -8,8 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use phpDocumentor\Reflection\DocBlock\Tags\Reference\Url;
-use Psy\Util\Json;
 
 class AdminController extends MainController
 {
@@ -30,7 +28,7 @@ class AdminController extends MainController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $admin = new Admin();
         $role = new Role();
@@ -38,7 +36,8 @@ class AdminController extends MainController
         $roles = $role->getAllRoles();
         return view('backend.admin.create', [
             'admins' => $admins,
-            'roles' => $roles
+            'roles' => $roles,
+            'userAuthPermission' => $this->getUserPermissionns($request)
         ]);
     }
 
@@ -55,7 +54,7 @@ class AdminController extends MainController
             'username' => ['required', 'string', 'unique:admins'],
             'email' => ['required', 'email', 'unique:admins'],
             'password' => ['required', 'string', 'confirmed'],
-            'phone' => ['required', 'numeric', 'unique:admins'],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/', 'unique:admins'],
             'role_id' => ['required', 'numeric'],
         ]);
 
@@ -84,7 +83,8 @@ class AdminController extends MainController
         $admin = Admin::find($id);
 
         return view('backend.admin.view', [
-            'admin' => $admin
+            'admin' => $admin,
+            'userAuthPermission' => $this->getUserPermissionns($request)
         ]);
     }
 
@@ -117,7 +117,7 @@ class AdminController extends MainController
         $validation = Validator::make($request->all(), [
             'username' => ['required', 'string', Rule::unique('admins')->ignore($id, 'id')],
             'email' => ['required', 'email', Rule::unique('admins')->ignore($id, 'id')],
-            'phone' => ['required', 'numeric', Rule::unique('admins')->ignore($id, 'id')],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/', Rule::unique('admins')->ignore($id, 'id')],
         ]);
 
         if ($validation->fails()) {

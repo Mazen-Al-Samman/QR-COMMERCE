@@ -127,7 +127,9 @@
                                                         <td>{{$admin->role->role_title}}</td>
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('admin.show' , $admin->id )}}" class="btn btn-info">View</a>
-                                                            <a href="{{route('admin.edit' , $admin->id )}}" class="btn btn-primary">Edit</a>
+                                                            @if(in_array('admin.edit',$userAuthPermission) || auth()->user()->role_id == 1)
+                                                                <a href="{{route('admin.edit' , $admin->id )}}" class="btn btn-primary">Edit</a>
+                                                            @endif
                                                             <form action="{{route('admin.delete', $admin->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
@@ -138,6 +140,11 @@
                                                 @endforeach
                                                 </tbody>
                                             </table>
+                                        </div>
+                                    </div>
+                                    <div class="footer">
+                                        <div class="container">
+                                            {!! $admins->links() !!}
                                         </div>
                                     </div>
                                 </div>

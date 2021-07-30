@@ -26,11 +26,17 @@
                                             @csrf
                                             <input type="hidden" value="{{$role->id}}" name="role_id">
                                             <div class="row">
+                                                @if(count($permissions) > 0)
                                                 @foreach($permissions as $permission)
                                                     <div class="col-auto m-1">
                                                         <input type="checkbox" value="{{$permission->permission_id}}" name="permissions[]" @if($role->id == $permission->role_id) checked @endif> <span class="font-weight-bold ml-1" style="font-size: 18px">{{$permission->permission}}</span>
                                                     </div>
                                                 @endforeach
+                                                @else
+                                                    <div class="col-12 alert alert-danger">
+                                                        There is No Permissions
+                                                    </div>
+                                                @endif
                                                 <div class="col-md-12 mt-3">
                                                     <button type="submit" class="btn btn-primary">Save Permissions</button>
                                                     <a href="{{route('rolePermission.index')}}" class="btn btn-secondary">Back to home</a>

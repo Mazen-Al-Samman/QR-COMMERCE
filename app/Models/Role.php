@@ -14,7 +14,7 @@ class Role extends Model
     }
 
     public function getAllRoles(){
-        return Role::all();
+        return Role::paginate(15);
     }
 
     public function createRole($request){

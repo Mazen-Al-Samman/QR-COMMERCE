@@ -25,28 +25,44 @@ class Vendor extends Model
         'end_subscription'
     ];
 
-    public static function getAllVendors() {
-        return Vendor::where('end_subscription', '>', date('Y-m-d'))->get();
+    public function category()
+    {
+        return $this->hasMany(Category::class);
     }
 
-    public function createVendor($request) {
+    public static function getAllVendors()
+    {
+        return Vendor::where('end_subscription', '>', date('Y-m-d'))->paginate(15);
+    }
+
+    public function createVendor($request)
+    {
         $vendor = new Vendor();
         $vendor->name = $request->name;
         $vendor->phone = $request->phone;
         $vendor->country = $request->country;
         $vendor->city = $request->city;
         $vendor->subscribe = "0000";
-        $vendor->start_subscription = "2020-01-01"; 
-        $vendor->end_subscription = "2020-01-01"; 
+        $vendor->start_subscription = "2020-01-01";
+        $vendor->end_subscription = "2020-01-01";
         return $vendor->save();
     }
 
-    public function updateVendor($id, $request) {
+    public function updateVendor($id, $request)
+    {
         $vendor = self::find($id);
         $vendor->name = $request->name;
         $vendor->phone = $request->phone;
         $vendor->country = $request->country;
         $vendor->city = $request->city;
         return $vendor->save();
+    }
+
+    public function getAllVendorsApi()
+    {
+        return Vendor::all()
+                    ->where('end_subscription', '>', date('Y-m-d'))
+                    ->groupBy('country');
+
     }
 }
