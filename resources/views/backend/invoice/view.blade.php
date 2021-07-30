@@ -4,6 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
@@ -11,7 +12,7 @@
     <title>Invoice</title>
 </head>
 <body>
-<div class="container mt-5">
+<div class="@if(!isset($pdf_option)) container @else container-fluid @endif mt-5">
     <div class="card">
         <div class="card-header">
             Invoice
@@ -21,35 +22,25 @@
         </div>
         <div class="card-body">
             <div class="row mb-4">
-                <div class="col-sm-5">
-                    <h6 class="mb-3">From:</h6>
-                    <div>
-                        <strong>MY BILL</strong>
-                    </div>
-                    <div>My Bill</div>
-                    <div>Amman, Jordan</div>
-                    <div>Email: mybill@gmail.com</div>
-                    <div>Phone: 06 5413258</div>
-                </div>
-
-                <div class="col-sm-5">
-                    <h6 class="mb-3">To:</h6>
+                <div class="col-sm-10">
+                    <h2 class="@if(!isset($pdf_option)) mt-2 @else mt-5 @endif">MY BILL</h2>
                     <div>
                         <strong>{{$invoice_data->user->first_name}}</strong>
                     </div>
                     <div>Full Name: {{$invoice_data->user->first_name.' '.$invoice_data->user->last_name}}</div>
                     <div>Phone: {{$invoice_data->user->phone}}</div>
                 </div>
-                <div class="col-sm-2">
-                    {!! QrCode::size(150)->generate(route('invoice.show',['invoice_id' => $invoice_data->id])) !!}
+                <div class="col-sm-2 float-right">
+                    @if(!isset($pdf_option))
+                        {!! QrCode::size(150)->generate(route('invoice.show',['invoice_id' => $invoice_data->id])) !!}
+                    @else
+                        <img class="mt-5" src="data:image/png;base64, {!! base64_encode(QrCode::format('svg')->size(150)->generate(route('invoice.show',['invoice_id' => $invoice_data->id]))) !!}">
+                    @endif
                 </div>
-
-
-
             </div>
 
-            <div class="table-responsive-sm">
-                <table class="table table-striped">
+            <div class="mt-5">
+                <table class="table table-striped" style="">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -78,7 +69,9 @@
             </div>
             <div class="row">
                 <div class="col-lg-4 col-sm-5">
-                    <a href="{{route('invoice.pdf',['invoice_id' => $invoice_data->id])}}" class="btn btn-danger">Download PDF</a>
+                    @if(!isset($pdf_option))
+                        <a href="{{route('invoice.pdf',['invoice_id' => $invoice_data->id,'invoice_data' => $invoice_data, 'products_data' => $invoice_products])}}" class="btn btn-danger">Download PDF</a>
+                    @endif
                 </div>
 
                 <div class="col-lg-4 col-sm-5 ml-auto">

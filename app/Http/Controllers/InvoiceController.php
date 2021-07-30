@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoiceProduct;
 use App\Models\Product;
-use Barryvdh\DomPDF\PDF;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
+
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class InvoiceController extends Controller
@@ -114,8 +114,26 @@ class InvoiceController extends Controller
 
     public function downloadPDF($invoice_id)
     {
-        $pdf = PDF::loadView(route('invoice.show',['invoice_id' => $invoice_id]), compact('Invoice'));
-        return $pdf->download('report.pdf');
+        $invoice = Invoice::find($invoice_id);
+        $products =  DB::table('products')
+            ->select([
+                'invoice_products.invoice_id',
+                'invoice_products.quantity',
+                'products.id As product_id',
+                'products.*',
+                'categories.title As category_name'
+            ])
+            ->join('invoice_products', function ($join) use ($invoice_id) {
+                $join->on('invoice_products.product_id', '=', 'products.id')
+                    ->where('invoice_products.invoice_id', $invoice_id);
+            })->join('categories','products.category_id','=','categories.id')->get();
+
+        $pdf = PDF::loadView('backend.invoice.view',[
+            'invoice_data' => $invoice,
+            'invoice_products' => $products,
+            'pdf_option' => true
+        ])->setPaper('letter', 'landscape')->setPaper('a4', 'landscape');
+        return $pdf->download('invoice.pdf');
     }
 
     /**
