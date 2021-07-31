@@ -7,7 +7,7 @@
         $guard = 'web';
         $name = auth('web')->user()->username;
     } else if (Auth::guard('vendor')->check()) {
-        $guard = 'web';
+        $guard = 'vendor';
         $name = auth('vendor')->user()->name;
     }
 ?>
@@ -73,7 +73,11 @@
                     <label>Menu</label>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('admin.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Admin</span></a>
+                    @if($guard == 'web')
+                        <a href="{{route('admin.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Admin</span></a>
+                    @elseif($guard == 'vendor')
+                        <a href="{{route('admin-vendor.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Admin</span></a>
+                    @endif
                 </li>
                 <li class="nav-item">
                     <a href="{{route('vendor.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-map"></i></span><span class="pcoded-mtext">Vendor</span></a>

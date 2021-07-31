@@ -2,32 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
 use App\Models\AdminVendor;
 use App\Models\Role;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class AdminVendorController extends MainController
 {
-    /**
-     * AdminVendorController constructor.
-     */
-    public function __construct()
-    {
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -37,12 +20,12 @@ class AdminVendorController extends MainController
     {
         $admin = new AdminVendor();
         $role = new Role();
-        $admins = $admin->getAllAdmins($this->getVendorId());
+        $admins = $admin->getAllAdmins($this->getLoggedInVendorId());
         $roles = $role->getAllRoles();
         return view('backend.admin-vendor.create', [
             'admins' => $admins,
             'roles' => $roles,
-            'userAuthPermission' => $this->getUserPermissionns($request)
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -54,7 +37,26 @@ class AdminVendorController extends MainController
      */
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            'username' => ['required', 'string'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string', 'confirmed'],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+            'role_id' => ['required', 'numeric'],
+        ]);
+
+        if ($validation->fails()) {
+            return Redirect::route('admin-vendor.create')->withErrors($validation);
+        }
+
+        $admin = new AdminVendor();
+        $vendor_id = Auth::guard('vendor')->user()->vendor_id;
+        if ($admin->createAdmin($request, $vendor_id)) {
+            $request->session()->flash('success', 'Admin was successful added!');
+            return \redirect()->route('admin-vendor.create');
+        }
+
+        return new \Exception('an error occurred');
     }
 
     /**
@@ -63,9 +65,17 @@ class AdminVendorController extends MainController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        $admin = AdminVendor::find($id);
+        if (!$admin || $admin->vendor_id != Auth::guard('vendor')->user()->vendor_id) {
+            return \redirect()->route('admin-vendor.create');
+        }
+
+        return view('backend.admin-vendor.view', [
+            'admin' => $admin,
+            'userAuthPermission' => $this->getUserPermissionns($request)
+        ]);
     }
 
     /**
@@ -74,9 +84,15 @@ class AdminVendorController extends MainController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        //
+        $admin = AdminVendor::find($id);
+        $role = new Role();
+        $roles = $role->getAllRoles();
+        return view('backend.admin-vendor.edit', [
+            'admin' => $admin,
+            'roles' => $roles
+        ]);
     }
 
     /**
@@ -88,7 +104,23 @@ class AdminVendorController extends MainController
      */
     public function update(Request $request, $id)
     {
-        //
+        $validation = Validator::make($request->all(), [
+            'username' => ['required', 'string'],
+            'email' => ['required', 'email'],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+        ]);
+
+        if ($validation->fails()) {
+            return Redirect::back()->withErrors($validation);
+        }
+
+        $admin = new AdminVendor();
+        if ($admin->updateAdmin($id, $request)) {
+            $request->session()->flash('update', 'Admin was successful updated!');
+            return Redirect::back();
+        }
+
+        return new \Exception('an error occurred');
     }
 
     /**
@@ -97,12 +129,15 @@ class AdminVendorController extends MainController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
+        if (AdminVendor::find($id)->delete()) {
+            $request->session()->flash('delete', 'User was successful deleted!');
+            return \redirect()->route('admin-vendor.create');
+        }
     }
 
-    public function getVendorId() {
+    public function getLoggedInVendorId() {
         return Auth::guard('vendor')->user()->vendor_id ?? -1;
     }
 }

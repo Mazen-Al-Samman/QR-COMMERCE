@@ -26,8 +26,8 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="username">Username</label>
-                                                        <input type="text" name="username" class="form-control" id="username" placeholder="Enter Username">
+                                                        <label for="username">Admin Name</label>
+                                                        <input type="text" name="username" class="form-control" id="username" placeholder="Enter the admin name">
                                                         @error('username')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
@@ -128,9 +128,9 @@
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('admin-vendor.show' , $admin->id )}}" class="btn btn-info">View</a>
                                                             @if(in_array('admin-vendor.edit',$userAuthPermission))
-                                                                <a href="{{route('admin-vendors.edit' , $admin->id )}}" class="btn btn-primary">Edit</a>
+                                                                <a href="{{route('admin-vendor.edit' , $admin->id )}}" class="btn btn-primary">Edit</a>
                                                             @endif
-                                                            <form action="{{route('admin.delete', $admin->id)}}" method="post">
+                                                            <form action="{{route('admin-vendor.delete', $admin->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
