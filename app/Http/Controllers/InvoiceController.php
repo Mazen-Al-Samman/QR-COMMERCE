@@ -84,6 +84,28 @@ class InvoiceController extends Controller
 
     }
 
+    public function deleteFromCart(Request $request){
+        $cart = session()->has('cart') ? session()->get('cart') : [];
+        if (array_key_exists($request->product_id, $cart)) {
+            unset($cart[$request->product_id]);
+            \session(['cart'=>$cart]);
+        }
+        return view('backend.invoice.productsAjax',[
+            'data'=>$cart
+        ]);
+    }
+
+    public function updateCart(Request $request) {
+        $cart = session()->has('cart') ? session()->get('cart') : [];
+        if (array_key_exists($request->product_id, $cart)) {
+            $cart[$request->product_id]['quantity'] = $request->quantity;
+            \session(['cart'=>$cart]);
+        }
+        return view('backend.invoice.productsAjax',[
+            'data'=>$cart
+        ]);
+    }
+
     /**
      * Display the specified resource.
      *

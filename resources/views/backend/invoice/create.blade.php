@@ -24,22 +24,24 @@
                                                 {{ session()->get('alert-success') }}
                                             </div>
                                         @endif
-                                            <div class="row">
-                                                <div class="col-8">
-                                                    <div class="row">
-                                                        @foreach($products as $product)
-                                                            <div class="col-4">
-                                                                <span>{{$product->name}}</span>
+                                            <div class="row mb-4">
+                                                @foreach($products as $product)
+                                                    <div class="col-lg-6 col-sm-12 col-md-12 border-right">
+                                                        <div class="row mb-3">
+                                                            <div class="col-6 mt-3">
+                                                                <span class="font-weight-bold" style="font-size: 18px">{{$product->name}}</span>
                                                             </div>
-                                                            <div class="col-4">
+                                                            <div class="col-auto">
                                                                 <input type="number" min="1" value="1" max="10" class="form-control quantity_{{$product->id}}">
                                                             </div>
-                                                            <div class="col-4">
+                                                            <div class="col-auto">
                                                                 <button id="addToCart" class="btn btn-warning addToCart float-right" data-id="{{$product->id}}"><i class="fa fa-plus"></i></button>
                                                             </div>
-                                                        @endforeach
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                @endforeach
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-4 d-flex align-items-center ">
                                                         <a href="{{route('invoice.store')}}" data-method="POST" class="btn btn-secondary btn-block">Generate QR</a>
                                                 </div>
@@ -70,13 +72,14 @@
                                                     <th>Image</th>
                                                     <th>Name</th>
                                                     <th>Category</th>
-                                                    <th>quantity</th>
+                                                    <th>Price</th>
+                                                    <th style="width: 120px">quantity</th>
                                                     <th>Actions</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="cart-content">
                                                     <tr>
-                                                        <td colspan="5">
+                                                        <td colspan="6">
                                                             <div class="alert alert-warning">
                                                                There is no products
                                                             </div>
