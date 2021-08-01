@@ -82,4 +82,12 @@ class User extends Authenticatable implements JWTSubject
         $user->phone = $request->phone;
         return $user->save();
     }
+
+    public static function getAllUsers(){
+        return User::all();
+    }
+
+    public static function getUsersCount(){
+        return User::all()->count();
+    }
 }

@@ -35,6 +35,11 @@ class Vendor extends Model
         return Vendor::where('end_subscription', '>', date('Y-m-d'))->paginate(15);
     }
 
+    public static function getVendorsCount()
+    {
+        return Vendor::where('end_subscription', '>', date('Y-m-d'))->count();
+    }
+
     public function createVendor($request)
     {
         $vendor = new Vendor();

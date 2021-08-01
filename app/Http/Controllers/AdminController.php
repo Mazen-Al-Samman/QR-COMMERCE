@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Invoice;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -18,8 +21,13 @@ class AdminController extends MainController
      */
     public function index()
     {
+        $total_vendors = Vendor::getVendorsCount();
+        $total_users = User::getUsersCount();
+        $total_invoices = Invoice::getInvoicesCount();
         return view('backend.home',[
-            'test' => 75
+            'total_vendors' => $total_vendors,
+            'total_users' => $total_users,
+            'total_invoices' => $total_invoices
         ]);
     }
 
