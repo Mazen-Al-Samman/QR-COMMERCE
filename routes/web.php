@@ -96,17 +96,14 @@ Route::prefix('backend')->group(function () {
 
 
         Route::prefix('invoice')->group(function () {
-            Route::get('/', [\App\Http\Controllers\InvoiceController::class, 'create'])->name('invoice.create');
+            Route::get('/', [\App\Http\Controllers\InvoiceController::class, 'index'])->name('invoice.index');
+            Route::get('/create', [\App\Http\Controllers\InvoiceController::class, 'create'])->name('invoice.create');
             Route::get('/store', [\App\Http\Controllers\InvoiceController::class, 'store'])->name('invoice.store');
             Route::post('/add-to-cart', [\App\Http\Controllers\InvoiceController::class, 'addToCart'])->name('invoice.addToCart');
             Route::post('/delete-from-cart', [\App\Http\Controllers\InvoiceController::class, 'deleteFromCart'])->name('invoice.deleteFromCart');
             Route::post('/update-cart', [\App\Http\Controllers\InvoiceController::class, 'updateCart'])->name('invoice.updateCart');
-            Route::delete('/delete/{id}', [\App\Http\Controllers\InvoiceController::class, 'destroy'])->name('invoice.delete');
-            Route::get('/imageDelete/{id}', [\App\Http\Controllers\InvoiceController::class, 'deleteImage'])->name('invoice.delete');
-            Route::get('/edit/{id}', [\App\Http\Controllers\InvoiceController::class, 'edit'])->name('invoice.edit');
             Route::get('/show/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'show'])->name('invoice.show');
             Route::get('/download-pdf/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'downloadPDF'])->name('invoice.pdf');
-            Route::put('/update/{id}', [\App\Http\Controllers\InvoiceController::class, 'update'])->name('invoice.update');
         });
 
     });

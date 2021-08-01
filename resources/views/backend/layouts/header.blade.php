@@ -94,23 +94,7 @@
                     <a href="{{route('product.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-product-hunt"></i></span><span class="pcoded-mtext">Product</span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('invoice.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fas fa-file-invoice"></i></span><span class="pcoded-mtext">Invoice</span></a>
-                </li>
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Forms &amp; table</label>
-                </li>
-                <li class="nav-item">
-                    <a href="map-google.html" class="nav-link"><span class="pcoded-micon"><i class="feather icon-map"></i></span><span class="pcoded-mtext">Maps</span></a>
-                </li>
-                <li class="nav-item pcoded-menu-caption">
-                    <label>Pages</label>
-                </li>
-                <li class="nav-item pcoded-hasmenu">
-                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-lock"></i></span><span class="pcoded-mtext">Authentication</span></a>
-                    <ul class="pcoded-submenu">
-                        <li class=""><a href="auth-signup.html" class="" target="_blank">Sign up</a></li>
-                        <li class=""><a href="auth-signin.html" class="" target="_blank">Sign in</a></li>
-                    </ul>
+                    <a href="{{route('invoice.index')}}" class="nav-link"><span class="pcoded-micon"><i class="fas fa-file-invoice"></i></span><span class="pcoded-mtext">Invoice</span></a>
                 </li>
             </ul>
             <div class="card text-center">

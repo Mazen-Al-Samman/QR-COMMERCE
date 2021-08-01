@@ -5,7 +5,7 @@ $(document).ready(function () {
         var quantity = $('.quantity_' + product_id).val();
         $.ajax({
             type: "POST",
-            url: "./invoice/add-to-cart/",
+            url: "./add-to-cart/",
             headers: {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
@@ -23,7 +23,7 @@ $(document).ready(function () {
         var product_id = $(this).attr('data-id');
         $.ajax({
             type: "POST",
-            url: "./invoice/delete-from-cart/",
+            url: "./delete-from-cart/",
             headers: {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
@@ -67,7 +67,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "./invoice/update-cart/",
+            url: "./update-cart/",
             headers: {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },

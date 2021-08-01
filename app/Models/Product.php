@@ -40,7 +40,8 @@ class Product extends Model
         return $this->hasOne(MediaProduct::class);
     }
 
-    public function invoiceProduct(){
+    public function invoiceProduct()
+    {
         return $this->hasOne(InvoiceProduct::class);
     }
 
@@ -165,4 +166,46 @@ class Product extends Model
         return $products;
     }
 
+    public static function addToCart($request)
+    {
+        $cart = session()->has('cart') ? session()->get('cart') : [];
+        $product = Product::where(['id' => $request->product_id])->get();
+
+        if (array_key_exists($request->product_id, $cart)) {
+            $cart[$request->product_id]['quantity'] += $request->quantity;
+        } else {
+            $cart[$request->product_id] = array(
+                'id' => $product[0]->id,
+                'main_image' => $product[0]->main_image,
+                'name' => $product[0]->name,
+                'category' => $product[0]->category->title,
+                'category_id' => $product[0]->category_id,
+                'price' => $product[0]->price,
+                'quantity' => $request->quantity
+            );
+        }
+        \session(['cart' => $cart]);
+        return $cart;
+    }
+
+    public static function deleteFromCart($request)
+    {
+        $cart = session()->has('cart') ? session()->get('cart') : [];
+        if (array_key_exists($request->product_id, $cart)) {
+            unset($cart[$request->product_id]);
+            \session(['cart' => $cart]);
+        }
+        return $cart;
+    }
+
+
+    public static function updateCart($request)
+    {
+        $cart = session()->has('cart') ? session()->get('cart') : [];
+        if (array_key_exists($request->product_id, $cart)) {
+            $cart[$request->product_id]['quantity'] = $request->quantity;
+            \session(['cart' => $cart]);
+        }
+        return $cart;
+    }
 }
