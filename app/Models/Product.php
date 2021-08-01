@@ -22,8 +22,7 @@ class Product extends Model
         'barcode',
         'main_image',
         'category_id',
-        'vendor_id',
-        'posted_by'
+        'vendor_id'
     ];
 
     public function category()
