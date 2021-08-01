@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\Invoice;
+use App\Models\QuickResponseCode;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Vendor;
@@ -25,7 +26,12 @@ class AdminController extends MainController
         $total_active_vendors = Vendor::getActiveVendorsCount();
         $total_disabled_vendors = Vendor::getDisabledVendorsCount();
         $total_users = User::getUsersCount();
+        $total_verified_users = User::getVerifiedUsersCount();
+        $total_not_verified_users = User::getNotVerifiedUsersCount();
         $total_invoices = Invoice::getInvoicesCount();
+        $total_qr_scan = QuickResponseCode::getCount();
+        $total_android_scan = QuickResponseCode::getCountByAndriod();
+        $total_ios_scan = QuickResponseCode::getCountByIos();
         $qr_daily = 15;
         $qr_weekly = 123;
         $qr_monthly = 243;
@@ -36,6 +42,11 @@ class AdminController extends MainController
             'total_active_vendors' => $total_active_vendors,
             'total_disabled_vendors' => $total_disabled_vendors,
             'total_users' => $total_users,
+            'total_verified_users' => $total_verified_users,
+            'total_not_verified_users' => $total_not_verified_users,
+            'total_qr_scan' => $total_qr_scan,
+            'total_android_scan' => $total_android_scan,
+            'total_ios_scan' => $total_ios_scan,
             'qr_daily' => $qr_daily,
             'qr_weekly' => $qr_weekly,
             'qr_monthly' => $qr_monthly,

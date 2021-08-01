@@ -18,9 +18,11 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
+        'first_name',
+        'last_name',
+        'phone',
         'password',
+        'actived'
     ];
 
     /**
@@ -89,5 +91,13 @@ class User extends Authenticatable implements JWTSubject
 
     public static function getUsersCount(){
         return User::all()->count();
+    }
+
+    public static function getVerifiedUsersCount(){
+        return User::where(['actived' => 1])->count();
+    }
+
+    public static function getNotVerifiedUsersCount(){
+        return User::where(['actived' => 0])->count();
     }
 }

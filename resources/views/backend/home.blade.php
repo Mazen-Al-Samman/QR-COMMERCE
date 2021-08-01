@@ -107,7 +107,7 @@
                                         <div class="row align-items-center m-b-25">
                                             <div class="col">
                                                 <h6 class="m-b-5 text-white">Users Verified</h6>
-                                                <h3 class="m-b-0 text-white">{{$total_users}}</h3>
+                                                <h3 class="m-b-0 text-white">{{$total_verified_users}}</h3>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-user-check text-c-green f-18"></i>
@@ -122,7 +122,7 @@
                                         <div class="row align-items-center m-b-25">
                                             <div class="col">
                                                 <h6 class="m-b-5 text-white">Users Not Verified</h6>
-                                                <h3 class="m-b-0 text-white">{{$total_users}}</h3>
+                                                <h3 class="m-b-0 text-white">{{$total_not_verified_users}}</h3>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-user-alt-slash text-c-red f-18"></i>
@@ -137,7 +137,7 @@
                                         <div class="row align-items-center m-b-25">
                                             <div class="col">
                                                 <h6 class="m-b-5 text-white">Total QR Scan</h6>
-                                                <h3 class="m-b-0 text-white">1500</h3>
+                                                <h3 class="m-b-0 text-white">{{$total_qr_scan}}</h3>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-qrcode text-c-yellow f-18"></i>
@@ -160,7 +160,7 @@
                             <div class="col-md-6 col-xl-4">
                                 <div class="card user-card">
                                     <div class="card-header">
-                                        <h5>Invoice Analytics</h5>
+                                        <h5>Invoice Analytics By Device Type</h5>
                                     </div>
                                     <div class="card-body  text-center">
                                         <div class="card-body px-0 py-0">
@@ -187,28 +187,20 @@
         setTimeout(function () {
             Morris.Donut({
                 element: 'morris-donut-chart',
-                data: [{
-                    value: 25,
-                    label: 'Data 0'
-                },
+                data: [
                     {
-                        value: 20,
-                        label: 'Data 1'
+                    value: {{$total_android_scan}},
+                    label: 'Android'
                     },
                     {
-                        value: 10,
-                        label: 'Data 2'
-                    },
-                    {
-                        value: 5,
-                        label: 'Data 3'
+                        value: {{$total_ios_scan}},
+                        label: 'IOS'
                     }
+
                 ],
                 colors: [
                     '#3949AB',
-                    '#463699',
-                    '#e52d27',
-                    '#f57c00',
+                    '#e52d27'
                 ],
                 resize: true,
                 formatter: function (x) {

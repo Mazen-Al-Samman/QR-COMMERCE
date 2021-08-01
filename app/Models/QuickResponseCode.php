@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class QuickResponseCode extends Model
 {
     use HasFactory;
-
+    const ANDROID = 'android';
+    const IOS = 'ios';
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +22,23 @@ class QuickResponseCode extends Model
         'user_id'
 
     ];
+
+    public static function getCount()
+    {
+        return QuickResponseCode::all()->count();
+    }
+
+    public static function getCountByAndriod()
+    {
+        return QuickResponseCode::where(['device_type' => self::ANDROID])->count();
+    }
+
+    public static function getCountByIos()
+    {
+        return QuickResponseCode::where(['device_type' => self::IOS])->count();
+    }
+
+
 
     public static function storeQrScan($request)
     {
