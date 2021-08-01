@@ -35,9 +35,19 @@ class Vendor extends Model
         return Vendor::where('end_subscription', '>', date('Y-m-d'))->paginate(15);
     }
 
-    public static function getVendorsCount()
+    public static function getActiveVendorsCount()
     {
         return Vendor::where('end_subscription', '>', date('Y-m-d'))->count();
+    }
+
+    public static function getDisabledVendorsCount()
+    {
+        return Vendor::where('end_subscription', '<', date('Y-m-d'))->count();
+    }
+
+    public static function getVendorsCount()
+    {
+        return Vendor::all()->count();
     }
 
     public function createVendor($request)

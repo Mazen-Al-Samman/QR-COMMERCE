@@ -27,7 +27,7 @@
                         <div class="row">
                             <!-- product profit start -->
                             <div class="col-xl-3 col-md-6">
-                                <div class="card prod-p-card bg-c-red">
+                                <div class="card prod-p-card bg-c-blue">
                                     <div class="card-body">
                                         <div class="row align-items-center m-b-25">
                                             <div class="col">
@@ -35,7 +35,52 @@
                                                 <h3 class="m-b-0 text-white">{{$total_vendors}}</h3>
                                             </div>
                                             <div class="col-auto">
+                                                <i class="fas fa-store-alt text-c-blue f-18"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card prod-p-card bg-c-green">
+                                    <div class="card-body">
+                                        <div class="row align-items-center m-b-25">
+                                            <div class="col">
+                                                <h6 class="m-b-5 text-white">Active Vendors</h6>
+                                                <h3 class="m-b-0 text-white">{{$total_active_vendors}}</h3>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-store-alt text-c-green f-18"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card prod-p-card bg-c-red">
+                                    <div class="card-body">
+                                        <div class="row align-items-center m-b-25">
+                                            <div class="col">
+                                                <h6 class="m-b-5 text-white">Disabled Vendors</h6>
+                                                <h3 class="m-b-0 text-white">{{$total_disabled_vendors}}</h3>
+                                            </div>
+                                            <div class="col-auto">
                                                 <i class="fas fa-store-alt text-c-red f-18"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card prod-p-card bg-c-yellow">
+                                    <div class="card-body">
+                                        <div class="row align-items-center m-b-25">
+                                            <div class="col">
+                                                <h6 class="m-b-5 text-white">Total Invoices</h6>
+                                                <h3 class="m-b-0 text-white">{{$total_invoices}}</h3>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-file-invoice text-c-yellow f-18"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -61,11 +106,26 @@
                                     <div class="card-body">
                                         <div class="row align-items-center m-b-25">
                                             <div class="col">
-                                                <h6 class="m-b-5 text-white">Total QR Scan</h6>
-                                                <h3 class="m-b-0 text-white">1500</h3>
+                                                <h6 class="m-b-5 text-white">Users Verified</h6>
+                                                <h3 class="m-b-0 text-white">{{$total_users}}</h3>
                                             </div>
                                             <div class="col-auto">
-                                                <i class="fas fa-dollar-sign text-c-green f-18"></i>
+                                                <i class="fas fa-database text-c-blue f-18"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card prod-p-card bg-c-red">
+                                    <div class="card-body">
+                                        <div class="row align-items-center m-b-25">
+                                            <div class="col">
+                                                <h6 class="m-b-5 text-white">Users Not Verified</h6>
+                                                <h3 class="m-b-0 text-white">{{$total_users}}</h3>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-database text-c-blue f-18"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -76,11 +136,11 @@
                                     <div class="card-body">
                                         <div class="row align-items-center m-b-25">
                                             <div class="col">
-                                                <h6 class="m-b-5 text-white">Total Invoices</h6>
-                                                <h3 class="m-b-0 text-white">{{$total_invoices}}</h3>
+                                                <h6 class="m-b-5 text-white">Total QR Scan</h6>
+                                                <h3 class="m-b-0 text-white">1500</h3>
                                             </div>
                                             <div class="col-auto">
-                                                <i class="fas fa-file-invoice text-c-yellow f-18"></i>
+                                                <i class="fas fa-qrcode text-c-yellow f-18"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -123,84 +183,76 @@
 <!-- [ Main Content ] end -->
 @include ('backend.layouts.footer')
 <script>
-    var graph = Morris.Donut({
-        element: 'morris-donut-chart',
-        data: [{
-            value:25,
-            label: 'Data 1'
-        },
-            {
-                value: 20,
-                label: 'Data 1'
-            },
-            {
-                value: 10,
-                label: 'Data 1'
-            },
-            {
-                value: 5,
-                label: 'Data 1'
-            }
-        ],
-        colors: [
-            '#3949AB',
-            '#463699',
-            '#e52d27',
-            '#f57c00',
-        ],
-        resize: true,
-        formatter: function(x) {
-            return "val : " + x
-        }
+    $(document).ready(function() {
+        setTimeout(function () {
+            Morris.Donut({
+                element: 'morris-donut-chart',
+                data: [{
+                    value: 25,
+                    label: 'Data 1'
+                },
+                    {
+                        value: 20,
+                        label: 'Data 1'
+                    },
+                    {
+                        value: 10,
+                        label: 'Data 1'
+                    },
+                    {
+                        value: 5,
+                        label: 'Data 1'
+                    }
+                ],
+                colors: [
+                    '#3949AB',
+                    '#463699',
+                    '#e52d27',
+                    '#f57c00',
+                ],
+                resize: true,
+                formatter: function (x) {
+                    return "val : " + x
+                }
+            });
+            // [ line-angle-chart ] Start
+            Morris.Bar({
+                element: 'morris-bar-chart',
+                data: [{
+                    y: 'Daily',
+                    a: 50,
+                    b: 40,
+                    c: 35,
+                },
+                    {
+                        y: 'weekly',
+                        a: 75,
+                        b: 65,
+                        c: 60,
+                    },
+                    {
+                        y: 'Monthly',
+                        a: 50,
+                        b: 40,
+                        c: 55,
+                    },
+                    {
+                        y: 'Yearly',
+                        a: 75,
+                        b: 65,
+                        c: 85,
+                    },
+                ],
+                xkey: 'y',
+                barSizeRatio: 0.70,
+                barGap: 3,
+                resize: true,
+                responsive: true,
+                ykeys: ['a', 'b', 'c'],
+                labels: ['Bar 1', 'Bar 2', 'Bar 3'],
+                barColors: ["#3949AB", "#463699", "#2ca961"]
+            });
+            // [ line-angle-chart ] end
+        }, 700);
     });
-    // [ line-angle-chart ] Start
-    Morris.Line({
-        element: 'morris-line-chart',
-        data: [{
-            y: '2006',
-            a: 20,
-            b: 10
-        },
-            {
-                y: '2007',
-                a: 55,
-                b: 45
-            },
-            {
-                y: '2008',
-                a: 45,
-                b: 35
-            },
-            {
-                y: '2009',
-                a: 75,
-                b: 65
-            },
-            {
-                y: '2010',
-                a: 50,
-                b: 40
-            },
-            {
-                y: '2011',
-                a: 75,
-                b: 65
-            },
-            {
-                y: '2012',
-                a: 100,
-                b: 90
-            }
-        ],
-        xkey: 'y',
-        redraw: true,
-        resize: true,
-        smooth: false,
-        ykeys: ['a', 'b'],
-        hideHover: 'auto',
-        responsive: true,
-        labels: ['Series A', 'Series B'],
-        lineColors: ['#463699', '#3949AB']
-    });
-    // [ line-angle-chart ] end
 </script>

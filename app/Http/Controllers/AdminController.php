@@ -22,12 +22,16 @@ class AdminController extends MainController
     public function index()
     {
         $total_vendors = Vendor::getVendorsCount();
+        $total_active_vendors = Vendor::getActiveVendorsCount();
+        $total_disabled_vendors = Vendor::getDisabledVendorsCount();
         $total_users = User::getUsersCount();
         $total_invoices = Invoice::getInvoicesCount();
         return view('backend.home',[
+            'total_invoices' => $total_invoices,
             'total_vendors' => $total_vendors,
+            'total_active_vendors' => $total_active_vendors,
+            'total_disabled_vendors' => $total_disabled_vendors,
             'total_users' => $total_users,
-            'total_invoices' => $total_invoices
         ]);
     }
 
