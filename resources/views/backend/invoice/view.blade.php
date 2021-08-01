@@ -16,7 +16,7 @@
     <div class="card">
         <div class="card-header">
             Invoice
-            <strong>{{$invoice_data->created_at}}</strong>
+            <strong>{{$invoice_data[0]['created_at']}}</strong>
             <div class="float-right"> <strong>Status:</strong> <span class="text-success">Done</span></div>
 
         </div>
@@ -25,16 +25,16 @@
                 <div class="col-sm-10">
                     <h2 class="@if(!isset($pdf_option)) mt-2 @else mt-5 @endif">MY BILL</h2>
                     <div>
-                        <strong>{{$invoice_data->user->first_name}}</strong>
+                        <strong>{{$invoice_data[0]['first_name'] }}</strong>
                     </div>
-                    <div>Full Name: {{$invoice_data->user->first_name.' '.$invoice_data->user->last_name}}</div>
-                    <div>Phone: {{$invoice_data->user->phone}}</div>
+                    <div>Full Name: {{$invoice_data[0]['first_name'].' '.$invoice_data[0]['last_name']}}</div>
+                    <div>Phone: {{$invoice_data[0]['phone']}}</div>
                 </div>
                 <div class="col-sm-2 float-right">
                     @if(!isset($pdf_option))
-                        {!! QrCode::size(150)->generate(route('invoice.show',['invoice_id' => $invoice_data->id])) !!}
+                        {!! QrCode::size(150)->generate(route('invoice.show',['invoice_id' => $invoice_data[0]['invoice_id']])) !!}
                     @else
-                        <img class="mt-5" src="data:image/png;base64, {!! base64_encode(QrCode::format('svg')->size(150)->generate(route('invoice.show',['invoice_id' => $invoice_data->id]))) !!}">
+                        <img class="mt-5" src="data:image/png;base64, {!! base64_encode(QrCode::format('svg')->size(150)->generate(route('invoice.show',['invoice_id' => $invoice_data[0]['invoice_id']]))) !!}">
                     @endif
                 </div>
             </div>
@@ -45,7 +45,6 @@
                     <tr>
                         <th>#</th>
                         <th>Item</th>
-                        <th>Category</th>
                         <th class="right">Unit Cost</th>
                         <th class="center">Qty</th>
                         <th class="right">Total</th>
@@ -53,14 +52,13 @@
                     </thead>
                     <tbody>
                     <?php $i=1; ?>
-                    @foreach($invoice_products as $product)
+                    @foreach($invoice_data as $product)
                         <tr>
                             <td class="center">{{$i}}</td>
-                            <td class="left">{{$product->name}}</td>
-                            <td class="left">{{$product->category_name}}</td>
-                            <td class="left">{{$product->price}} JOD</td>
-                            <td class="left">X{{$product->quantity}}</td>
-                            <td class="left">{{$product->price * $product->quantity}} JOD</td>
+                            <td class="left">{{$product['name']}}</td>
+                            <td class="left">{{$product['price']}} JOD</td>
+                            <td class="left">X{{$product['quantity']}}</td>
+                            <td class="left">{{$product['price'] * $product['quantity']}} JOD</td>
                         </tr>
                         <?php $i++; ?>
                     @endforeach
@@ -70,7 +68,7 @@
             <div class="row">
                 <div class="col-lg-4 col-sm-5">
                     @if(!isset($pdf_option))
-                        <a href="{{route('invoice.pdf',['invoice_id' => $invoice_data->id,'invoice_data' => $invoice_data, 'products_data' => $invoice_products])}}" class="btn btn-danger">Download PDF</a>
+                        <a href="{{route('invoice.pdf',['invoice_id' => $invoice_data[0]['invoice_id']])}}" class="btn btn-danger">Download PDF</a>
                     @endif
                 </div>
 
@@ -82,7 +80,7 @@
                                 <strong>Total</strong>
                             </td>
                             <td class="right">
-                                <strong>{{$invoice_data->total_price}} JOD</strong>
+                                <strong>{{$invoice_data[0]['total_price']}} JOD</strong>
                             </td>
                         </tr>
                         </tbody>

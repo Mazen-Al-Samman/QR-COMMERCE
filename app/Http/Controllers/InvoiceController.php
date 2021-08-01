@@ -112,47 +112,46 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, $pdf_option = null)
     {
-        $invoice = Invoice::find($id);
-        $products =  DB::table('products')
-            ->select([
-                'invoice_products.invoice_id',
-                'invoice_products.quantity',
-                'products.id As product_id',
-                'products.*',
-                'categories.title As category_name'
-            ])
-            ->join('invoice_products', function ($join) use ($id) {
-                $join->on('invoice_products.product_id', '=', 'products.id')
-                    ->where('invoice_products.invoice_id', $id);
-            })->join('categories','products.category_id','=','categories.id')->get();
+        $invoice_data = DB::table('invoices')->select(['invoice_products.invoice_id','invoice_products.quantity','invoices.*','products.*','users.*'])
+                            ->join('invoice_products', function ($join) use ($id) {
+                                $join->on('invoices.id', '=', 'invoice_products.invoice_id')
+                                    ->join('products','invoice_products.product_id', '=', 'products.id')
+                                    ->where('invoice_products.invoice_id', $id);
+                            })
+                            ->join('users', function ($join) use ($id) {
+                                $join->on('invoices.user_id', '=', 'users.id');
+                            })
+                            ->get()
+                            ->toArray();
+
+        $invoice_data = json_decode(json_encode($invoice_data),true);
 
         return view('backend.invoice.view',[
-            'invoice_data' => $invoice,
-            'invoice_products' => $products
+            'invoice_data' => $invoice_data
         ]);
     }
 
     public function downloadPDF($invoice_id)
     {
-        $invoice = Invoice::find($invoice_id);
-        $products =  DB::table('products')
-            ->select([
-                'invoice_products.invoice_id',
-                'invoice_products.quantity',
-                'products.id As product_id',
-                'products.*',
-                'categories.title As category_name'
-            ])
+        $invoice_data = DB::table('invoices')->select(['invoice_products.invoice_id','invoice_products.quantity','invoices.*','products.*','users.*'])
             ->join('invoice_products', function ($join) use ($invoice_id) {
-                $join->on('invoice_products.product_id', '=', 'products.id')
+                $join->on('invoices.id', '=', 'invoice_products.invoice_id')
+                    ->join('products','invoice_products.product_id', '=', 'products.id')
                     ->where('invoice_products.invoice_id', $invoice_id);
-            })->join('categories','products.category_id','=','categories.id')->get();
+            })
+            ->join('users', function ($join) use ($invoice_id) {
+                $join->on('invoices.user_id', '=', 'users.id');
+            })
+            ->where(['invoices.id' => $invoice_id])
+            ->get()
+            ->toArray();
+
+        $invoice_data = json_decode(json_encode($invoice_data),true);
 
         $pdf = PDF::loadView('backend.invoice.view',[
-            'invoice_data' => $invoice,
-            'invoice_products' => $products,
+            'invoice_data' => $invoice_data,
             'pdf_option' => true
         ])->setPaper('letter', 'landscape')->setPaper('a4', 'landscape');
         return $pdf->download('invoice.pdf');
