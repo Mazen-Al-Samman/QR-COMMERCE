@@ -26,12 +26,20 @@ class AdminController extends MainController
         $total_disabled_vendors = Vendor::getDisabledVendorsCount();
         $total_users = User::getUsersCount();
         $total_invoices = Invoice::getInvoicesCount();
+        $qr_daily = 15;
+        $qr_weekly = 123;
+        $qr_monthly = 243;
+        $qr_yearly = 3598;
         return view('backend.home',[
             'total_invoices' => $total_invoices,
             'total_vendors' => $total_vendors,
             'total_active_vendors' => $total_active_vendors,
             'total_disabled_vendors' => $total_disabled_vendors,
             'total_users' => $total_users,
+            'qr_daily' => $qr_daily,
+            'qr_weekly' => $qr_weekly,
+            'qr_monthly' => $qr_monthly,
+            'qr_yearly' => $qr_yearly,
         ]);
     }
 

@@ -95,7 +95,7 @@
                                                 <h3 class="m-b-0 text-white">{{$total_users}}</h3>
                                             </div>
                                             <div class="col-auto">
-                                                <i class="fas fa-database text-c-blue f-18"></i>
+                                                <i class="fas fa-users text-c-blue f-18"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -110,7 +110,7 @@
                                                 <h3 class="m-b-0 text-white">{{$total_users}}</h3>
                                             </div>
                                             <div class="col-auto">
-                                                <i class="fas fa-database text-c-blue f-18"></i>
+                                                <i class="fas fa-user-check text-c-green f-18"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -125,7 +125,7 @@
                                                 <h3 class="m-b-0 text-white">{{$total_users}}</h3>
                                             </div>
                                             <div class="col-auto">
-                                                <i class="fas fa-database text-c-blue f-18"></i>
+                                                <i class="fas fa-user-alt-slash text-c-red f-18"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -189,7 +189,7 @@
                 element: 'morris-donut-chart',
                 data: [{
                     value: 25,
-                    label: 'Data 1'
+                    label: 'Data 0'
                 },
                     {
                         value: 20,
@@ -197,11 +197,11 @@
                     },
                     {
                         value: 10,
-                        label: 'Data 1'
+                        label: 'Data 2'
                     },
                     {
                         value: 5,
-                        label: 'Data 1'
+                        label: 'Data 3'
                     }
                 ],
                 colors: [
@@ -212,7 +212,7 @@
                 ],
                 resize: true,
                 formatter: function (x) {
-                    return "val : " + x
+                    return x
                 }
             });
             // [ line-angle-chart ] Start
@@ -221,36 +221,36 @@
                 data: [{
                     y: 'Daily',
                     a: 50,
-                    b: 40,
-                    c: 35,
+                    // b: 40,
+                    // c: 35,
                 },
                     {
                         y: 'weekly',
                         a: 75,
-                        b: 65,
-                        c: 60,
+                        // b: 65,
+                        // c: 60,
                     },
                     {
                         y: 'Monthly',
                         a: 50,
-                        b: 40,
-                        c: 55,
+                        // b: 40,
+                        // c: 55,
                     },
                     {
                         y: 'Yearly',
                         a: 75,
-                        b: 65,
-                        c: 85,
+                        // b: 65,
+                        // c: 85,
                     },
                 ],
                 xkey: 'y',
-                barSizeRatio: 0.70,
-                barGap: 3,
+                barSizeRatio: 0.50,
+                barGap: 5,
                 resize: true,
                 responsive: true,
-                ykeys: ['a', 'b', 'c'],
-                labels: ['Bar 1', 'Bar 2', 'Bar 3'],
-                barColors: ["#3949AB", "#463699", "#2ca961"]
+                ykeys: ['a'],
+                labels: ['Scan Number'],
+                barColors: ["#463699"/*, "#463699", "#2ca961"*/]
             });
             // [ line-angle-chart ] end
         }, 700);
