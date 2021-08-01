@@ -45,5 +45,6 @@ Route::group([
         Route::post('feedback/store',[\App\Http\Controllers\FeedbackController::class,'storeApi']);
         /* End feedback Routes */
 
+        Route::post('qr/store',[\App\Http\Controllers\QuickResponseCodeController::class,'storeApi']);
     });
 });

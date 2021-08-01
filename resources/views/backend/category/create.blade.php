@@ -76,7 +76,7 @@
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Roles List</h5>
+                                        <h5>Categories List</h5>
                                         <span class="d-block m-t-5">All Categories list information</span>
                                     </div>
                                     <div class="card-body table-border-style">

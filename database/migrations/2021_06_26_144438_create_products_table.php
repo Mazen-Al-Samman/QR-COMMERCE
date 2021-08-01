@@ -23,10 +23,8 @@ class CreateProductsTable extends Migration
             $table->string("main_image",'500')->nullable(false);
             $table->integer("category_id")->unsigned()->nullable(false);
             $table->integer("vendor_id")->unsigned()->nullable(false);
-            $table->integer("posted_by")->unsigned()->nullable(false);
             $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('posted_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
