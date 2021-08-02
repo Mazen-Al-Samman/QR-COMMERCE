@@ -34,7 +34,7 @@ class FeedbackController extends Controller
         $validation = Validator::make($request->all(), [
             'rate' => ['required'],
             'comment' => ['required','string'],
-            'user_id' => ['required','exists:users,id'],
+            'user_id' => ['exists:users,id'],
             'vendor_id' => ['required','exists:vendors,id']
         ]);
 
