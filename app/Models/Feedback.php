@@ -26,7 +26,7 @@ class Feedback extends Model
         $feedback = new Feedback();
         $feedback->rate = $request->rate;
         $feedback->comment = $request->comment;
-        $feedback->user_id = $request->user_id;
+        $feedback->user_id = auth('api')->user()->id;
         $feedback->vendor_id = $request->vendor_id;
         return $feedback->save();
     }
