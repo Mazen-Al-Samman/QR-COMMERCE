@@ -153,7 +153,7 @@
                                                 <tbody>
                                                 @foreach($products as $product)
                                                     <tr>
-                                                        <td><img src="{{ asset('storage/uploads/products/'.$product->main_image)}}" class="rounded" width="75" height="75" alt=""></td>
+                                                        <td><img src="{{ asset('assets/images/uploads/products/'.$product->main_image)}}" class="rounded" width="75" height="75" alt=""></td>
                                                         <td>{{$product->name}}</td>
                                                         <td>{{$product->category->title}}</td>
                                                         <td>{{$product->old_price}}</td>

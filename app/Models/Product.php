@@ -65,7 +65,7 @@ class Product extends Model
         if ($request->hasfile('main_image')) {
             $file = $request->file('main_image');
             $name = time() . '_' . $file->getClientOriginalName();
-            $file->move(storage_path() . "/app/public/uploads/products/", $name);
+            $file->move(public_path() . "/assets/images/uploads/products/", $name);
             $product->main_image = $name;
         }
 
@@ -84,7 +84,7 @@ class Product extends Model
                         if (!$media_product->save()) {
                             $result = false;
                         }
-                        $file->move(storage_path() . "/app/public/uploads/products/", $name);
+                        $file->move(public_path() . "/assets/images/uploads/products/", $name);
                     }
                     $i++;
                 }
@@ -109,7 +109,7 @@ class Product extends Model
         if ($request->hasfile('main_image')) {
             $file = $request->file('main_image');
             $name = time() . '_' . $file->getClientOriginalName();
-            $file->move(storage_path() . "/app/public/uploads/products/", $name);
+            $file->move(public_path() . "/assets/images/uploads/products/", $name);
             $product->main_image = $name;
         }
         if ($product->save()) {
@@ -127,7 +127,7 @@ class Product extends Model
                         if (!$media_product->save()) {
                             $result = false;
                         }
-                        $file->move(storage_path() . "/app/public/uploads/products/", $name);
+                        $file->move(public_path() . "/assets/images/uploads/products/", $name);
                     }
                     $i++;
                 }
