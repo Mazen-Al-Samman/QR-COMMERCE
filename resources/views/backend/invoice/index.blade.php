@@ -36,7 +36,7 @@
                                                 <tbody>
                                                 @foreach($invoice_data as $invoice)
                                                     <tr>
-                                                        <td><img src="{{ asset('storage/uploads/qr/'.$invoice->qr_code)}}" class="rounded" width="75" height="75" alt=""></td>
+                                                        <td><img src="{{ asset('assets/images/uploads/qr/'.$invoice->qr_code)}}" class="rounded" width="75" height="75" alt=""></td>
                                                         <td>{{$invoice->total_price}}</td>
                                                         <td>{{$invoice->user->first_name}}</td>
                                                         <td>{{$invoice->vendor->name}}</td>
