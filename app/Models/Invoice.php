@@ -89,7 +89,7 @@ class Invoice extends Model
             if ($check) {
                 QrCode::size(500)
                     ->format('png')
-                    ->generate(route('invoice.show', ['invoice_id' => $invoice->id]), storage_path() . "/app/public/uploads/qr/" . $invoice->qr_code);
+                    ->generate(route('invoice.show', ['invoice_id' => $invoice->id]), public_path() . "/assets/images/uploads/qr/" . $invoice->qr_code);
                 return ['status' => true, 'data' => $invoice];
             }
         }

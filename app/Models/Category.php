@@ -32,7 +32,7 @@ class Category extends Model
         if ($request->hasfile('image')) {
             $file = $request->file('image');
             $name = time() . '_' . $file->getClientOriginalName();
-            $file->move(storage_path() . "/app/public/uploads/categories/", $name);
+            $file->move(public_path() . "/assets/images/uploads/categories/", $name);
             $category->image = $name;
         }
         return $category->save();
@@ -46,7 +46,7 @@ class Category extends Model
         if ($request->hasfile('image')) {
             $file = $request->file('image');
             $name = time() . '_' . $file->getClientOriginalName();
-            $file->move(storage_path() . "/app/public/uploads/categories/", $name);
+            $file->move(public_path() . "/assets/images/uploads/categories/", $name);
             $category->image = $name;
         }
         return $category->save();
