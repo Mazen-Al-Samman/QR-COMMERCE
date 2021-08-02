@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -38,7 +39,25 @@ class QuickResponseCode extends Model
         return QuickResponseCode::where(['device_type' => self::IOS])->count();
     }
 
+    public static function getDailyQrScan()
+    {
+        return QuickResponseCode::whereDate('created_at', '=', date('Y-m-d'))->count();
+    }
 
+    public static function getWeeklyQrScan()
+    {
+        return QuickResponseCode::whereDate('created_at', '>=', strtotime(date('Y-m-d'). ' -7 day'))->count();
+    }
+
+    public static function getMonthlyQrScan()
+    {
+        return QuickResponseCode::whereDate('created_at', '>=', strtotime(date('Y-m-d'). ' -30 day'))->count();
+    }
+
+    public static function getYearlyQrScan()
+    {
+        return QuickResponseCode::whereDate('created_at', '>=', strtotime(date('Y-m-d'). ' -365 day'))->count();
+    }
 
     public static function storeQrScan($request)
     {

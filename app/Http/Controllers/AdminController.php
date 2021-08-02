@@ -8,6 +8,8 @@ use App\Models\QuickResponseCode;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Vendor;
+use Carbon\Carbon;
+use Carbon\Traits\Date;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -32,10 +34,10 @@ class AdminController extends MainController
         $total_qr_scan = QuickResponseCode::getCount();
         $total_android_scan = QuickResponseCode::getCountByAndriod();
         $total_ios_scan = QuickResponseCode::getCountByIos();
-        $qr_daily = 15;
-        $qr_weekly = 123;
-        $qr_monthly = 243;
-        $qr_yearly = 3598;
+        $qr_daily = QuickResponseCode::getDailyQrScan();
+        $qr_weekly = QuickResponseCode::getWeeklyQrScan();
+        $qr_monthly = QuickResponseCode::getMonthlyQrScan();
+        $qr_yearly = QuickResponseCode::getYearlyQrScan();
         return view('backend.home',[
             'total_invoices' => $total_invoices,
             'total_vendors' => $total_vendors,
