@@ -14,12 +14,13 @@ class RolePermissionController extends MainController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $role = new Role();
         $roles = $role->getAllRoles();
         return view('backend.rolePermission.index',[
-            'roles' => $roles
+            'roles' => $roles,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -50,14 +51,15 @@ class RolePermissionController extends MainController
      * @param int $role_id
      * @return \Illuminate\Http\Response
      */
-    public function show($role_id)
+    public function show($role_id, Request $request)
     {
         $role = Role::find($role_id);
         $rolePermission = new RolePermission();
         $permissions = $rolePermission->getPermissionsByRoleID($role->id);
         return view('backend.rolePermission.view', [
             'role' => $role,
-            'permissions' => $permissions
+            'permissions' => $permissions,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -67,7 +69,7 @@ class RolePermissionController extends MainController
      * @param int $role_id
      * @return \Illuminate\Http\Response
      */
-    public function edit($role_id)
+    public function edit($role_id, Request $request)
     {
         $permission = new Permission();
         $permissions = $permission->getPermissionsWithSelected($role_id);
@@ -75,7 +77,8 @@ class RolePermissionController extends MainController
 
         return view('backend.rolePermission.edit',[
             'role' => $role,
-            'permissions' => $permissions
+            'permissions' => $permissions,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 

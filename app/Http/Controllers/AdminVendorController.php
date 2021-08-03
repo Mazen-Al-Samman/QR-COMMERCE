@@ -91,7 +91,8 @@ class AdminVendorController extends MainController
         $roles = $role->getAllRoles();
         return view('backend.admin-vendor.edit', [
             'admin' => $admin,
-            'roles' => $roles
+            'roles' => $roles,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 

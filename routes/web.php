@@ -18,7 +18,6 @@ Route::post('/admin/login', [\App\Http\Controllers\Auth\LoginController::class, 
 Route::post('/vendor/login', [\App\Http\Controllers\Auth\LoginController::class, 'vendorLogin'])->name('vendor.login.submit');
 
 
-
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::get('/en', [\App\Http\Controllers\HomeController::class, 'index_en'])->name('index_en');
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -76,7 +75,7 @@ Route::prefix('backend')->group(function () {
             });
 
             Route::prefix('admin/vendor')->group(function () {
-                Route::group(['middleware' => ['vendor-auth']], function (){
+                Route::group(['middleware' => ['vendor-auth']], function () {
                     Route::get('/', [\App\Http\Controllers\AdminVendorController::class, 'create'])->name('admin-vendor.create');
                     Route::post('/store', [\App\Http\Controllers\AdminVendorController::class, 'store'])->name('admin-vendor.store');
                     Route::delete('/delete/{id}', [\App\Http\Controllers\AdminVendorController::class, 'destroy'])->name('admin-vendor.delete');
@@ -86,38 +85,37 @@ Route::prefix('backend')->group(function () {
                 });
 
             });
+            Route::prefix('category')->group(function () {
+                Route::get('/', [\App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
+                Route::post('/store', [\App\Http\Controllers\CategoryController::class, 'store'])->name('category.store');
+                Route::delete('/delete/{id}', [\App\Http\Controllers\CategoryController::class, 'destroy'])->name('category.delete');
+                Route::get('/edit/{id}', [\App\Http\Controllers\CategoryController::class, 'edit'])->name('category.edit');
+                Route::get('/show/{id}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
+                Route::put('/update/{id}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('category.update');
+            });
+
+            Route::prefix('product')->group(function () {
+                Route::get('/', [\App\Http\Controllers\ProductController::class, 'create'])->name('product.create');
+                Route::post('/store', [\App\Http\Controllers\ProductController::class, 'store'])->name('product.store');
+                Route::delete('/delete/{id}', [\App\Http\Controllers\ProductController::class, 'destroy'])->name('product.delete');
+                Route::get('/imageDelete/{id}', [\App\Http\Controllers\ProductController::class, 'deleteImage'])->name('product_image.delete');
+                Route::get('/edit/{id}', [\App\Http\Controllers\ProductController::class, 'edit'])->name('product.edit');
+                Route::get('/show/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
+                Route::put('/update/{id}', [\App\Http\Controllers\ProductController::class, 'update'])->name('product.update');
+            });
+
+
+            Route::prefix('invoice')->group(function () {
+                Route::get('/', [\App\Http\Controllers\InvoiceController::class, 'index'])->name('invoice.index');
+                Route::get('/create', [\App\Http\Controllers\InvoiceController::class, 'create'])->name('invoice.create');
+                Route::get('/store', [\App\Http\Controllers\InvoiceController::class, 'store'])->name('invoice.store');
+                Route::post('/add-to-cart', [\App\Http\Controllers\InvoiceController::class, 'addToCart'])->name('invoice.addToCart');
+                Route::post('/delete-from-cart', [\App\Http\Controllers\InvoiceController::class, 'deleteFromCart'])->name('invoice.deleteFromCart');
+                Route::post('/update-cart', [\App\Http\Controllers\InvoiceController::class, 'updateCart'])->name('invoice.updateCart');
+                Route::get('/show/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'show'])->name('invoice.show');
+                Route::get('/download-pdf/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'downloadPDF'])->name('invoice.pdf');
+            });
+
         });
-
-        Route::prefix('category')->group(function () {
-            Route::get('/', [\App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
-            Route::post('/store', [\App\Http\Controllers\CategoryController::class, 'store'])->name('category.store');
-            Route::delete('/delete/{id}', [\App\Http\Controllers\CategoryController::class, 'destroy'])->name('category.delete');
-            Route::get('/edit/{id}', [\App\Http\Controllers\CategoryController::class, 'edit'])->name('category.edit');
-            Route::get('/show/{id}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
-            Route::put('/update/{id}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('category.update');
-        });
-
-        Route::prefix('product')->group(function () {
-            Route::get('/', [\App\Http\Controllers\ProductController::class, 'create'])->name('product.create');
-            Route::post('/store', [\App\Http\Controllers\ProductController::class, 'store'])->name('product.store');
-            Route::delete('/delete/{id}', [\App\Http\Controllers\ProductController::class, 'destroy'])->name('product.delete');
-            Route::get('/imageDelete/{id}', [\App\Http\Controllers\ProductController::class, 'deleteImage'])->name('product_image.delete');
-            Route::get('/edit/{id}', [\App\Http\Controllers\ProductController::class, 'edit'])->name('product.edit');
-            Route::get('/show/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
-            Route::put('/update/{id}', [\App\Http\Controllers\ProductController::class, 'update'])->name('product.update');
-        });
-
-
-        Route::prefix('invoice')->group(function () {
-            Route::get('/', [\App\Http\Controllers\InvoiceController::class, 'index'])->name('invoice.index');
-            Route::get('/create', [\App\Http\Controllers\InvoiceController::class, 'create'])->name('invoice.create');
-            Route::get('/store', [\App\Http\Controllers\InvoiceController::class, 'store'])->name('invoice.store');
-            Route::post('/add-to-cart', [\App\Http\Controllers\InvoiceController::class, 'addToCart'])->name('invoice.addToCart');
-            Route::post('/delete-from-cart', [\App\Http\Controllers\InvoiceController::class, 'deleteFromCart'])->name('invoice.deleteFromCart');
-            Route::post('/update-cart', [\App\Http\Controllers\InvoiceController::class, 'updateCart'])->name('invoice.updateCart');
-            Route::get('/show/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'show'])->name('invoice.show');
-            Route::get('/download-pdf/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'downloadPDF'])->name('invoice.pdf');
-        });
-
     });
 });

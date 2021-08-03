@@ -26,12 +26,13 @@ class RoleController extends MainController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $role = new Role();
         $roles = $role->getAllRoles();
         return view('backend.role.create', [
-            'roles' => $roles
+            'roles' => $roles,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -82,11 +83,12 @@ class RoleController extends MainController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $role = Role::find($id);
         return view('backend.role.view', [
-            'role' => $role
+            'role' => $role,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -96,11 +98,12 @@ class RoleController extends MainController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
         $role = Role::find($id);
         return view('backend.role.edit',[
-            'role' => $role
+            'role' => $role,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 

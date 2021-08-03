@@ -26,12 +26,13 @@ class PermissionController extends MainController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $permission = new Permission();
         $permissions = $permission->getAllPermissions();
         return view('backend.permission.create', [
-            'permissions' => $permissions
+            'permissions' => $permissions,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -67,12 +68,13 @@ class PermissionController extends MainController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $permission = Permission::find($id);
 
         return view('backend.permission.view', [
-            'permission' => $permission
+            'permission' => $permission,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -82,11 +84,12 @@ class PermissionController extends MainController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
         $permission = Permission::find($id);
         return view('backend.permission.edit', [
             'permission' => $permission,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
