@@ -15,14 +15,12 @@
 <div class="@if(!isset($pdf_option)) container @else container-fluid @endif mt-5">
     <div class="card">
         <div class="card-header">
-            Invoice
-            <strong>{{$invoice_data[0]['created_at']}}</strong>
-            <div class="float-right"> <strong>Status:</strong> <span class="text-success">Done</span></div>
+            Invoice <strong>{{$invoice_data[0]['created_at']}}</strong>
 
         </div>
         <div class="card-body">
             <div class="row mb-4">
-                <div class="col-sm-10">
+                <div class="col-xl-10 col-lg-9 col-md-8 col-sm-11 mb-4">
                     <h2 class="@if(!isset($pdf_option)) mt-2 @else mt-5 @endif">MY BILL</h2>
                     <div>
                         <strong>{{$invoice_data[0]['first_name'] }}</strong>
@@ -37,9 +35,14 @@
                         <img class="mt-5" src="data:image/png;base64, {!! base64_encode(QrCode::format('svg')->size(150)->generate(route('invoice.show',['invoice_id' => $invoice_data[0]['invoice_id']]))) !!}">
                     @endif
                 </div>
+                <div class="col-12 mt-3">
+                    @if(!isset($pdf_option))
+                        <a href="{{route('invoice.pdf',['invoice_id' => $invoice_data[0]['invoice_id']])}}" class="btn btn-danger">Download PDF</a>
+                    @endif
+                </div>
             </div>
 
-            <div class="mt-5">
+            <div class="mt-5 table-responsive">
                 <table class="table table-striped" style="">
                     <thead>
                     <tr>
@@ -66,21 +69,12 @@
                 </table>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-sm-5">
-                    @if(!isset($pdf_option))
-                        <a href="{{route('invoice.pdf',['invoice_id' => $invoice_data[0]['invoice_id']])}}" class="btn btn-danger">Download PDF</a>
-                    @endif
-                </div>
-
-                <div class="col-lg-4 col-sm-5 ml-auto">
+                <div class="col-lg-12 col-sm-12 ml-auto">
                     <table class="table table-clear">
                         <tbody>
                         <tr>
                             <td class="left">
-                                <strong>Total</strong>
-                            </td>
-                            <td class="right">
-                                <strong>{{$invoice_data[0]['total_price']}} JOD</strong>
+                                <strong>Total: {{$invoice_data[0]['total_price']}} JOD</strong>
                             </td>
                         </tr>
                         </tbody>
