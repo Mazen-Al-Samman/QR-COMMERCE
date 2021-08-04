@@ -57,7 +57,7 @@ class AddBasicRolesAndPermissions extends Migration
                 ],
                 [
                     'controller' => 'invoice',
-                    'actions' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'],
+                    'actions' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy', 'addToCart', 'deleteFromCart', 'updateCart'],
                 ],
                 [
                     'controller' => 'invoice-product',

@@ -25,8 +25,7 @@ Route::get('/en', [\App\Http\Controllers\HomeController::class, 'index_en'])->na
 Route::prefix('backend')->group(function () {
     Auth::routes();
     Route::group(['middleware' => ['login-auth', 'prevent-back-history']], function () {
-
-        Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
+            Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
         Route::group(['middleware' => ['auth-permissions']], function () {
             Route::get('/profile', [\App\Http\Controllers\MainController::class, 'profile'])->name('profile');
             Route::put('/update/profile', [\App\Http\Controllers\MainController::class, 'updateProfile'])->name('update.profile');

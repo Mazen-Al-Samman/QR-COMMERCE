@@ -85,7 +85,7 @@
                         <a href="{{route('vendor.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-map"></i></span><span class="pcoded-mtext">Vendor</span></a>
                     @endif
                 </li>
-                @if(in_array('role.create', $userAuthPermission)) || (in_array('permission.create', $userAuthPermission)) || (in_array('role-permission.create', $userAuthPermission))
+                @if(in_array('role.create', $userAuthPermission) || in_array('permission.create', $userAuthPermission) || in_array('role-permission.create', $userAuthPermission))
                 <li class="nav-item pcoded-hasmenu">
                     <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-star"></i></span><span class="pcoded-mtext">Roles & Permissions</span></a>
                     <ul class="pcoded-submenu">
