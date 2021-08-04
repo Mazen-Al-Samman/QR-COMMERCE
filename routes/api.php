@@ -46,5 +46,9 @@ Route::group([
         /* End feedback Routes */
 
         Route::post('qr/store',[\App\Http\Controllers\QuickResponseCodeController::class,'storeApi']);
+
+        /* MyReport Routes */
+        Route::post('report/store',[\App\Http\Controllers\MyReportController::class,'storeApi']);
+        Route::post('report/delete',[\App\Http\Controllers\MyReportController::class,'deleteApi']);
     });
 });
