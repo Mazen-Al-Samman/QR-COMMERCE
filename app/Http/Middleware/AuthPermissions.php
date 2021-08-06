@@ -20,10 +20,13 @@ class AuthPermissions
     public function handle(Request $request, Closure $next)
     {
         $guardName = "";
+        $route = "";
         if (Auth::guard('web')->check()) {
             $guardName = "web";
+            $route = "admin.dashboard";
         } else if (Auth::guard('vendor')->check()) {
             $guardName = "vendor";
+            $route = "admin-vendor.dashboard";
         }
 
         $auth_obj = Auth::guard($guardName)->user();
@@ -32,8 +35,8 @@ class AuthPermissions
         $permissions = RolePermission::select("permission")->where(['role_id' => $auth_obj->role_id])->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')->get();
         $request->attributes->add(['permissions' => $permissions]);
 
-        if (!$this->hasPermission($permissions, $currentAction) && $auth_obj->role_id != 1) {
-            return redirect()->route('dashboard');
+        if (!$this->hasPermission($permissions, $currentAction)) {
+            return redirect()->route($route);
         }
 
         return $next($request);

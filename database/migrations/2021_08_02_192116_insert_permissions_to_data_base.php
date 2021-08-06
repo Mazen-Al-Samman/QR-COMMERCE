@@ -26,7 +26,7 @@ class InsertPermissionsToDataBase extends Migration
             'product',
             'role',
             'role-permission',
-            'vendors'
+            'vendor'
         ];
 
         $actions = [
@@ -51,7 +51,7 @@ class InsertPermissionsToDataBase extends Migration
             }
         }
         $additional_fields = [
-            'invoice.addToCart', 'invoice.deleteFromCart', 'invoice.updateCart'
+            'invoice.addToCart', 'invoice.deleteFromCart', 'invoice.updateCart', 'admin.dashboard', 'admin-vendor.dashboard', 'role-permission.manage'
         ];
 
         foreach ($additional_fields as $additional_field) {
@@ -69,5 +69,6 @@ class InsertPermissionsToDataBase extends Migration
     {
         DB::statement("SET FOREIGN_KEY_CHECKS = 0;");
         DB::statement("TRUNCATE TABLE permissions;");
+        DB::statement("SET FOREIGN_KEY_CHECKS = 1;");
     }
 }

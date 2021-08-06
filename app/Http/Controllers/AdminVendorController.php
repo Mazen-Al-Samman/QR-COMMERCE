@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminVendorController extends MainController
 {
+    public function index() {
+        echo "Hello world!"; die;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

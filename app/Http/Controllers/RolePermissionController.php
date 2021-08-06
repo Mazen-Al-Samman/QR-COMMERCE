@@ -93,7 +93,7 @@ class RolePermissionController extends MainController
         $rolePermission = new RolePermission();
         if($rolePermission->UpdateRolePermission($request)) {
             $request->session()->flash('alert-update', 'Process was succeeded!');
-            return \redirect()->route('rolePermission.manage',['role_id' => $request->role_id]);
+            return \redirect()->route('role-permission.manage',['role_id' => $request->role_id]);
         }
         return new \Exception('an error occurred');
     }
@@ -108,7 +108,7 @@ class RolePermissionController extends MainController
     {
         if (RolePermission::where(['role_id' => $id])->delete()) {
             $request->session()->flash('alert-delete', 'User was successful deleted!');
-            return \redirect()->route('rolePermission.create');
+            return \redirect()->route('role-permission.create');
         }
     }
 }

@@ -23,7 +23,7 @@ class AddBasicRolesAndPermissions extends Migration
             'Super Admin' => [
                 [
                 'controller' => 'admin',
-                'actions' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'],
+                'actions' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy', 'dashboard'],
                 ],
                 [
                     'controller' => 'home',
@@ -39,17 +39,17 @@ class AddBasicRolesAndPermissions extends Migration
                 ],
                 [
                     'controller' => 'role-permission',
-                    'actions' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'],
+                    'actions' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy', 'manage'],
                 ],
                 [
-                    'controller' => 'vendors',
+                    'controller' => 'vendor',
                     'actions' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'],
                 ],
             ],
             'Admin' => [
                 [
                     'controller' => 'admin-vendor',
-                    'actions' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'],
+                    'actions' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy', 'dashboard'],
                 ],
                 [
                     'controller' => 'category',

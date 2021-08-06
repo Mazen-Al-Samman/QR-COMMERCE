@@ -25,10 +25,11 @@ Route::get('/en', [\App\Http\Controllers\HomeController::class, 'index_en'])->na
 Route::prefix('backend')->group(function () {
     Auth::routes();
     Route::group(['middleware' => ['login-auth', 'prevent-back-history']], function () {
-            Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
         Route::group(['middleware' => ['auth-permissions']], function () {
             Route::get('/profile', [\App\Http\Controllers\MainController::class, 'profile'])->name('profile');
             Route::put('/update/profile', [\App\Http\Controllers\MainController::class, 'updateProfile'])->name('update.profile');
+            Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
+            Route::get('/vendor/dashboard', [\App\Http\Controllers\AdminVendorController::class, 'index'])->name('admin-vendor.dashboard');
 
             Route::prefix('admin')->group(function () {
                 Route::get('/', [\App\Http\Controllers\AdminController::class, 'create'])->name('admin.create');
@@ -57,11 +58,11 @@ Route::prefix('backend')->group(function () {
                 Route::get('/show/{id}', [\App\Http\Controllers\PermissionController::class, 'show'])->name('permission.show');
             });
 
-            Route::prefix('rolePermission')->group(function () {
-                Route::get('/', [\App\Http\Controllers\RolePermissionController::class, 'index'])->name('rolePermission.index');
-                Route::get('/manage/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'edit'])->name('rolePermission.manage');
-                Route::put('/update/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'update'])->name('rolePermission.update');
-                Route::get('/show/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'show'])->name('rolePermission.show');
+            Route::prefix('role-permission')->group(function () {
+                Route::get('/', [\App\Http\Controllers\RolePermissionController::class, 'index'])->name('role-permission.index');
+                Route::get('/manage/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'edit'])->name('role-permission.manage');
+                Route::put('/update/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'update'])->name('role-permission.update');
+                Route::get('/show/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'show'])->name('role-permission.show');
             });
 
             Route::prefix('vendor')->group(function () {
