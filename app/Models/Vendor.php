@@ -57,9 +57,15 @@ class Vendor extends Model
         $vendor->phone = $request->phone;
         $vendor->country = $request->country;
         $vendor->city = $request->city;
-        $vendor->subscribe = "0000";
-        $vendor->start_subscription = "2020-01-01";
-        $vendor->end_subscription = "2020-01-01";
+        $vendor->subscribe = $this->generateRandomString(20);
+        $vendor->start_subscription = date("Y-m-d");
+        $vendor->end_subscription = date('Y-m-d', strtotime("+1 months", strtotime("NOW")));
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path() . "/assets/images/uploads/vendors/", $name);
+            $vendor->image = $name;
+        }
         return $vendor->save();
     }
 
@@ -70,14 +76,30 @@ class Vendor extends Model
         $vendor->phone = $request->phone;
         $vendor->country = $request->country;
         $vendor->city = $request->city;
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path() . "/assets/images/uploads/vendors/", $name);
+            $vendor->image = $name;
+        }
         return $vendor->save();
     }
 
     public function getAllVendorsApi()
     {
         return Vendor::all()
-                    ->where('end_subscription', '>', date('Y-m-d'))
-                    ->groupBy('country');
+        ->where('end_subscription', '>', date('Y-m-d'))
+        ->groupBy('country');
 
+    }
+
+    function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

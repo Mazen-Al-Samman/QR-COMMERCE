@@ -21,7 +21,7 @@
                                                 {{ session()->get('update') }}
                                             </div>
                                         @endif
-                                        <form action="{{route('vendor.update',['id' => $vendor->id])}}" method="post">
+                                        <form action="{{route('vendor.update',['id' => $vendor->id])}}" method="post" enctype="multipart/form-data">
                                             @method('put')
                                             @csrf
                                             <div class="row">
@@ -64,6 +64,15 @@
                                                         </select>
                                                         @error('city')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="image">Image</label>
+                                                        <input type="file" name="image" class="form-control" id="image">
+                                                        @error('image')
+                                                        <small id="imageHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
                                                     </div>
                                                 </div>

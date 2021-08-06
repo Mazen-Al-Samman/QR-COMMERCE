@@ -28,6 +28,7 @@ class VendorsController extends MainController
      */
     public function create(Request $request)
     {
+
         $vendorModel = new Vendor();
         $vendors = $vendorModel->getAllVendors();
         $path = storage_path() . "/app/public/json_files/jordanian_cities.json";
@@ -52,6 +53,7 @@ class VendorsController extends MainController
             'phone' => ['required', 'numeric', 'unique:admins', 'regex:(^[07][7|8|9][0-9]{8})'],
             'country' => ['required', 'string'],
             'city' => ['required', 'string'],
+            'image' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
         if ($validation->fails()) {
@@ -114,6 +116,7 @@ class VendorsController extends MainController
             'phone' => ['required', 'numeric', 'unique:admins', 'regex:(^[07][7|8|9][0-9]{8})'],
             'country' => ['required', 'string'],
             'city' => ['required', 'string'],
+            'image' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
         if ($validation->fails()) {
