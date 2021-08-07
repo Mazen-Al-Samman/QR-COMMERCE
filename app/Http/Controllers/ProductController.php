@@ -192,7 +192,7 @@ class ProductController extends MainController
         }
     }
 
-    public function vendorProductsApi($vendor_id, Request $request)
+    public function vendorProductsApi($vendor_id)
     {
         try {
             if (!$user = JWTAuth::parseToken()->authenticate()) {

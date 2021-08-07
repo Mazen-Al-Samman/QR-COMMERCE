@@ -25,21 +25,6 @@
                                             </div>
                                         @endif
                                             <div class="row mb-4">
-{{--                                                @foreach($products as $product)--}}
-{{--                                                    <div class="col-lg-6 col-xs-12 col-sm-12 col-md-12 border-right">--}}
-{{--                                                        <div class="row mb-3">--}}
-{{--                                                            <div class="col-lg-6 col-md-4 mt-3">--}}
-{{--                                                                <span class="font-weight-bold" style="font-size: 18px">{{$product->name}}</span>--}}
-{{--                                                            </div>--}}
-{{--                                                            <div class="col-lg-auto col-md-auto col-xs-5 col-4">--}}
-{{--                                                                <input type="number" min="1" value="1" max="10" class="form-control quantity_{{$product->id}}">--}}
-{{--                                                            </div>--}}
-{{--                                                            <div class="col-lg-auto col-md-auto col-xs-7 col-8">--}}
-{{--                                                                <button id="addToCart" class="btn btn-warning addToCart float-right" data-id="{{$product->id}}"><i class="fa fa-plus"></i></button>--}}
-{{--                                                            </div>--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
-{{--                                                @endforeach--}}
                                                 @foreach($products as $product)
                                                     <div class="col-lg-4 col-sm-6">
                                                         <div class="product-box border bx-border-radius p-2">
