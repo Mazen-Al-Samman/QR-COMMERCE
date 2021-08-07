@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminVendor;
+use App\Models\Invoice;
+use App\Models\QuickResponseCode;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -11,6 +15,20 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminVendorController extends MainController
 {
+    public function index(Request $request) {
+
+        if (empty(auth('vendor')->user()->vendor_id)) {
+            abort(404);
+        }
+
+        $vendor_id = auth('vendor')->user()->vendor_id;
+        $vendorModel = Vendor::where(['id' => $vendor_id])->first();
+        if (!$vendorModel) {
+            abort(404);
+        }
+        return view('backend.dashboard', ['userAuthPermission' => $this->getUserPermissionns($request), 'model' => $vendorModel]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -91,7 +109,8 @@ class AdminVendorController extends MainController
         $roles = $role->getAllRoles();
         return view('backend.admin-vendor.edit', [
             'admin' => $admin,
-            'roles' => $roles
+            'roles' => $roles,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 

@@ -5,21 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Invoice;
 use App\Models\InvoiceProduct;
 use App\Models\Product;
+use Illuminate\Support\Facades\Route;
 use PDF;
 use Illuminate\Http\Request;
 
-class InvoiceController extends Controller
+class InvoiceController extends MainController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $invoice_data = Invoice::getAllInvoices();
         return view('backend.invoice.index', [
-            'invoice_data' => $invoice_data
+            'invoice_data' => $invoice_data,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -28,12 +30,13 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         \session()->remove('cart');
         $productsByCat = Product::with('category')->get();
         return view('backend.invoice.create', [
-            'products' => $productsByCat
+            'products' => $productsByCat,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -58,7 +61,8 @@ class InvoiceController extends Controller
         if ($request->quantity != 0) {
             $cart = Product::addToCart($request);
             return view('backend.invoice.productsAjax', [
-                'data' => $cart
+                'data' => $cart,
+                'userAuthPermission' => $this->getUserPermissionns($request),
             ]);
         }
 
@@ -68,7 +72,8 @@ class InvoiceController extends Controller
     {
         $cart = Product::deleteFromCart($request);
         return view('backend.invoice.productsAjax', [
-            'data' => $cart
+            'data' => $cart,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -76,7 +81,8 @@ class InvoiceController extends Controller
     {
         $cart = Product::UpdateCart($request);
         return view('backend.invoice.productsAjax', [
-            'data' => $cart
+            'data' => $cart,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -86,13 +92,14 @@ class InvoiceController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $invoice = new Invoice();
         $invoice_data = $invoice->getInvoiceById($id);
 
         return view('backend.invoice.view', [
-            'invoice_data' => $invoice_data
+            'invoice_data' => $invoice_data,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
-class FeedbackController extends Controller
+class FeedbackController extends MainController
 {
     /**
      * Display a listing of the resource.

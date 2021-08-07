@@ -29,7 +29,7 @@ class ProductController extends MainController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $category = new Category();
         $vendor = new Vendor();
@@ -40,7 +40,8 @@ class ProductController extends MainController
         return view('backend.product.create', [
             'categories' => $categories,
             'vendors' => $vendors,
-            'products' => $products
+            'products' => $products,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -81,7 +82,7 @@ class ProductController extends MainController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $product = Product::find($id);
         $images = MediaProduct::where(['product_id' => $id])
@@ -89,7 +90,8 @@ class ProductController extends MainController
             ->get();
         return view('backend.product.view', [
             'product' => $product,
-            'images' => $images
+            'images' => $images,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 
@@ -99,7 +101,7 @@ class ProductController extends MainController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
         $product = Product::find($id);
         $category = new Category();
@@ -113,7 +115,8 @@ class ProductController extends MainController
             'product' => $product,
             'categories' => $categories,
             'vendors' => $vendors,
-            'images' => $images
+            'images' => $images,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 

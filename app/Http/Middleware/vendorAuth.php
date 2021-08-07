@@ -20,6 +20,6 @@ class vendorAuth
         if (Auth::guard('vendor')->check()) {
             return $next($request);
         }
-        return redirect()->route('dashboard');
+        return redirect()->route('vendor-dashboard');
     }
 }

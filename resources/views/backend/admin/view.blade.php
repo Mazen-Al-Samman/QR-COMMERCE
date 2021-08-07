@@ -1,4 +1,4 @@
-@include ('backend.layouts.header')
+@include ('backend.layouts.header', ['userAuthPermission' => $userAuthPermission])
 <div class="pcoded-main-container">
     <div class="pcoded-wrapper">
         <div class="pcoded-content">

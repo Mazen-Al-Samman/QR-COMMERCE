@@ -18,7 +18,6 @@ Route::post('/admin/login', [\App\Http\Controllers\Auth\LoginController::class, 
 Route::post('/vendor/login', [\App\Http\Controllers\Auth\LoginController::class, 'vendorLogin'])->name('vendor.login.submit');
 
 
-
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::get('/en', [\App\Http\Controllers\HomeController::class, 'index_en'])->name('index_en');
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -26,11 +25,11 @@ Route::get('/en', [\App\Http\Controllers\HomeController::class, 'index_en'])->na
 Route::prefix('backend')->group(function () {
     Auth::routes();
     Route::group(['middleware' => ['login-auth', 'prevent-back-history']], function () {
-
-        Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
         Route::group(['middleware' => ['auth-permissions']], function () {
             Route::get('/profile', [\App\Http\Controllers\MainController::class, 'profile'])->name('profile');
             Route::put('/update/profile', [\App\Http\Controllers\MainController::class, 'updateProfile'])->name('update.profile');
+            Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
+            Route::get('/vendor/dashboard', [\App\Http\Controllers\AdminVendorController::class, 'index'])->name('admin-vendor.dashboard');
 
             Route::prefix('admin')->group(function () {
                 Route::get('/', [\App\Http\Controllers\AdminController::class, 'create'])->name('admin.create');
@@ -59,11 +58,11 @@ Route::prefix('backend')->group(function () {
                 Route::get('/show/{id}', [\App\Http\Controllers\PermissionController::class, 'show'])->name('permission.show');
             });
 
-            Route::prefix('rolePermission')->group(function () {
-                Route::get('/', [\App\Http\Controllers\RolePermissionController::class, 'index'])->name('rolePermission.index');
-                Route::get('/manage/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'edit'])->name('rolePermission.manage');
-                Route::put('/update/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'update'])->name('rolePermission.update');
-                Route::get('/show/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'show'])->name('rolePermission.show');
+            Route::prefix('role-permission')->group(function () {
+                Route::get('/', [\App\Http\Controllers\RolePermissionController::class, 'index'])->name('role-permission.index');
+                Route::get('/manage/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'edit'])->name('role-permission.manage');
+                Route::put('/update/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'update'])->name('role-permission.update');
+                Route::get('/show/{role_id}', [\App\Http\Controllers\RolePermissionController::class, 'show'])->name('role-permission.show');
             });
 
             Route::prefix('vendor')->group(function () {
@@ -76,7 +75,7 @@ Route::prefix('backend')->group(function () {
             });
 
             Route::prefix('admin/vendor')->group(function () {
-                Route::group(['middleware' => ['vendor-auth']], function (){
+                Route::group(['middleware' => ['vendor-auth']], function () {
                     Route::get('/', [\App\Http\Controllers\AdminVendorController::class, 'create'])->name('admin-vendor.create');
                     Route::post('/store', [\App\Http\Controllers\AdminVendorController::class, 'store'])->name('admin-vendor.store');
                     Route::delete('/delete/{id}', [\App\Http\Controllers\AdminVendorController::class, 'destroy'])->name('admin-vendor.delete');
@@ -86,38 +85,37 @@ Route::prefix('backend')->group(function () {
                 });
 
             });
+            Route::prefix('category')->group(function () {
+                Route::get('/', [\App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
+                Route::post('/store', [\App\Http\Controllers\CategoryController::class, 'store'])->name('category.store');
+                Route::delete('/delete/{id}', [\App\Http\Controllers\CategoryController::class, 'destroy'])->name('category.delete');
+                Route::get('/edit/{id}', [\App\Http\Controllers\CategoryController::class, 'edit'])->name('category.edit');
+                Route::get('/show/{id}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
+                Route::put('/update/{id}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('category.update');
+            });
+
+            Route::prefix('product')->group(function () {
+                Route::get('/', [\App\Http\Controllers\ProductController::class, 'create'])->name('product.create');
+                Route::post('/store', [\App\Http\Controllers\ProductController::class, 'store'])->name('product.store');
+                Route::delete('/delete/{id}', [\App\Http\Controllers\ProductController::class, 'destroy'])->name('product.delete');
+                Route::get('/imageDelete/{id}', [\App\Http\Controllers\ProductController::class, 'deleteImage'])->name('product_image.delete');
+                Route::get('/edit/{id}', [\App\Http\Controllers\ProductController::class, 'edit'])->name('product.edit');
+                Route::get('/show/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
+                Route::put('/update/{id}', [\App\Http\Controllers\ProductController::class, 'update'])->name('product.update');
+            });
+
+
+            Route::prefix('invoice')->group(function () {
+                Route::get('/', [\App\Http\Controllers\InvoiceController::class, 'index'])->name('invoice.index');
+                Route::get('/create', [\App\Http\Controllers\InvoiceController::class, 'create'])->name('invoice.create');
+                Route::get('/store', [\App\Http\Controllers\InvoiceController::class, 'store'])->name('invoice.store');
+                Route::post('/add-to-cart', [\App\Http\Controllers\InvoiceController::class, 'addToCart'])->name('invoice.addToCart');
+                Route::post('/delete-from-cart', [\App\Http\Controllers\InvoiceController::class, 'deleteFromCart'])->name('invoice.deleteFromCart');
+                Route::post('/update-cart', [\App\Http\Controllers\InvoiceController::class, 'updateCart'])->name('invoice.updateCart');
+                Route::get('/show/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'show'])->name('invoice.show');
+                Route::get('/download-pdf/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'downloadPDF'])->name('invoice.pdf');
+            });
+
         });
-
-        Route::prefix('category')->group(function () {
-            Route::get('/', [\App\Http\Controllers\CategoryController::class, 'create'])->name('category.create');
-            Route::post('/store', [\App\Http\Controllers\CategoryController::class, 'store'])->name('category.store');
-            Route::delete('/delete/{id}', [\App\Http\Controllers\CategoryController::class, 'destroy'])->name('category.delete');
-            Route::get('/edit/{id}', [\App\Http\Controllers\CategoryController::class, 'edit'])->name('category.edit');
-            Route::get('/show/{id}', [\App\Http\Controllers\CategoryController::class, 'show'])->name('category.show');
-            Route::put('/update/{id}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('category.update');
-        });
-
-        Route::prefix('product')->group(function () {
-            Route::get('/', [\App\Http\Controllers\ProductController::class, 'create'])->name('product.create');
-            Route::post('/store', [\App\Http\Controllers\ProductController::class, 'store'])->name('product.store');
-            Route::delete('/delete/{id}', [\App\Http\Controllers\ProductController::class, 'destroy'])->name('product.delete');
-            Route::get('/imageDelete/{id}', [\App\Http\Controllers\ProductController::class, 'deleteImage'])->name('product_image.delete');
-            Route::get('/edit/{id}', [\App\Http\Controllers\ProductController::class, 'edit'])->name('product.edit');
-            Route::get('/show/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
-            Route::put('/update/{id}', [\App\Http\Controllers\ProductController::class, 'update'])->name('product.update');
-        });
-
-
-        Route::prefix('invoice')->group(function () {
-            Route::get('/', [\App\Http\Controllers\InvoiceController::class, 'index'])->name('invoice.index');
-            Route::get('/create', [\App\Http\Controllers\InvoiceController::class, 'create'])->name('invoice.create');
-            Route::get('/store', [\App\Http\Controllers\InvoiceController::class, 'store'])->name('invoice.store');
-            Route::post('/add-to-cart', [\App\Http\Controllers\InvoiceController::class, 'addToCart'])->name('invoice.addToCart');
-            Route::post('/delete-from-cart', [\App\Http\Controllers\InvoiceController::class, 'deleteFromCart'])->name('invoice.deleteFromCart');
-            Route::post('/update-cart', [\App\Http\Controllers\InvoiceController::class, 'updateCart'])->name('invoice.updateCart');
-            Route::get('/show/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'show'])->name('invoice.show');
-            Route::get('/download-pdf/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'downloadPDF'])->name('invoice.pdf');
-        });
-
     });
 });

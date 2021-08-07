@@ -22,7 +22,7 @@ class AdminController extends MainController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $total_vendors = Vendor::getVendorsCount();
         $total_active_vendors = Vendor::getActiveVendorsCount();
@@ -53,6 +53,7 @@ class AdminController extends MainController
             'qr_weekly' => $qr_weekly,
             'qr_monthly' => $qr_monthly,
             'qr_yearly' => $qr_yearly,
+            'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
 

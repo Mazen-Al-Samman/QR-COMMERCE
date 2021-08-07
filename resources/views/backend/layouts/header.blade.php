@@ -68,38 +68,58 @@
                     <label>Navigation</label>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('dashboard')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+                    @if (auth('web')->check())
+                        <a href="{{route('admin.dashboard')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+                    @elseif (auth('vendor')->check())
+                        <a href="{{route('admin-vendor.dashboard')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+                    @endif
                 </li>
                 <li class="nav-item pcoded-menu-caption">
                     <label>Menu</label>
                 </li>
                 <li class="nav-item">
-                    @if($guard == 'web')
+                    @if($guard == 'web' && in_array('admin.create', $userAuthPermission))
                         <a href="{{route('admin.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Admin</span></a>
-                    @elseif($guard == 'vendor')
+                    @elseif($guard == 'vendor' && in_array('admin-vendor.create', $userAuthPermission))
                         <a href="{{route('admin-vendor.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Admin</span></a>
                     @endif
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('vendor.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-map"></i></span><span class="pcoded-mtext">Vendor</span></a>
+                    @if(in_array('vendor.create', $userAuthPermission))
+                        <a href="{{route('vendor.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-map"></i></span><span class="pcoded-mtext">Vendor</span></a>
+                    @endif
                 </li>
+                @if(in_array('role.create', $userAuthPermission) || in_array('permission.create', $userAuthPermission) || in_array('role-permission.create', $userAuthPermission))
                 <li class="nav-item pcoded-hasmenu">
-                    <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-star"></i></span><span class="pcoded-mtext">Roles & Permissions</span></a>
+                    <a class="nav-link" style="cursor:pointer;"><span class="pcoded-micon"><i class="feather icon-star"></i></span><span class="pcoded-mtext">Roles & Permissions</span></a>
                     <ul class="pcoded-submenu">
-                        <li class=""><a href="{{route('role.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-tasks"></i></span><span class="pcoded-mtext">Role</span></a></li>
-                        <li class=""><a href="{{route('permission.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-lock"></i></span><span class="pcoded-mtext">Permission</span></a></li>
-                        <li class=""><a href="{{route('rolePermission.index')}}" class="nav-link"><span class="pcoded-micon"><i class="fas fa-user-lock"></i></span><span class="pcoded-mtext">Role Permissions</span></a></li>
+                        @if(in_array('role.create', $userAuthPermission))
+                            <li class=""><a href="{{route('role.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-tasks"></i></span><span class="pcoded-mtext">Role</span></a></li>
+                        @endif
+                        @if(in_array('permission.create', $userAuthPermission))
+                            <li class=""><a href="{{route('permission.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-lock"></i></span><span class="pcoded-mtext">Permission</span></a></li>
+                        @endif
+                        @if(in_array('role-permission.create', $userAuthPermission))
+                        <li class=""><a href="{{route('role-permission.index')}}" class="nav-link"><span class="pcoded-micon"><i class="fas fa-user-lock"></i></span><span class="pcoded-mtext">Role Permissions</span></a></li>
+                        @endif
                     </ul>
                 </li>
+                @endif
+                @if(in_array('category.create', $userAuthPermission))
                 <li class="nav-item">
                     <a href="{{route('category.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-list-alt"></i></span><span class="pcoded-mtext">Category</span></a>
                 </li>
+                @endif
+                @if(in_array('product.create', $userAuthPermission))
                 <li class="nav-item">
                     <a href="{{route('product.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-product-hunt"></i></span><span class="pcoded-mtext">Product</span></a>
                 </li>
+                @endif
+                @if(in_array('invoice.create', $userAuthPermission))
                 <li class="nav-item">
                     <a href="{{route('invoice.index')}}" class="nav-link"><span class="pcoded-micon"><i class="fas fa-file-invoice"></i></span><span class="pcoded-mtext">Invoice</span></a>
                 </li>
+                @endif
                 <li class="nav-item pcoded-hasmenu">
                     <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-lock"></i></span><span class="pcoded-mtext">Authentication</span></a>
                     <ul class="pcoded-submenu">

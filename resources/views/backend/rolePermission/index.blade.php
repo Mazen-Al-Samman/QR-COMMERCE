@@ -1,4 +1,4 @@
-@include ('backend.layouts.header')
+@include ('backend.layouts.header', ['userAuthPermission' => $userAuthPermission])
 <!-- [ Main Content ] start -->
 <div class="pcoded-main-container">
     <div class="pcoded-wrapper">
@@ -27,8 +27,8 @@
                                                         <span class="font-weight-bold" style="font-size: 20px">{{$role->role_title}}</span>
                                                         </th>
                                                         <td>
-                                                            <a href="{{ route('rolePermission.manage',['role_id'=> $role->id]) }}" class="btn btn-primary">Manage Permissions</a>
-                                                            <a href="{{ route('rolePermission.show',['role_id'=> $role->id]) }}" class="btn btn-info">View</a>
+                                                            <a href="{{ route('role-permission.manage',['role_id'=> $role->id]) }}" class="btn btn-primary">Manage Permissions</a>
+                                                            <a href="{{ route('role-permission.show',['role_id'=> $role->id]) }}" class="btn btn-info">View</a>
                                                         </td>
                                                     </tr>
                                                     <?php $i++; ?>
