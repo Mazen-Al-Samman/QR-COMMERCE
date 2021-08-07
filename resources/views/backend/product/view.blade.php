@@ -25,15 +25,15 @@
                                             <div class="col-12 border-bottom">
                                                 <h5>Main Image</h5>
                                             </div>
-                                            <div class="col-auto mt-2">
-                                                <img src="{{ asset('storage/uploads/products/'.$product->main_image)}}" style="box-shadow: 5px 5px 5px darkred; width: 175px; height: 175px" class="rounded" alt="">
+                                            <div class="col-12 mt-2">
+                                                <img src="{{ asset('assets/images/uploads/products/'.$product->main_image)}}" style="width: 100%; height: auto" class="rounded shadow" alt="">
                                             </div>
                                             <div class="col-12 mt-4 mb-2 border-bottom">
                                                 <h5>Other Images</h5>
                                             </div>
                                             @foreach($images as $image)
                                                 <div class="col-auto">
-                                                    <img src="{{ asset('storage/uploads/products/'.$image->image)}}" style="box-shadow: 5px 5px 5px darkred; width: 175px; height: 175px" class="rounded" alt="">
+                                                    <img src="{{ asset('assets/images/uploads/products/'.$image->image)}}" style="width: 175px; height: 175px" class="rounded" alt="">
                                                 </div>
                                             @endforeach
                                         </div>

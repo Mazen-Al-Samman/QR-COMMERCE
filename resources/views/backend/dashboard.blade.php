@@ -26,11 +26,11 @@
                         <!-- [ Main Content ] start -->
                         <div class="container">
                             <div class="row d-flex justify-content-center text-center">
-                                <div class="col-lg-4">
-                                    <img style="width: 250px; height: 250px; border-radius: 20px" src="{{ asset('assets/images/uploads/vendors/'.$model->image)}}" alt="">
+                                <div class="col-lg-12 shadow p-5">
+                                    <img style="border-radius: 20px" src="{{ asset('assets/images/uploads/vendors/'.$model->image)}}" alt="">
                                 </div>
 
-                                <div class="col-lg-10 mt-4 bg-light border shadow">
+                                <div class="col-lg-10 mt-4">
                                     <h1 class="text-danger p-5">{{ $model->name }}</h1>
                                 </div>
                             </div>

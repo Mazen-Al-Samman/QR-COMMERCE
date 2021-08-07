@@ -130,7 +130,7 @@
                                                             @if(in_array('admin-vendor.edit',$userAuthPermission))
                                                                 <a href="{{route('admin-vendor.edit' , $admin->id )}}" class="btn btn-primary">Edit</a>
                                                             @endif
-                                                            <form action="{{route('admin-vendor.delete', $admin->id)}}" method="post">
+                                                            <form action="{{route('admin-vendor.destroy', $admin->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>

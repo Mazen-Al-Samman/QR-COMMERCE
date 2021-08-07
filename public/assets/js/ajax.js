@@ -95,5 +95,30 @@ $(document).ready(function () {
         quantity_data_id = '';
     });
 
+    $(document).on('click', '#check-btn', function (event) {
+        var phone = $("#phone").val();
+        $.ajax({
+            type: "POST",
+            url: "/phoneCheck/",
+            headers: {
+                'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+            },
+            data: {
+                'phone' : phone
+            },
+            success: function (data) {
+                if (data['status']) {
+                    $("#generate").removeClass('disabled');
+                    $('#not-found').html('');
+                    $("#exampleModal").modal('hide');
+                    $("#hidden-phone").val(phone);
+                } else {
+                    $("#generate").addClass('disabled');
+                    $('#not-found').html(data['message']['phone']);
+                }
+            }
+        });
+    });
+
 })
 ;

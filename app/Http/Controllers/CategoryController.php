@@ -49,7 +49,6 @@ class CategoryController extends MainController
     {
         $validation = Validator::make($request->all(), [
             'title' => ['required', 'string'],
-            'vendor' => ['required', 'exists:vendors,id'],
             'image' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
@@ -110,7 +109,6 @@ class CategoryController extends MainController
     {
         $validation = Validator::make($request->all(), [
             'title' => ['required', 'string'],
-            'vendor' => ['required', 'exists:vendors,id'],
             'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 

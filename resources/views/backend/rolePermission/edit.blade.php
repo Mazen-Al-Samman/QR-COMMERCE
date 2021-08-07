@@ -25,10 +25,10 @@
                                             @method('put')
                                             @csrf
                                             <input type="hidden" value="{{$role->id}}" name="role_id">
-                                            <div class="row">
+                                            <div class="row d-flex justify-content-center">
                                                 @if(count($permissions) > 0)
                                                 @foreach($permissions as $permission)
-                                                    <div class="col-auto m-1">
+                                                    <div class="col-3 m-1">
                                                         <input type="checkbox" value="{{$permission->permission_id}}" name="permissions[]" @if($role->id == $permission->role_id) checked @endif> <span class="font-weight-bold ml-1" style="font-size: 18px">{{$permission->permission}}</span>
                                                     </div>
                                                 @endforeach

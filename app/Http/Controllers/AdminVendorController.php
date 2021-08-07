@@ -151,7 +151,7 @@ class AdminVendorController extends MainController
     public function destroy($id, Request $request)
     {
         if (AdminVendor::find($id)->delete()) {
-            $request->session()->flash('delete', 'User was successful deleted!');
+            $request->session()->flash('delete', 'Admin was successful deleted!');
             return \redirect()->route('admin-vendor.create');
         }
     }

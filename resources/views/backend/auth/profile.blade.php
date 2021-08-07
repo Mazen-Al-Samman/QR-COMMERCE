@@ -19,7 +19,7 @@
                                                 {{ session()->get('update') }}
                                             </div>
                                         @endif
-                                        <form action="{{route('update.profile')}}" method="post">
+                                        <form action="{{route('profile.update')}}" method="post">
                                             @method('put')
                                             @csrf
                                             <div class="row">

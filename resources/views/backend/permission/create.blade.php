@@ -84,7 +84,7 @@
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('permission.show' , $permission->id )}}" class="btn btn-info">View</a>
                                                             <a href="{{route('permission.edit' , $permission->id )}}" class="btn btn-primary">Edit</a>
-                                                            <form action="{{route('permission.delete', $permission->id)}}" method="post">
+                                                            <form action="{{route('permission.destroy', $permission->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>

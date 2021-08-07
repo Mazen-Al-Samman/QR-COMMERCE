@@ -44,6 +44,42 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
+                                                        <label for="exampleInputEmail1">Email address</label>
+                                                        <input type="email" name="email" class="form-control" placeholder="Enter email">
+                                                        @error('email')
+                                                        <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="image">Image</label>
+                                                        <input type="file" name="image" class="form-control" id="image">
+                                                        @error('image')
+                                                        <small id="imageHelp" class="form-text text-muted text-danger">{{$message}}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword1">Password</label>
+                                                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="Password">
+                                                        @error('password')
+                                                        <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="confirm-password">Confirm Password</label>
+                                                        <input id="password" placeholder="Confirm Password" type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation">
+                                                        @error('password')
+                                                        <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
                                                         <label for="country">Country</label>
                                                         <select name="country" class="form-control" id="">
                                                             <option value="jordan">Jordan</option>
@@ -63,15 +99,6 @@
                                                         </select>
                                                         @error('city')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="image">Image</label>
-                                                        <input type="file" name="image" class="form-control" id="image">
-                                                        @error('image')
-                                                        <small id="imageHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
                                                     </div>
                                                 </div>
@@ -123,7 +150,7 @@
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('vendor.show' , $vendor->id )}}" class="btn btn-info">View</a>
                                                             <a href="{{route('vendor.edit' , $vendor->id )}}" class="btn btn-primary">Edit</a>
-                                                            <form action="{{route('vendor.delete', $vendor->id)}}" method="post">
+                                                            <form action="{{route('vendor.destroy', $vendor->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>

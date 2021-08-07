@@ -29,10 +29,10 @@ class MainController extends Controller
         return count($matches) > 0;
     }
 
-    public function profile()
+    public function profile(Request $request)
     {
         if (\auth()->user()) {
-            return view('backend.auth.profile');
+            return view('backend.auth.profile', ['userAuthPermission' => $this->getUserPermissionns($request),]);
         }
         return redirect()->route('login');
     }

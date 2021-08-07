@@ -51,11 +51,11 @@ class InsertPermissionsToDataBase extends Migration
             }
         }
         $additional_fields = [
-            'invoice.addToCart', 'invoice.deleteFromCart', 'invoice.updateCart', 'admin.dashboard', 'admin-vendor.dashboard', 'role-permission.manage'
+            'invoice.addToCart', 'invoice.deleteFromCart', 'invoice.updateCart', 'admin.dashboard', 'admin-vendor.dashboard', 'role-permission.manage', 'profile.show', 'profile.update', 'product_image.destroy', 'invoice.pdf'
         ];
 
         foreach ($additional_fields as $additional_field) {
-            DB::insert('insert into permissions (`permission`, `description`, `created_at`, `updated_at`) values (?, ?, ?, ?)', [$additional_field, "", date('Y-m-d h:i:s'), date('Y-m-d h:i:s')]);
+            DB::insert('insert into permissions (`permission`, `description`, `created_at`, `updated_at`) values (?, ?, ?, ?)', [$additional_field, "Additional Permission", date('Y-m-d h:i:s'), date('Y-m-d h:i:s')]);
         }
         DB::statement("SET FOREIGN_KEY_CHECKS = 1;");
     }

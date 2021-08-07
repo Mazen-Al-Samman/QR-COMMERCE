@@ -84,19 +84,6 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="vendor_id">Vendor</label>
-                                                        <select name="vendor_id" id="vendor_id" class="form-control">
-                                                            @foreach($vendors as $vendor)
-                                                                <option value="{{$vendor->id}}">{{$vendor->name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('vendor_id')
-                                                        <small id="vendorHelp" class="form-text text-muted text-danger">{{$message}}</small>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
                                                         <label for="barcode">Barcode</label>
                                                         <input type="text" name="barcode" class="form-control" id="barcode" placeholder="Barcode">
                                                         @error('barcode')
@@ -162,7 +149,7 @@
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('product.show' , $product->id )}}" class="btn btn-info">View</a>
                                                             <a href="{{route('product.edit' , $product->id )}}" class="btn btn-primary">Edit</a>
-                                                            <form action="{{route('product.delete', $product->id)}}" method="post">
+                                                            <form action="{{route('product.destroy', $product->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>

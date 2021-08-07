@@ -53,12 +53,15 @@ class Product extends Model
 
     public function createProduct($request)
     {
+        if (empty(auth('vendor')->user()->vendor_id)) {
+            abort(404);
+        }
         $product = new Product();
         $product->name = $request->name;
         $product->category_id = $request->category_id;
         $product->old_price = isset($request->old_price) ? $request->old_price : null;
         $product->price = $request->price;
-        $product->vendor_id = $request->vendor_id;
+        $product->vendor_id = auth('vendor')->user()->vendor_id;
         $product->barcode = $request->barcode;
         $product->description = $request->description;
 
@@ -97,12 +100,15 @@ class Product extends Model
 
     public function updateProdcut($id, $request)
     {
+        if (empty(auth('vendor')->user()->vendor_id)) {
+            abort(404);
+        }
         $product = Product::find($id);
         $product->name = $request->name;
         $product->category_id = $request->category_id;
         $product->old_price = isset($request->old_price) ? $request->old_price : null;
         $product->price = $request->price;
-        $product->vendor_id = $request->vendor_id;
+        $product->vendor_id = auth('vendor')->user()->vendor_id;
         $product->barcode = $request->barcode;
         $product->description = $request->description;
 

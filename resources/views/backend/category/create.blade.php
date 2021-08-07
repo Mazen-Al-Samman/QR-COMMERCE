@@ -36,19 +36,6 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="description">Vendor</label>
-                                                        <select name="vendor" id="vendor" class="form-control">
-                                                            @foreach($vendors as $vendor)
-                                                                <option value="{{$vendor->id}}">{{$vendor->name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('vendor')
-                                                        <small id="vendorHelp" class="form-text text-muted text-danger">{{$message}}</small>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
                                                         <label for="image">Image</label>
                                                         <input type="file" name="image" class="form-control" id="image">
                                                         @error('image')
@@ -99,7 +86,7 @@
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('category.show' , $category->id )}}" class="btn btn-info">View</a>
                                                             <a href="{{route('category.edit' , $category->id )}}" class="btn btn-primary">Edit</a>
-                                                            <form action="{{route('category.delete', $category->id)}}" method="post">
+                                                            <form action="{{route('category.destroy', $category->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>

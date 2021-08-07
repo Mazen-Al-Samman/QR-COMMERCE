@@ -36,19 +36,6 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="description">Vendor</label>
-                                                        <select name="vendor" id="vendor" class="form-control">
-                                                            @foreach($vendors as $vendor)
-                                                                <option value="{{$vendor->id}}" {{$category->vendor_id == $vendor->id ? 'selected' : ''}}>{{$vendor->name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('vendor')
-                                                        <small id="vendorHelp" class="form-text text-muted text-danger">{{$message}}</small>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
                                                         <label for="image">Image</label>
                                                         <input type="file" name="image" class="form-control" id="image">
                                                         @error('image')
@@ -56,9 +43,9 @@
                                                         @enderror
                                                     </div>
                                                 </div>
-                                                <div class="col-6"></div>
-                                                <div class="col-auto">
-                                                    <img src="{{ asset('storage/uploads/categories/'.$category->image)}}" style="box-shadow: 5px 5px 5px darkred; width: 150px; height: 150px" class="rounded" alt="">
+                                                <div class="col-12 d-flex justify-content-center"></div>
+                                                <div class="col-12">
+                                                    <img src="{{ asset('assets/images/uploads/categories/'.$category->image)}}" style="width: 100%; height: auto;" class="rounded shadow" alt="">
                                                 </div>
                                                 <div class="col-md-12 mt-4">
                                                     <button type="submit" class="btn btn-primary">Update</button>

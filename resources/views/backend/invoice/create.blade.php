@@ -36,7 +36,12 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-4 col-xl-4 col-12 d-flex align-items-center ">
-                                                        <a href="{{route('invoice.store')}}" data-method="POST" class="btn btn-secondary btn-block">Generate QR</a>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Next</button>
+                                                    <form action="{{route('invoice.store')}}" method="get">
+                                                        <input name="phone" type="hidden" id="hidden-phone">
+                                                        <button type="submit" id="generate" data-method="POST" class="btn disabled btn-secondary btn-block">Generate QR</button>
+
+                                                    </form>
                                                 </div>
                                             </div>
                                     </div>
@@ -91,4 +96,30 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="phone" class="col-form-label">User phone number</label>
+                        <input type="text" class="form-control" id="phone">
+                        <span class="text-danger mt-1" id="not-found"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="check-btn" data-method="POST" class="btn btn-secondary btn-block">Check user</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @include ('backend.layouts.footer')
