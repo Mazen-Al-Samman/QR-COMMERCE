@@ -156,11 +156,11 @@ class Product extends Model
         return $products;
     }
 
-    public function getProductByBarcodeApi($request)
+    public function getProductByBarcodeApi($data)
     {
         $products = Product::where([
-            'vendor_id' => $request->vendor_id,
-            'barcode' => $request->barcode
+            'vendor_id' => $data['vendor_id'],
+            'barcode' => $data['barcode']
         ])->get();
 
         return $products;
