@@ -100,4 +100,8 @@ class User extends Authenticatable implements JWTSubject
     public static function getNotVerifiedUsersCount(){
         return User::where(['actived' => 0])->count();
     }
+
+    public function checkUserFromPhone($phone) {
+        return self::where(['phone' => $phone])->exists();
+    }
 }

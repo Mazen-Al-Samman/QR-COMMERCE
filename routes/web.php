@@ -20,6 +20,7 @@ Route::post('/vendor/login', [\App\Http\Controllers\Auth\LoginController::class,
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::get('/en', [\App\Http\Controllers\HomeController::class, 'index_en'])->name('index_en');
+Route::post('/phoneCheck', [\App\Http\Controllers\AuthController::class, 'checkUser']);
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::prefix('backend')->group(function () {

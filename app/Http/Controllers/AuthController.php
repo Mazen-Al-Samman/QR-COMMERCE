@@ -16,7 +16,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'checkUser']]);
     }
 
     /**
@@ -149,6 +149,22 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'data' => auth('api')->user()
+        ]);
+    }
+
+    public function checkUser(Request $request) {
+        $validation = Validator::make($request->all(), [
+            'phone' => ['required', 'exists:users,phone'],
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validation->errors()
+            ]);
+        }
+        return response()->json([
+            'status' => true,
+            'message' => "Done"
         ]);
     }
 }

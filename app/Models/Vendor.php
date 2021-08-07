@@ -66,7 +66,12 @@ class Vendor extends Model
             $file->move(public_path() . "/assets/images/uploads/vendors/", $name);
             $vendor->image = $name;
         }
-        return $vendor->save();
+        if ($vendor->save()) {
+            $adminVendor = new AdminVendor();
+            $request->username = $request->name;
+            $request->role_id = Role::VENDOR;
+            return $adminVendor->createAdmin($request, $vendor->id);
+        }
     }
 
     public function updateVendor($id, $request)

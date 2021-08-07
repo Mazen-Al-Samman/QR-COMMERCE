@@ -50,9 +50,11 @@ class VendorsController extends MainController
     {
         $validation = Validator::make($request->all(), [
             'name' => ['required', 'string', 'unique:vendors'],
-            'phone' => ['required', 'numeric', 'unique:admins', 'regex:(^[07][7|8|9][0-9]{8})'],
+            'phone' => ['required', 'numeric', 'unique:vendors', 'regex:(^[07][7|8|9][0-9]{8})'],
             'country' => ['required', 'string'],
             'city' => ['required', 'string'],
+            'email' => ['required', 'email', 'unique:admin_vendors'],
+            'password' => ['required', 'string', 'confirmed'],
             'image' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 

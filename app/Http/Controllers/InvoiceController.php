@@ -48,8 +48,12 @@ class InvoiceController extends MainController
      */
     public function store(Request $request)
     {
+        $phone = $request->phone ?? -1;
+        if ($phone == -1) {
+            return redirect()->back()->withErrors(['phone', "Phone field is required"]);
+        }
         $in_procuts = new InvoiceProduct();
-        if ($invoice = $in_procuts->storeInvoiceProducts()) {
+        if ($invoice = $in_procuts->storeInvoiceProducts($phone)) {
             return redirect()->route('invoice.show', ['invoice_id' => $invoice->id]);
         }
         $request->session()->flash('alert-empty-cart', 'Cart is empty!');
