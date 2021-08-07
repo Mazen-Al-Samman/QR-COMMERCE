@@ -25,8 +25,11 @@ class CreateProductsTable extends Migration
             $table->integer("vendor_id")->unsigned()->nullable(false);
             $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->index(['vendor_id', 'barcode']);
             $table->timestamps();
         });
+
+
     }
 
     /**

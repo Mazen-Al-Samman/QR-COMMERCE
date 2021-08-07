@@ -71,11 +71,6 @@ class AuthController extends Controller
             $token = auth('api')->attempt($credentials);
             $cookie = cookie('jwt-token', $token, 68 * 24); // 1 day
             return $this->respondWithToken($token)->withCookie($cookie);
-//            return response()->json([
-//                'status' => true,
-//                'message' => "User successfully registered",
-//                'user' => $user
-//            ]);
         }
 
     }
@@ -153,7 +148,6 @@ class AuthController extends Controller
             'status' => true,
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 360,
             'data' => auth('api')->user()
         ]);
     }
