@@ -172,13 +172,12 @@ class ProductController extends MainController
         }
     }
 
-    public function productsApi(Request $request)
+    public function productsApi($category_id = null)
     {
         try {
             if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
             }
-            $category_id = $request->category_id ? $request->category_id : null;
             $product = new Product();
             $products = $product->getProductsApi($category_id);
             return response()->json([
@@ -193,13 +192,12 @@ class ProductController extends MainController
         }
     }
 
-    public function vendorProductsApi(Request $request)
+    public function vendorProductsApi($vendor_id, Request $request)
     {
         try {
             if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
             }
-            $vendor_id = $request->vendor_id ? $request->vendor_id : null;
             $product = new Product();
             $products = $product->getVendorProductsApi($vendor_id);
             return response()->json([
@@ -214,27 +212,27 @@ class ProductController extends MainController
         }
     }
 
-    public function productByBarcodeApi(Request $request)
+    public function productByBarcodeApi($vendor_id,$barcode)
     {
         try {
             if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
             }
 
-            $validation = Validator::make($request->all(), [
-                'vendor_id' => ['required', 'exists:products,vendor_id'],
-                'barcode' => ['required', 'exists:products,barcode']
-            ]);
-
-            if ($validation->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => $validation->errors()
-                ]);
-            }
-
+//            $validation = Validator::make($request->all(), [
+//                'vendor_id' => ['required', 'exists:products,vendor_id'],
+//                'barcode' => ['required', 'exists:products,barcode']
+//            ]);
+//
+//            if ($validation->fails()) {
+//                return response()->json([
+//                    'status' => false,
+//                    'message' => $validation->errors()
+//                ]);
+//            }
+            $data = ['vendor_id' => $vendor_id, 'barcode' => $barcode];
             $product = new Product();
-            $products = $product->getProductByBarcodeApi($request);
+            $products = $product->getProductByBarcodeApi($data);
             return response()->json([
                 'status' => true,
                 'data' => $products

@@ -41,22 +41,22 @@ class QuickResponseCode extends Model
 
     public static function getDailyQrScan()
     {
-        return QuickResponseCode::whereDate('created_at', '=', date('Y-m-d'))->count();
+        return QuickResponseCode::whereDay('created_at', '=', date('d'))->count();
     }
 
     public static function getWeeklyQrScan()
     {
-        return QuickResponseCode::whereDate('created_at', '>=', strtotime(date('Y-m-d'). ' -7 day'))->count();
+        return QuickResponseCode::whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])->count();
     }
 
     public static function getMonthlyQrScan()
     {
-        return QuickResponseCode::whereDate('created_at', '>=', strtotime(date('Y-m-d'). ' -30 day'))->count();
+        return QuickResponseCode::whereMonth('created_at', date('m'))->WhereYear('created_at',date('Y'))->count();
     }
 
     public static function getYearlyQrScan()
     {
-        return QuickResponseCode::whereDate('created_at', '>=', strtotime(date('Y-m-d'). ' -365 day'))->count();
+        return QuickResponseCode::whereYear('created_at',date('Y'))->count();
     }
 
     public static function storeQrScan($request)

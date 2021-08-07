@@ -28,17 +28,17 @@ Route::group([
 
     Route::group(['middleware' => 'auth:api'], function () {
         /* vendors Routes */
-        Route::post('vendors', [\App\Http\Controllers\VendorsController::class, 'vendorsApi'])->name('vendor-api');
+        Route::get('vendors', [\App\Http\Controllers\VendorsController::class, 'vendorsApi'])->name('vendor-api');
         /* End vendors Routes */
 
         /* categories Routes */
-        Route::post('categories', [\App\Http\Controllers\CategoryController::class, 'categoriesApi'])->name('product-api');
+        Route::get('categories', [\App\Http\Controllers\CategoryController::class, 'categoriesApi'])->name('product-api');
         /* End categories Routes */
 
         /* products Routes */
-        Route::post('vendor/products',[\App\Http\Controllers\ProductController::class,'vendorProductsApi'])->name('vendor-products-api');
-        Route::post('product/details',[\App\Http\Controllers\ProductController::class,'productByBarcodeApi'])->name('barcode-products-api');
-        Route::post('products', [\App\Http\Controllers\ProductController::class, 'productsApi'])->name('product-api');
+        Route::get('vendor/products/{vendor_id}',[\App\Http\Controllers\ProductController::class,'vendorProductsApi'])->name('vendor-products-api');
+        Route::get('product/details/{vendor_id}/{barcode}',[\App\Http\Controllers\ProductController::class,'productByBarcodeApi'])->name('barcode-products-api');
+        Route::get('products/{category_id?}', [\App\Http\Controllers\ProductController::class, 'productsApi'])->name('product-api');
         /* End products Routes */
 
         /* feedback Routes */
