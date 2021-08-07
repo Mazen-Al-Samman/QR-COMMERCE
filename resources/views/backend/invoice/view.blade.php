@@ -12,25 +12,22 @@
     <title>Invoice</title>
 </head>
 <body>
-<div class="@if(!isset($pdf_option)) container @else container-fluid @endif mt-5">
+<div class="@if(!isset($pdf_option)) container @else border @endif mt-5">
     <div class="card">
         <div class="card-header">
             Invoice <strong>{{$invoice_data[0]['created_at']}}</strong>
-
         </div>
         <div class="card-body">
             <div class="row mb-4">
-                <div class="col-xl-10 col-lg-9 col-md-8 col-sm-11 mb-4">
+                <div class="@if(!isset($pdf_option))col-8 col-xl-10 col-lg-10 col-md-8 col-sm-8 @else col-10 col-xl-10 col-lg-10 col-md-10 col-sm-10 @endif">
                     <h2 class="@if(!isset($pdf_option)) mt-2 @else mt-5 @endif">MY BILL</h2>
-                    <div>
-                        <strong>{{$invoice_data[0]['first_name'] }}</strong>
-                    </div>
-                    <div>Full Name: {{$invoice_data[0]['first_name'].' '.$invoice_data[0]['last_name']}}</div>
-                    <div>Phone: {{$invoice_data[0]['phone']}}</div>
+                    <div><p class="font-weight-bold m-0">Full Name:</p> {{$invoice_data[0]['first_name'].' '.$invoice_data[0]['last_name']}}</div>
+                    <div><p class="font-weight-bold m-0">Phone:</p> {{$invoice_data[0]['phone']}}</div>
                 </div>
-                <div class="col-sm-2 float-right">
+                <div class="@if(!isset($pdf_option)) col-4 col-xl-2 col-lg-2 col-md-4 col-sm-4 float-right @else col-2 float-right @endif">
                     @if(!isset($pdf_option))
-                        {!! QrCode::size(150)->generate(route('invoice.show',['invoice_id' => $invoice_data[0]['invoice_id']])) !!}
+                        <img src="{{asset('assets/images/uploads/qr/'.$invoice_data[0]['qr_code'])}}" width="100%" style="min-height: 50px; min-width: 50px;" alt="">
+                        {{--                        {!! QrCode::size(200)->generate(route('invoice.show',['invoice_id' => $invoice_data[0]['invoice_id']])) !!}--}}
                     @else
                         <img class="mt-5" src="data:image/png;base64, {!! base64_encode(QrCode::format('svg')->size(150)->generate(route('invoice.show',['invoice_id' => $invoice_data[0]['invoice_id']]))) !!}">
                     @endif

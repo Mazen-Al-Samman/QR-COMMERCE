@@ -25,24 +25,32 @@
                                             </div>
                                         @endif
                                             <div class="row mb-4">
+{{--                                                @foreach($products as $product)--}}
+{{--                                                    <div class="col-lg-6 col-xs-12 col-sm-12 col-md-12 border-right">--}}
+{{--                                                        <div class="row mb-3">--}}
+{{--                                                            <div class="col-lg-6 col-md-4 mt-3">--}}
+{{--                                                                <span class="font-weight-bold" style="font-size: 18px">{{$product->name}}</span>--}}
+{{--                                                            </div>--}}
+{{--                                                            <div class="col-lg-auto col-md-auto col-xs-5 col-4">--}}
+{{--                                                                <input type="number" min="1" value="1" max="10" class="form-control quantity_{{$product->id}}">--}}
+{{--                                                            </div>--}}
+{{--                                                            <div class="col-lg-auto col-md-auto col-xs-7 col-8">--}}
+{{--                                                                <button id="addToCart" class="btn btn-warning addToCart float-right" data-id="{{$product->id}}"><i class="fa fa-plus"></i></button>--}}
+{{--                                                            </div>--}}
+{{--                                                        </div>--}}
+{{--                                                    </div>--}}
+{{--                                                @endforeach--}}
                                                 @foreach($products as $product)
-                                                    <div class="col-lg-6 col-sm-12 col-md-12 border-right">
-                                                        <div class="row mb-3">
-                                                            <div class="col-6 mt-3">
-                                                                <span class="font-weight-bold" style="font-size: 18px">{{$product->name}}</span>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <input type="number" min="1" value="1" max="10" class="form-control quantity_{{$product->id}}">
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <button id="addToCart" class="btn btn-warning addToCart float-right" data-id="{{$product->id}}"><i class="fa fa-plus"></i></button>
-                                                            </div>
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div class="product-box border bx-border-radius p-2">
+                                                            <input type="number" min="1" value="1" max="10" class="form-control mb-1 quantity_{{$product->id}}">
+                                                            <button id="addToCart" class="btn btn-warning btn-block addToCart" data-id="{{$product->id}}">{{$product->name}}</button>
                                                         </div>
                                                     </div>
                                                 @endforeach
                                             </div>
                                             <div class="row">
-                                                <div class="col-4 d-flex align-items-center ">
+                                                <div class="col-lg-4 col-xl-4 col-12 d-flex align-items-center ">
                                                         <a href="{{route('invoice.store')}}" data-method="POST" class="btn btn-secondary btn-block">Generate QR</a>
                                                 </div>
                                             </div>

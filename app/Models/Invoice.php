@@ -118,6 +118,6 @@ class Invoice extends Model
             'invoice_data' => $invoice_data,
             'pdf_option' => true
         ])->setPaper('letter', 'landscape')->setPaper('a4', 'landscape');
-        return $pdf->download('invoice.pdf');
+        return $pdf->stream('invoice.pdf');
     }
 }
