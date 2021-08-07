@@ -123,7 +123,7 @@
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('vendor.show' , $vendor->id )}}" class="btn btn-info">View</a>
                                                             <a href="{{route('vendor.edit' , $vendor->id )}}" class="btn btn-primary">Edit</a>
-                                                            <form action="{{route('vendor.delete', $vendor->id)}}" method="post">
+                                                            <form action="{{route('vendor.destroy', $vendor->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>

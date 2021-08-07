@@ -45,6 +45,10 @@ class AddBasicRolesAndPermissions extends Migration
                     'controller' => 'vendor',
                     'actions' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'],
                 ],
+                [
+                    'controller' => 'profile',
+                    'actions' => ['show', 'update']
+                ],
             ],
             'Admin' => [
                 [
@@ -66,6 +70,10 @@ class AddBasicRolesAndPermissions extends Migration
                 [
                     'controller' => 'product',
                     'actions' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'],
+                ],
+                [
+                    'controller' => 'profile',
+                    'actions' => ['show', 'update']
                 ],
             ]
         ];

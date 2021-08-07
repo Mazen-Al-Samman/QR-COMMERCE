@@ -84,7 +84,7 @@
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('role.show' , $role->id )}}" class="btn btn-info">View</a>
                                                             <a href="{{route('role.edit' , $role->id )}}" class="btn btn-primary">Edit</a>
-                                                            <form action="{{route('role.delete', $role->id)}}" method="post">
+                                                            <form action="{{route('role.destroy', $role->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>

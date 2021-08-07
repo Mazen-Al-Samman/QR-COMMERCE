@@ -162,7 +162,7 @@
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('product.show' , $product->id )}}" class="btn btn-info">View</a>
                                                             <a href="{{route('product.edit' , $product->id )}}" class="btn btn-primary">Edit</a>
-                                                            <form action="{{route('product.delete', $product->id)}}" method="post">
+                                                            <form action="{{route('product.destroy', $product->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>

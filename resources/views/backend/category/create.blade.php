@@ -99,7 +99,7 @@
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('category.show' , $category->id )}}" class="btn btn-info">View</a>
                                                             <a href="{{route('category.edit' , $category->id )}}" class="btn btn-primary">Edit</a>
-                                                            <form action="{{route('category.delete', $category->id)}}" method="post">
+                                                            <form action="{{route('category.destroy', $category->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>

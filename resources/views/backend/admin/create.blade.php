@@ -130,7 +130,7 @@
                                                             @if(in_array('admin.edit',$userAuthPermission) || auth()->user()->role_id == 1)
                                                                 <a href="{{route('admin.edit' , $admin->id )}}" class="btn btn-primary">Edit</a>
                                                             @endif
-                                                            <form action="{{route('admin.delete', $admin->id)}}" method="post">
+                                                            <form action="{{route('admin.destroy', $admin->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
