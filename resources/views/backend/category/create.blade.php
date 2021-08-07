@@ -36,19 +36,6 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="description">Vendor</label>
-                                                        <select name="vendor" id="vendor" class="form-control">
-                                                            @foreach($vendors as $vendor)
-                                                                <option value="{{$vendor->id}}">{{$vendor->name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('vendor')
-                                                        <small id="vendorHelp" class="form-text text-muted text-danger">{{$message}}</small>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
                                                         <label for="image">Image</label>
                                                         <input type="file" name="image" class="form-control" id="image">
                                                         @error('image')

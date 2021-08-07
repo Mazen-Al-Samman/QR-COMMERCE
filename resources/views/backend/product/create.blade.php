@@ -84,19 +84,6 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="vendor_id">Vendor</label>
-                                                        <select name="vendor_id" id="vendor_id" class="form-control">
-                                                            @foreach($vendors as $vendor)
-                                                                <option value="{{$vendor->id}}">{{$vendor->name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('vendor_id')
-                                                        <small id="vendorHelp" class="form-text text-muted text-danger">{{$message}}</small>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
                                                         <label for="barcode">Barcode</label>
                                                         <input type="text" name="barcode" class="form-control" id="barcode" placeholder="Barcode">
                                                         @error('barcode')

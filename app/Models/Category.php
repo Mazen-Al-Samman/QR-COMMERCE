@@ -26,9 +26,12 @@ class Category extends Model
 
     public function createCategory($request)
     {
+        if (empty(auth('vendor')->user()->vendor_id)) {
+            abort(404);
+        }
         $category = new Category();
         $category->title = $request->title;
-        $category->vendor_id = $request->vendor;
+        $category->vendor_id = auth('vendor')->user()->vendor_id;
         if ($request->hasfile('image')) {
             $file = $request->file('image');
             $name = time() . '_' . $file->getClientOriginalName();
@@ -40,9 +43,12 @@ class Category extends Model
 
     public function updateCategory($id, $request)
     {
+        if (empty(auth('vendor')->user()->vendor_id)) {
+            abort(404);
+        }
         $category = Category::find($id);
         $category->title = $request->title;
-        $category->vendor_id = $request->vendor;
+        $category->vendor_id = auth('vendor')->user()->vendor_id;
         if ($request->hasfile('image')) {
             $file = $request->file('image');
             $name = time() . '_' . $file->getClientOriginalName();

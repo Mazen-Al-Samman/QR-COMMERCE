@@ -90,19 +90,6 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="vendor_id">Vendor</label>
-                                                        <select name="vendor_id" id="vendor_id" class="form-control">
-                                                            @foreach($vendors as $vendor)
-                                                                <option value="{{$vendor->id}}" {{$product->vendor_id == $vendor->id ? 'selected' : ''}}>{{$vendor->name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('vendor_id')
-                                                        <small id="vendorHelp" class="form-text text-muted text-danger">{{$message}}</small>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
                                                         <label for="barcode">Barcode</label>
                                                         <input type="text" name="barcode" class="form-control" id="barcode" value="{{$product->barcode}}" placeholder="Barcode">
                                                         @error('barcode')
@@ -122,16 +109,16 @@
                                                 <div class="col-12 border-bottom">
                                                     <h5>Main Image</h5>
                                                 </div>
-                                                <div class="col-auto mt-2">
-                                                    <img src="{{ asset('storage/uploads/products/'.$product->main_image)}}" style="box-shadow: 5px 5px 5px darkred; width: 175px; height: 175px" class="rounded" alt="">
+                                                <div class="col-12 mt-2">
+                                                    <img src="{{asset('assets/images/uploads/products/'.$product->main_image)}}" style="width: 100%; height: auto;"  class="rounded" alt="">
                                                 </div>
                                                 <div class="col-12 mt-4 mb-2 border-bottom">
                                                     <h5>Other Images</h5>
                                                 </div>
                                                 @foreach($images as $image)
                                                     <div class="col-auto">
-                                                        <a href="{{ route('product_image.delete',['id' => $image->id]) }}" class="bg-danger text-light rounded p-2" onclick="return confirm('Are you sure ?')" style="position: absolute; right: 20px; top: 5px;"><i class="fa fa-trash fa-lg"></i></a>
-                                                        <img src="{{ asset('storage/uploads/products/'.$image->image)}}" style="box-shadow: 5px 5px 5px darkred; width: 175px; height: 175px" class="rounded" alt="">
+                                                        <a href="{{ route('product_image.destroy',['id' => $image->id]) }}" class="bg-danger text-light rounded p-2" onclick="return confirm('Are you sure ?')" style="position: absolute; right: 20px; top: 5px;"><i class="fa fa-trash fa-lg"></i></a>
+                                                        <img src="{{ asset('assets/images/uploads/products/'.$image->image)}}" style="width: 175px; height: 175px" class="rounded shadow" alt="">
                                                     </div>
                                                 @endforeach
                                                 <div class="col-md-12 mt-3">

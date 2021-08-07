@@ -60,7 +60,6 @@ class ProductController extends MainController
             'price' => ['required', 'numeric'],
             'main_image' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
             'images.*' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
-            'vendor_id' => ['required', 'exists:vendors,id'],
             'barcode' => ['required', 'string', 'unique:products,barcode,NULL,id,vendor_id,' . $request->vendor_id],
             'description' => ['required', 'string'],
         ]);
@@ -136,7 +135,6 @@ class ProductController extends MainController
             'price' => ['required', 'numeric'],
             'main_image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
             'images.*' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
-            'vendor_id' => ['required', 'exists:vendors,id'],
             'barcode' => ['required', 'string', 'unique:products,barcode,' . $id . ',id,vendor_id,' . $request->vendor_id],
             'description' => ['required', 'string'],
         ]);
