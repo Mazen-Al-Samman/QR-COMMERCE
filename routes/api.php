@@ -27,8 +27,10 @@ Route::group([
     Route::post('profile/update', [\App\Http\Controllers\AuthController::class, 'updateProfile']);
 
     Route::group(['middleware' => 'auth:api'], function () {
+
         /* vendors Routes */
         Route::get('vendors', [\App\Http\Controllers\VendorsController::class, 'vendorsApi'])->name('vendor-api');
+        Route::get('vendors/featured', [\App\Http\Controllers\VendorsController::class, 'featuredVendorsSliders'])->name('vendor-api');
         /* End vendors Routes */
 
         /* categories Routes */

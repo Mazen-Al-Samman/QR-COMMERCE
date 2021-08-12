@@ -166,4 +166,13 @@ class VendorsController extends MainController
             ]);
         }
     }
+
+    public function featuredVendorsSliders()
+    {
+        $vendors =  Vendor::select(['id', 'image', 'name'])->get();
+        return response()->json([
+            'status' => true,
+            'data' => $vendors
+        ]);
+    }
 }
