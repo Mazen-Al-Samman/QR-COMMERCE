@@ -27,7 +27,7 @@
                         <div class="container">
                             <div class="row d-flex justify-content-center text-center">
                                 <div class="col-lg-12 shadow p-5">
-                                    <img style="border-radius: 20px" src="{{ asset('assets/images/uploads/vendors/'.$model->image)}}" alt="">
+                                    <img style="border-radius: 20px; width: 100%; max-height: 500px;" src="{{ asset('assets/images/uploads/vendors/'.$model->image)}}" alt="">
                                 </div>
 
                                 <div class="col-lg-10 mt-4">

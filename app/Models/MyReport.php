@@ -23,6 +23,13 @@ class MyReport extends Model
         'image'
     ];
 
+    public static function getMyReports($id)
+    {
+        if($id)
+            return MyReport::where(['user_id' => $id])->get();
+
+        return false;
+    }
 
     public static function storeMyReportApi($request)
     {
@@ -31,6 +38,7 @@ class MyReport extends Model
         $report->guarantee = $request->guarantee;
         $report->payment_date = $request->payment_date;
         $report->reminder = $request->reminder;
+        $report->user_id = auth('api')->user()->id;
 
         if ($request->hasfile('image')) {
             $file = $request->file('image');
