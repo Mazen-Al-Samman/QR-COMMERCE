@@ -19,6 +19,7 @@ class Vendor extends Model
         'name',
         'country',
         'city',
+        'is_featured',
         'subscribe',
         'phone',
         'start_subscription',
@@ -60,6 +61,9 @@ class Vendor extends Model
         $vendor->subscribe = $this->generateRandomString(20);
         $vendor->start_subscription = date("Y-m-d");
         $vendor->end_subscription = date('Y-m-d', strtotime("+1 months", strtotime("NOW")));
+        if(isset($request->is_featured)) {
+            $vendor->is_featured = 1;
+        }
         if ($request->hasfile('image')) {
             $file = $request->file('image');
             $name = time() . '_' . $file->getClientOriginalName();
@@ -81,6 +85,11 @@ class Vendor extends Model
         $vendor->phone = $request->phone;
         $vendor->country = $request->country;
         $vendor->city = $request->city;
+        if (isset($request->is_featured)) {
+            $vendor->is_featured = 1;
+        } else {
+            $vendor->is_featured = 0;
+        }
         if ($request->hasfile('image')) {
             $file = $request->file('image');
             $name = time() . '_' . $file->getClientOriginalName();

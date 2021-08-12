@@ -17,6 +17,7 @@
                                             <li><span class="font-weight-bold">Phone: </span>{{$vendor->phone}}</li>
                                             <li><span class="font-weight-bold">Country: </span>{{$vendor->country}}</li>
                                             <li><span class="font-weight-bold">City: </span>{{$vendor->city}}</li>
+                                            <li><span class="font-weight-bold">Is Featured: </span>@if($vendor->is_featured == 1) true @else false @endif</li>
                                             <li><span class="font-weight-bold">End of subscription: </span>{{$vendor->end_subscription}}</li>
                                         </ul>
                                         <a href="{{route('vendor.create')}}" class="btn btn-secondary">Back</a>

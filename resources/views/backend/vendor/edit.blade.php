@@ -77,6 +77,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
+                                                    <input type="checkbox" name="is_featured" @if($vendor->is_featured == 1) checked @endif><span class="font-weight-bold" style="font-size: 20px"> Is Featured</span>
+                                                </div>
+                                                <div class="col-md-12 mt-2">
                                                     <button type="submit" class="btn btn-primary">Submit</button>
                                                 </div>
                                             </div>
