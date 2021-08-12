@@ -14,8 +14,14 @@ class Role extends Model
         return $this->hasMany(Admin::class);
     }
 
-    public function getAllRoles(){
+    public function getAllRoles()
+    {
         return Role::paginate(15);
+    }
+
+    public function getAllRolesWithOutSuperAdmin()
+    {
+        return Role::where('id', '<>' , Role::SUPER_ADMIN)->get();
     }
 
     public function createRole($request){

@@ -12,13 +12,7 @@ class CreateMyReportsTable extends Migration
      * @return void
      */
     public function up()
-    { /*
-  'title',
-        'guarantee',
-        'payment_date',
-        'reminder',
-        'image'
- */
+    {
         Schema::create('my_reports', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable(false);
@@ -26,6 +20,8 @@ class CreateMyReportsTable extends Migration
             $table->date('payment_date')->nullable(false);
             $table->smallInteger('reminder')->default(2);
             $table->string('image',500)->nullable(true);
+            $table->integer('user_id')->unsigned()->nullable(false);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

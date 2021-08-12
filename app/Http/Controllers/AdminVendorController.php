@@ -39,7 +39,7 @@ class AdminVendorController extends MainController
         $admin = new AdminVendor();
         $role = new Role();
         $admins = $admin->getAllAdmins($this->getLoggedInVendorId());
-        $roles = $role->getAllRoles();
+        $roles = $role->getAllRolesWithOutSuperAdmin();
         return view('backend.admin-vendor.create', [
             'admins' => $admins,
             'roles' => $roles,

@@ -8,6 +8,24 @@ use Illuminate\Support\Facades\Validator;
 
 class MyReportController extends Controller
 {
+
+    public function showApi($id)
+    {
+
+        $my_reports = MyReport::getMyReports($id);
+        if (count($my_reports) > 0) {
+            return response()->json([
+                'status' => true,
+                'data' => $my_reports
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'data' => 'there is no data'
+        ]);
+    }
+
     public function storeApi(Request $request)
     {
         $validation = Validator::make($request->all(), [
@@ -40,9 +58,14 @@ class MyReportController extends Controller
     {
         if (MyReport::deleteReportApi($request)) {
             return response()->json([
-                'status' => false,
+                'status' => true,
                 'message' => 'Report was successful deleted!'
             ]);
         }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Something wrong'
+        ]);
     }
 }

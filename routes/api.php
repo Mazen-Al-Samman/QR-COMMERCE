@@ -50,5 +50,6 @@ Route::group([
         /* MyReport Routes */
         Route::post('report/store',[\App\Http\Controllers\MyReportController::class,'storeApi']);
         Route::post('report/delete',[\App\Http\Controllers\MyReportController::class,'deleteApi']);
+        Route::get('reports/{id}',[\App\Http\Controllers\MyReportController::class,'showApi']);
     });
 });
