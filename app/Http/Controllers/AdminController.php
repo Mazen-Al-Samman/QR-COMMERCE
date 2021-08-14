@@ -113,7 +113,6 @@ class AdminController extends MainController
     public function show($id, Request $request)
     {
         $admin = Admin::find($id);
-
         return view('backend.admin.view', [
             'admin' => $admin,
             'userAuthPermission' => $this->getUserPermissionns($request)
