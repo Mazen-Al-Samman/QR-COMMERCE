@@ -72,7 +72,14 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="phone">Role</label>
-                                                        <input value="Super Admin" readonly disabled name="role_id" class="form-control disabled" >
+                                                        <select name="role_id" class="form-control" id="">
+                                                            @foreach($roles as $role)
+                                                                <option value="{{$role->id}}">{{$role->role_title}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('role_id')
+                                                        <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
@@ -123,13 +130,11 @@
                                                             @if(in_array('admin.edit',$userAuthPermission) || auth()->user()->role_id == 1)
                                                                 <a href="{{route('admin.edit' , $admin->id )}}" class="btn btn-primary">Edit</a>
                                                             @endif
-                                                            @if(auth('web')->user()->id != $admin->id)
-                                                                <form action="{{route('admin.destroy', $admin->id)}}" method="post">
-                                                                    @method('delete')
-                                                                    @csrf
-                                                                    <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
-                                                                </form>
-                                                            @endif
+                                                            <form action="{{route('admin.destroy', $admin->id)}}" method="post">
+                                                                @method('delete')
+                                                                @csrf
+                                                                <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
+                                                            </form>
                                                         </td>
                                                     </tr>
                                                 @endforeach

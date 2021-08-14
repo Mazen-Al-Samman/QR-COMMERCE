@@ -55,7 +55,14 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="phone">Role</label>
-                                                        <input value="SuperAdmin" readonly disabled name="role_id" class="form-control disabled" >
+                                                        <select name="role_id" class="form-control" id="role_id">
+                                                            @foreach($roles as $role)
+                                                                <option value="{{$role->id}}" {{$admin->role_id == $role->id ? 'selected' : ''}}>{{$role->role_title}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @error('phone')
+                                                        <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">

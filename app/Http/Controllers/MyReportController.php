@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Validator;
 class MyReportController extends Controller
 {
 
-    public function showApi()
+    public function showApi($id)
     {
 
-        $my_reports = MyReport::getMyReports(auth('api')->user()->id);
+        $my_reports = MyReport::getMyReports($id);
         if (count($my_reports) > 0) {
             return response()->json([
                 'status' => true,

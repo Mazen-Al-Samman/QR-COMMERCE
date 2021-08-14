@@ -15,8 +15,7 @@ class Category extends Model
     }
 
     public function getallCategories(){
-        $vendor_id = auth('vendor')->user()->vendor_id;
-        return Category::where(['vendor_id' => $vendor_id])->paginate(15);
+        return Category::paginate(15);
     }
 
     public function vendor()
