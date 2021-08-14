@@ -59,7 +59,7 @@ class Admin extends Authenticatable implements JWTSubject
         $admin->email = $request->email;
         $admin->password = Hash::make($request->password);
         $admin->phone = $request->phone;
-        $admin->role_id = Role::SUPER_ADMIN ;
+        $admin->role_id = $request->role_id ;
         return $admin->save();
     }
 
@@ -69,7 +69,7 @@ class Admin extends Authenticatable implements JWTSubject
         $admin->username = $request->username;
         $admin->email = $request->email;
         $admin->phone = $request->phone;
-        $admin->role_id = Role::SUPER_ADMIN ;
+        $admin->role_id = $request->role_id ;
         return $admin->save();
     }
 

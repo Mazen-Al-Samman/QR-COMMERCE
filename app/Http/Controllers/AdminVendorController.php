@@ -106,7 +106,7 @@ class AdminVendorController extends MainController
     {
         $admin = AdminVendor::find($id);
         $role = new Role();
-        $roles = $role->getAllRolesWithOutSuperAdmin();
+        $roles = $role->getAllRoles();
         return view('backend.admin-vendor.edit', [
             'admin' => $admin,
             'roles' => $roles,

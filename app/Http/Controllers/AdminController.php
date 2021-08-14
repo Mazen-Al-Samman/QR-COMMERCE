@@ -87,6 +87,7 @@ class AdminController extends MainController
             'email' => ['required', 'email', 'unique:admins'],
             'password' => ['required', 'string', 'confirmed'],
             'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/', 'unique:admins'],
+            'role_id' => ['required', 'numeric'],
         ]);
 
         if ($validation->fails()) {
@@ -125,15 +126,14 @@ class AdminController extends MainController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, Request $request)
+    public function edit($id)
     {
         $admin = Admin::find($id);
         $role = new Role();
         $roles = $role->getAllRoles();
         return view('backend.admin.edit', [
             'admin' => $admin,
-            'roles' => $roles,
-            'userAuthPermission' => $this->getUserPermissionns($request)
+            'roles' => $roles
         ]);
     }
 

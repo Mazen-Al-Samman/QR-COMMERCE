@@ -138,35 +138,25 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @if(count($products) > 0)
-                                                    @foreach($products as $product)
-                                                        <tr>
-                                                            <td><img src="{{ asset('assets/images/uploads/products/'.$product->main_image)}}" class="rounded" width="75" height="75" alt=""></td>
-                                                            <td>{{$product->name}}</td>
-                                                            <td>{{$product->category->title}}</td>
-                                                            <td>{{$product->old_price}}</td>
-                                                            <td>{{$product->price}}</td>
-                                                            <td>{{$product->vendor->name}}</td>
-                                                            <td class="d-flex align-items-center justify-content-center">
-                                                                <a href="{{route('product.show' , $product->id )}}" class="btn btn-info">View</a>
-                                                                <a href="{{route('product.edit' , $product->id )}}" class="btn btn-primary">Edit</a>
-                                                                <form action="{{route('product.destroy', $product->id)}}" method="post">
-                                                                    @method('delete')
-                                                                    @csrf
-                                                                    <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
-                                                                </form>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                @else
+                                                @foreach($products as $product)
                                                     <tr>
-                                                        <td colspan="7">
-                                                            <div class="alert alert-warning">
-                                                                There is no products
-                                                            </div>
+                                                        <td><img src="{{ asset('assets/images/uploads/products/'.$product->main_image)}}" class="rounded" width="75" height="75" alt=""></td>
+                                                        <td>{{$product->name}}</td>
+                                                        <td>{{$product->category->title}}</td>
+                                                        <td>{{$product->old_price}}</td>
+                                                        <td>{{$product->price}}</td>
+                                                        <td>{{$product->vendor->name}}</td>
+                                                        <td class="d-flex align-items-center justify-content-center">
+                                                            <a href="{{route('product.show' , $product->id )}}" class="btn btn-info">View</a>
+                                                            <a href="{{route('product.edit' , $product->id )}}" class="btn btn-primary">Edit</a>
+                                                            <form action="{{route('product.destroy', $product->id)}}" method="post">
+                                                                @method('delete')
+                                                                @csrf
+                                                                <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
+                                                            </form>
                                                         </td>
                                                     </tr>
-                                                @endif
+                                                @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
