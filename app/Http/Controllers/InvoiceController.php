@@ -33,7 +33,8 @@ class InvoiceController extends MainController
     public function create(Request $request)
     {
         \session()->remove('cart');
-        $productsByCat = Product::with('category')->get();
+        $vendor_id = auth('vendor')->user()->vendor_id;
+        $productsByCat = Product::where(['vendor_id' => $vendor_id])->with('category')->get();
         return view('backend.invoice.create', [
             'products' => $productsByCat,
             'userAuthPermission' => $this->getUserPermissionns($request),
