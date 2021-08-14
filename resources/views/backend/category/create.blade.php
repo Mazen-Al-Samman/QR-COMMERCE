@@ -78,22 +78,32 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach($categories as $category)
+                                                @if(count($categories) > 0)
+                                                    @foreach($categories as $category)
+                                                        <tr>
+                                                            <td><img src="{{ asset('assets/images/uploads/categories/'.$category->image)}}" class="rounded" width="75" height="75" alt=""></td>
+                                                            <td>{{$category->title}}</td>
+                                                            <td>{{$category->vendor->name}}</td>
+                                                            <td class="d-flex align-items-center justify-content-center">
+                                                                <a href="{{route('category.show' , $category->id )}}" class="btn btn-info">View</a>
+                                                                <a href="{{route('category.edit' , $category->id )}}" class="btn btn-primary">Edit</a>
+                                                                <form action="{{route('category.destroy', $category->id)}}" method="post">
+                                                                    @method('delete')
+                                                                    @csrf
+                                                                    <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
                                                     <tr>
-                                                        <td><img src="{{ asset('assets/images/uploads/categories/'.$category->image)}}" class="rounded" width="75" height="75" alt=""></td>
-                                                        <td>{{$category->title}}</td>
-                                                        <td>{{$category->vendor->name}}</td>
-                                                        <td class="d-flex align-items-center justify-content-center">
-                                                            <a href="{{route('category.show' , $category->id )}}" class="btn btn-info">View</a>
-                                                            <a href="{{route('category.edit' , $category->id )}}" class="btn btn-primary">Edit</a>
-                                                            <form action="{{route('category.destroy', $category->id)}}" method="post">
-                                                                @method('delete')
-                                                                @csrf
-                                                                <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
-                                                            </form>
+                                                        <td colspan="7">
+                                                            <div class="alert alert-warning">
+                                                                There is no categories
+                                                            </div>
                                                         </td>
                                                     </tr>
-                                                @endforeach
+                                                @endif
                                                 </tbody>
                                             </table>
                                         </div>
