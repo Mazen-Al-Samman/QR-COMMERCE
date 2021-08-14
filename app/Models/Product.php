@@ -47,8 +47,8 @@ class Product extends Model
 
     public function getAllProducts()
     {
-
-        return Product::paginate(15);
+        $vendor_id = auth('vendor')->user()->vendor_id;
+        return Product::where(['vendor_id' => $vendor_id])->paginate(15);
     }
 
     public function createProduct($request)
