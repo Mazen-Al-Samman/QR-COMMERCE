@@ -37,10 +37,17 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="description">Description</label>
-                                                        <textarea class="form-control" name="role_description" id="description">{{$role->role_description}}</textarea>
+                                                        <input type="text" class="form-control" name="role_description" id="description" value = {{$role->role_description}}/>
                                                         @error('role_description')
                                                         <small id="descriptionHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input id="for-admin" {{$role->level == 1 ? "checked" : ""}} type="checkbox" name="for_admins"><span class="ml-2">
+                                                            <label for="for-admin">For admins only</label>
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">

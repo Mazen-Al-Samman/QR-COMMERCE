@@ -82,11 +82,18 @@ class AddBasicRolesAndPermissions extends Migration
             ]
         ];
 
+        $level = [
+            'Super Admin' => 1,
+            'Admin' => 2,
+        ];
+
         DB::statement("SET FOREIGN_KEY_CHECKS = 0;");
+        DB::statement("INSERT INTO admins (`username`, `phone`, `email`, `active`, `password`, `role_id`, `created_at`, `updated_at`) VALUES ('Admin', '0787878787', 'admin@mybill.com', 1, '$2y$10\$X7ZvHFvq94.r25NNfqfx2OS3K.Z6WYLX3p3JIHkxA9RaKBg4gak0m' ,1 , '2021-08-08', '2021-08-08');");
         foreach ($permissions as $role => $permission) {
             $id = DB::table('roles')->insertGetId([
                 'role_title' => $role,
                 'role_description' => "",
+                'level' => $level[$role],
                 'created_at' => date("Y-m-d h:i:s"),
                 'updated_at' => date("Y-m-d h:i:s"),
             ]);

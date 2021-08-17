@@ -19,15 +19,16 @@ class Role extends Model
         return Role::paginate(15);
     }
 
-    public function getAllRolesWithOutSuperAdmin()
+    public function getAllVendorRoles()
     {
-        return Role::where('id', '<>' , Role::SUPER_ADMIN)->get();
+        return Role::where('level', '<>' , Role::SUPER_ADMIN)->get();
     }
 
     public function createRole($request){
         $role = new Role();
         $role->role_title = $request->role_title;
         $role->role_description = $request->role_description;
+        $role->level = ($this->for_admins) ? self::SUPER_ADMIN : self::VENDOR;
         return $role->save();
     }
 
@@ -35,6 +36,7 @@ class Role extends Model
         $role = Role::find($id);
         $role->role_title = $request->role_title;
         $role->role_description = $request->role_description;
+        $role->level = ($this->for_admins) ? self::SUPER_ADMIN : self::VENDOR;
         return $role->save();
     }
 }

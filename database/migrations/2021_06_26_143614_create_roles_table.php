@@ -17,6 +17,7 @@ class CreateRolesTable extends Migration
             $table->integerIncrements("id")->unsigned();
             $table->string('role_title','255')->nullable(false);
             $table->string('role_description',255)->nullable(false);
+            $table->tinyInteger('level')->default(1);
             $table->timestamps();
         });
     }

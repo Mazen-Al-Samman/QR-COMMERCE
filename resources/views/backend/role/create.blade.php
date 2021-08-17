@@ -43,6 +43,13 @@
                                                         @enderror
                                                     </div>
                                                 </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input id="for-admin" type="checkbox" name="for_admins"><span class="ml-2">
+                                                            <label for="for-admin">For admins only</label>
+                                                        </span>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-12">
                                                     <button type="submit" class="btn btn-primary">Submit</button>
                                                 </div>
