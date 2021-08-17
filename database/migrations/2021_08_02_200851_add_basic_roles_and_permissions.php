@@ -49,6 +49,10 @@ class AddBasicRolesAndPermissions extends Migration
                     'controller' => 'profile',
                     'actions' => ['show', 'update']
                 ],
+                [
+                    'controller' => 'no-permissions',
+                    'actions' => ['index']
+                ],
             ],
             'Admin' => [
                 [
@@ -78,6 +82,10 @@ class AddBasicRolesAndPermissions extends Migration
                 [
                   'controller' => 'product_image',
                   'actions' => ['destroy']
+                ],
+                [
+                    'controller' => 'no-permissions',
+                    'actions' => ['index']
                 ],
             ]
         ];

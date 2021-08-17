@@ -126,14 +126,15 @@ class AdminController extends MainController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
         $admin = Admin::find($id);
         $role = new Role();
         $roles = $role->getAllRoles();
         return view('backend.admin.edit', [
             'admin' => $admin,
-            'roles' => $roles
+            'roles' => $roles,
+            'userAuthPermission' => $this->getUserPermissionns($request)
         ]);
     }
 

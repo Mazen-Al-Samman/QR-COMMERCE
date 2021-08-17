@@ -84,4 +84,14 @@ class MainController extends Controller
         }
         return [];
     }
+
+    public function noPermissions(Request $request) {
+        $userPermissions = $this->getUserPermissionns($request);
+        if (count($userPermissions) != 0) {
+            abort(404);
+        }
+        return view('no_permissions', [
+            'userAuthPermission' => $userPermissions,
+        ]);
+    }
 }

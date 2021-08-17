@@ -51,7 +51,7 @@ class InsertPermissionsToDataBase extends Migration
             }
         }
         $additional_fields = [
-            'invoice.addToCart', 'invoice.deleteFromCart', 'invoice.updateCart', 'admin.dashboard', 'admin-vendor.dashboard', 'role-permission.manage', 'profile.show', 'profile.update', 'product_image.destroy', 'invoice.pdf'
+            'invoice.addToCart', 'invoice.deleteFromCart', 'invoice.updateCart', 'admin.dashboard', 'admin-vendor.dashboard', 'role-permission.manage', 'profile.show', 'profile.update', 'product_image.destroy', 'invoice.pdf', 'no-permissions.index'
         ];
 
         foreach ($additional_fields as $additional_field) {
