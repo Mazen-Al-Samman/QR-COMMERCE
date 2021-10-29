@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Twilio\Rest\Client;
 
 class AuthController extends Controller
 {
@@ -65,7 +66,10 @@ class AuthController extends Controller
                 'message' => $validation->errors()
             ]);
         }
-
+        $formattedPhone = '+962' . substr($request->phone, 1);
+        $verificationCode = $s = substr(str_shuffle(str_repeat("0123456789", 5)), 0, 5);
+        $message = "رمز التحقق الخاص بك هو {$verificationCode}";
+        $this->sendVerificationCode($message, $formattedPhone);
         if ($user = User::registerUser($request)) {
             $credentials = request(['phone', 'password']);
             $token = auth('api')->attempt($credentials);
@@ -166,5 +170,18 @@ class AuthController extends Controller
             'status' => true,
             'message' => "Done"
         ]);
+    }
+
+    private function sendMessage($message, $recipients) {
+        $account_sid = getenv("TWILIO_SID");
+        $auth_token = getenv("TWILIO_AUTH_TOKEN");
+        $twilio_number = getenv("TWILIO_NUMBER");
+        $client = new Client($account_sid, $auth_token);
+        $client->messages->create($recipients,
+            ['from' => $twilio_number, 'body' => $message]);
+    }
+
+    public function sendVerificationCode($message, $phone) {
+        $this->sendMessage($message, $phone);
     }
 }
