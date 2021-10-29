@@ -17,6 +17,7 @@ Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'showLo
 Route::post('/admin/login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('admin.login.submit');
 Route::post('/vendor/login', [\App\Http\Controllers\Auth\LoginController::class, 'vendorLogin'])->name('vendor.login.submit');
 Route::get('/no-permission', [\App\Http\Controllers\MainController::class, 'noPermissions'])->name('no-permissions.index');
+Route::get('/expired', [\App\Http\Controllers\MainController::class, 'expired'])->name('expired');
 
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('index');

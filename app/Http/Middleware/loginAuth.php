@@ -21,7 +21,11 @@ class loginAuth
             return $next($request);
         }
         if (Auth::guard('vendor')->check()) {
-            return $next($request);
+            $vendorEndSubscription = Auth::guard('vendor')->user()->vendor->end_subscription;
+            if (strtotime($vendorEndSubscription) > strtotime(date('Y-m-d'))) {
+                return $next($request);
+            }
+            return redirect()->route('expired');
         }
         return redirect()->route('login');
     }

@@ -94,4 +94,11 @@ class MainController extends Controller
             'userAuthPermission' => $userPermissions,
         ]);
     }
+
+    public function expired(Request $request) {
+        $userPermissions = $this->getUserPermissionns($request);
+        return view('expired',[
+            'userAuthPermission' => $userPermissions,
+        ]);
+    }
 }

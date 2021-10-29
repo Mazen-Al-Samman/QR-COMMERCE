@@ -71,8 +71,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="phone">Role</label>
-                                                        <select name="role_id" class="form-control" id="">
+                                                        <label for="roles">Role</label>
+                                                        <select name="role_id" class="form-control" id="roles">
                                                             @foreach($roles as $role)
                                                                 <option value="{{$role->id}}">{{$role->role_title}}</option>
                                                             @endforeach
