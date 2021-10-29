@@ -87,7 +87,6 @@ class AdminController extends MainController
             'email' => ['required', 'email', 'unique:admins'],
             'password' => ['required', 'string', 'confirmed'],
             'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/', 'unique:admins'],
-            'role_id' => ['required', 'numeric'],
         ]);
 
         if ($validation->fails()) {
@@ -113,7 +112,6 @@ class AdminController extends MainController
     public function show($id, Request $request)
     {
         $admin = Admin::find($id);
-
         return view('backend.admin.view', [
             'admin' => $admin,
             'userAuthPermission' => $this->getUserPermissionns($request)
