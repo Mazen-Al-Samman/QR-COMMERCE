@@ -93,15 +93,17 @@ class AuthController extends Controller
             ]);
         }
         $matchVerification = VerificationModel::matchUserWithCode($request->user_id, $request->verification_code);
-        if ($matchVerification) {
-            $userModel = User::find($request->user_id);
-            if (!$userModel) return;
-            $userModel->actived = VerificationModel::ACTIVE;
+        if (!$matchVerification) {
             return response()->json([
-                'status' => $userModel->save(),
-                'message' => $validation->errors()
+                'status' => false,
             ]);
         }
+        $userModel = User::find($request->user_id);
+        if (!$userModel) return;
+        $userModel->actived = VerificationModel::ACTIVE;
+        return response()->json([
+            'status' => $userModel->save(),
+        ]);
     }
 
     /**
