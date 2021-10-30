@@ -86,6 +86,13 @@ class User extends Authenticatable implements JWTSubject
         return $user->save();
     }
 
+    public function activateUser($userId) {
+        $userModel = self::find($userId) ?? null;
+        if (!$userModel) return;
+        $userModel->actived = VerificationModel::ACTIVE;
+        return $userModel->save();
+    }
+
     public static function getAllUsers(){
         return User::all();
     }

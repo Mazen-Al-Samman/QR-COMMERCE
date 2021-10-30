@@ -47,4 +47,8 @@ class VerificationModel extends Model
         );
         return $verification->save();
     }
+
+    public static function matchUserWithCode($userId, $verificationCode) {
+        return self::where(['user_id' => $userId, 'verification_code' => $verificationCode])->exists();
+    }
 }

@@ -18,7 +18,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'checkUser']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'checkUser', 'activateUser']]);
     }
 
     /**
@@ -78,7 +78,30 @@ class AuthController extends Controller
             $cookie = cookie('jwt-token', $token, 68 * 24); // 1 day
             return $this->respondWithToken($token)->withCookie($cookie);
         }
+    }
 
+    public function activateUser(Request $request) {
+        $validation = Validator::make($request->all(), [
+            'user_id' => ['required', 'integer'],
+            'verification_code' => ['required', 'string'],
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validation->errors()
+            ]);
+        }
+        $matchVerification = VerificationModel::matchUserWithCode($request->user_id, $request->verification_code);
+        if ($matchVerification) {
+            $userModel = User::find($request->user_id);
+            if (!$userModel) return;
+            $userModel->actived = VerificationModel::ACTIVE;
+            return response()->json([
+                'status' => $userModel->save(),
+                'message' => $validation->errors()
+            ]);
+        }
     }
 
     /**
