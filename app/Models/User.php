@@ -70,6 +70,7 @@ class User extends Authenticatable implements JWTSubject
         $user->last_name = $request->last_name;
         $user->phone = $request->phone;
         $user->password = Hash::make($request->password);
+        $user->actived = VerificationModel::DISABLED;
         if($user->save()){
             return $user;
         }
