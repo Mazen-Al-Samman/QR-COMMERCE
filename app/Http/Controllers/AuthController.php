@@ -67,9 +67,10 @@ class AuthController extends Controller
             ]);
         }
         $formattedPhone = '+962' . substr($request->phone, 1);
-        $verificationCode = $s = substr(str_shuffle(str_repeat("0123456789", 5)), 0, 5);
+        $verificationCode = substr(str_shuffle(str_repeat("0123456789", 5)), 0, 5);
         $message = "رمز التحقق الخاص بك هو {$verificationCode}";
         $this->sendVerificationCode($message, $formattedPhone);
+        die("dfdfdfd");
         if ($user = User::registerUser($request)) {
             $credentials = request(['phone', 'password']);
             $token = auth('api')->attempt($credentials);
@@ -175,10 +176,15 @@ class AuthController extends Controller
     private function sendMessage($message, $recipients) {
         $account_sid = getenv("TWILIO_SID");
         $auth_token = getenv("TWILIO_AUTH_TOKEN");
+        $msid = getenv("MESSAGING_SERVICE_ID");
         $twilio_number = getenv("TWILIO_NUMBER");
         $client = new Client($account_sid, $auth_token);
         $client->messages->create($recipients,
-            ['from' => $twilio_number, 'body' => $message]);
+            [
+                'from' => $twilio_number,
+                'body' => $message,
+                'messagingServiceSid' => $msid
+            ]);
     }
 
     public function sendVerificationCode($message, $phone) {
