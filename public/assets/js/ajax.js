@@ -1,11 +1,11 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
-    $('.addToCart').click(function () {
+    $('.addToCart').click(function() {
         var product_id = $(this).attr('data-id');
         var quantity = $('.quantity_' + product_id).val();
         $.ajax({
             type: "POST",
-            url: "./add-to-cart/",
+            url: "./add-to-cart",
             headers: {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
@@ -13,13 +13,13 @@ $(document).ready(function () {
                 'product_id': product_id,
                 'quantity': quantity
             },
-            success: function (data) {
+            success: function(data) {
                 $('#cart-content').html(data);
             }
         });
     });
 
-    $(document).on('click', '.delete-cart-btn', function (event) {
+    $(document).on('click', '.delete-cart-btn', function(event) {
         var product_id = $(this).attr('data-id');
         $.ajax({
             type: "POST",
@@ -30,7 +30,7 @@ $(document).ready(function () {
             data: {
                 'product_id': product_id
             },
-            success: function (data) {
+            success: function(data) {
                 if (data == '') {
                     var emptyView = `<tr>
                                         <td colspan="6">
@@ -51,13 +51,13 @@ $(document).ready(function () {
     var quantity_data_id = '';
     var check_changes = false;
 
-    $(document).on('change', '.cart_quantity', function (event) {
+    $(document).on('change', '.cart_quantity', function(event) {
         quantity_changes = $(this).val();
         quantity_data_id = $(this).attr('data-id');
         check_changes = true;
     });
 
-    $(document).on('click', '.update-cart-btn', function (event) {
+    $(document).on('click', '.update-cart-btn', function(event) {
         var product_id = $(this).attr('data-id');
         var quantity = $('.cart_quantity_' + product_id).val();
         if (check_changes) {
@@ -75,7 +75,7 @@ $(document).ready(function () {
                 'product_id': product_id,
                 'quantity': quantity
             },
-            success: function (data) {
+            success: function(data) {
                 if (data == '') {
                     var emptyView = `<tr>
                                         <td colspan="6">
@@ -95,7 +95,7 @@ $(document).ready(function () {
         quantity_data_id = '';
     });
 
-    $(document).on('click', '#check-btn', function (event) {
+    $(document).on('click', '#check-btn', function(event) {
         var phone = $("#phone").val();
         $.ajax({
             type: "POST",
@@ -104,9 +104,9 @@ $(document).ready(function () {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
             data: {
-                'phone' : phone
+                'phone': phone
             },
-            success: function (data) {
+            success: function(data) {
                 if (data['status']) {
                     $("#generate").removeClass('disabled');
                     $('#not-found').html('');
@@ -120,5 +120,4 @@ $(document).ready(function () {
         });
     });
 
-})
-;
+});
