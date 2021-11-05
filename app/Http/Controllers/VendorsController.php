@@ -58,6 +58,8 @@ class VendorsController extends MainController
             'image' => ['required', 'file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
+        $request->country = "Jeddah";
+
         if ($validation->fails()) {
             return Redirect::route('vendor.create')->withErrors($validation);
         }
