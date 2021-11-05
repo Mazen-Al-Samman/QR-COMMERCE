@@ -155,6 +155,7 @@ class VendorsController extends MainController
             }
             $vendor = new Vendor();
             $vendors = $vendor->getAllVendorsApi();
+
             return response()->json([
                 'status' => true,
                 'data' => $vendors
