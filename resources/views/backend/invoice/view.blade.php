@@ -18,26 +18,32 @@
 <div class="@if(!isset($pdf_option)) container @else border @endif mt-5">
     <div class="card">
         <div class="card-header">
-            Invoice <strong>{{$invoice_data[0]['created_at']}}</strong>
+            Invoice <strong>{{$invoice_data['created_at']}}</strong>
         </div>
         <div class="card-body">
             <div class="row mb-4">
                 <div class="@if(!isset($pdf_option))col-8 col-xl-10 col-lg-10 col-md-8 col-sm-8 @else col-10 col-xl-10 col-lg-10 col-md-10 col-sm-10 @endif">
                     <h2 class="@if(!isset($pdf_option)) mt-2 @else mt-5 @endif">MY BILL</h2>
-                    <div><p class="font-weight-bold m-0">Full Name:</p> {{$invoice_data[0]['first_name'].' '.$invoice_data[0]['last_name']}}</div>
-                    <div><p class="font-weight-bold m-0">Phone:</p> {{$invoice_data[0]['phone']}}</div>
+                    @if($user = $invoice_data['user'])
+                        <div><p class="font-weight-bold m-0">Full Name:</p> {{$user['first_name'].' '.$user['last_name']}}</div>
+                        <div><p class="font-weight-bold m-0">Phone:</p> {{$user['phone']}}</div>
+                    @else
+                        <div><p class="font-weight-bold m-0">&nbsp;</p></div>
+                        <div><p class="font-weight-bold m-0">&nbsp;</p></div>
+                        <div><p class="font-weight-bold m-0">&nbsp;</p></div>
+                    @endif
                 </div>
                 <div class="@if(!isset($pdf_option)) col-4 col-xl-2 col-lg-2 col-md-4 col-sm-4 float-right @else col-2 float-right @endif">
                     @if(!isset($pdf_option))
-                        <img src="{{asset('assets/images/uploads/qr/'.$invoice_data[0]['qr_code'])}}" width="100%" style="min-height: 50px; min-width: 50px;" alt="">
+                        <img src="{{asset('assets/images/uploads/qr/'.$invoice_data['qr_code'])}}" width="100%" style="min-height: 50px; min-width: 50px;" alt="">
                         {{--                        {!! QrCode::size(200)->generate(route('invoice.show',['invoice_id' => $invoice_data[0]['invoice_id']])) !!}--}}
                     @else
-                        <img class="mt-5" src="data:image/png;base64, {!! base64_encode(QrCode::format('svg')->size(150)->generate(route('invoice.show',['invoice_id' => $invoice_data[0]['invoice_id']]))) !!}">
+                        <img class="mt-5" src="data:image/png;base64, {!! base64_encode(QrCode::format('svg')->size(150)->generate(route('invoice.show',['invoice_id' => $invoice_data['id']]))) !!}">
                     @endif
                 </div>
                 <div class="col-12 mt-3">
                     @if(!isset($pdf_option))
-                        <a href="{{route('invoice.pdf',['invoice_id' => $invoice_data[0]['invoice_id']])}}" class="btn btn-danger">Download PDF</a>
+                        <a href="{{route('invoice.pdf',['invoice_id' => $invoice_data['id']])}}" class="btn btn-danger">Download PDF</a>
                     @endif
                 </div>
             </div>
@@ -55,13 +61,13 @@
                     </thead>
                     <tbody>
                     <?php $i=1; ?>
-                    @foreach($invoice_data as $product)
+                    @foreach($invoice_data['invoice_product'] as $product)
                         <tr>
                             <td class="center">{{$i}}</td>
-                            <td class="left" >{{$product['name']}}</td>
-                            <td class="left">{{$product['price']}} JOD</td>
+                            <td class="left" >{{$product['product']['name']}}</td>
+                            <td class="left">{{$product['product']['price']}} JOD</td>
                             <td class="left">X{{$product['quantity']}}</td>
-                            <td class="left">{{$product['price'] * $product['quantity']}} JOD</td>
+                            <td class="left">{{$product['product']['price'] * $product['quantity']}} JOD</td>
                         </tr>
                         <?php $i++; ?>
                     @endforeach
@@ -74,7 +80,7 @@
                         <tbody>
                         <tr>
                             <td class="left">
-                                <strong>Total: {{$invoice_data[0]['total_price']}} JOD</strong>
+                                <strong>Total: {{$invoice_data['total_price']}} JOD</strong>
                             </td>
                         </tr>
                         </tbody>

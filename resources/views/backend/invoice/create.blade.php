@@ -36,10 +36,9 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-4 col-xl-4 col-12 d-flex align-items-center ">
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Next</button>
                                                     <form action="{{route('invoice.store')}}" method="get">
                                                         <input name="phone" type="hidden" id="hidden-phone">
-                                                        <button type="submit" id="generate" data-method="POST" class="btn disabled btn-secondary btn-block">Generate QR</button>
+                                                        <button type="submit" id="generate" data-method="POST" class="btn btn-secondary btn-block">Generate QR</button>
 
                                                     </form>
                                                 </div>

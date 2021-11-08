@@ -29,15 +29,10 @@ class InvoiceProduct extends Model
         return $this->hasOne(Product::class, 'id', 'product_id');
     }
 
-    public function storeInvoiceProducts($phone)
+    public function storeInvoiceProducts()
     {
         if (empty(auth('vendor')->user()->vendor_id)) {
             abort(404);
-        }
-        $model = User::where(['phone' => $phone])->first();
-
-        if (!$model) {
-            return redirect()->back();
         }
 
         $cart = session()->get('cart');
@@ -47,7 +42,7 @@ class InvoiceProduct extends Model
                 $total_price += $item['price'] * $item['quantity'];
             }
 
-            $invoice_data = ['total_price' => $total_price, 'user_id' => $model->id, 'vendor_id' => auth('vendor')->user()->vendor_id];
+            $invoice_data = ['total_price' => $total_price, 'vendor_id' => auth('vendor')->user()->vendor_id];
 
 
             $data = Invoice::storeInvoice($invoice_data);
