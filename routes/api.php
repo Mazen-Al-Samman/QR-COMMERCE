@@ -26,6 +26,8 @@ Route::group([
     Route::post('refresh', [\App\Http\Controllers\AuthController::class, 'refresh']);
     Route::post('profile', [\App\Http\Controllers\AuthController::class, 'profile']);
     Route::post('profile/update', [\App\Http\Controllers\AuthController::class, 'updateProfile']);
+    Route::get('invoice/get-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'getInvoiceById'])->name('get-invoice-by-id');
+
 
     Route::group(['middleware' => 'auth:api'], function () {
 

@@ -38,7 +38,7 @@
                                                     <tr>
                                                         <td><img src="{{ asset('assets/images/uploads/qr/'.$invoice->qr_code)}}" class="rounded" width="75" height="75" alt=""></td>
                                                         <td>{{$invoice->total_price}}</td>
-                                                        <td>{{$invoice->user->first_name}}</td>
+                                                        <td>@if($invoice->user_id) {{$invoice->user->first_name}} @else <span class="text-danger">Un-Assign</span> @endif</td>
                                                         <td>{{$invoice->vendor->name}}</td>
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('invoice.show' , $invoice->id )}}" class="btn btn-info">View</a>

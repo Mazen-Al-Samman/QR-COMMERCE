@@ -41,7 +41,7 @@ class Invoice extends Model
 
     public function invoiceProduct()
     {
-        return $this->hasOne(InvoiceProduct::class);
+        return $this->hasMany(InvoiceProduct::class);
     }
 
     public static function getAllInvoices()
@@ -51,18 +51,7 @@ class Invoice extends Model
 
     public function getInvoiceById($invoice_id)
     {
-        $invoice_data = DB::table('invoices')->select(['invoice_products.invoice_id', 'invoice_products.quantity', 'invoices.*', 'products.*', 'users.*'])
-            ->join('invoice_products', function ($join) use ($invoice_id) {
-                $join->on('invoices.id', '=', 'invoice_products.invoice_id')
-                    ->join('products', 'invoice_products.product_id', '=', 'products.id')
-                    ->where('invoice_products.invoice_id', $invoice_id);
-            })
-            ->join('users', function ($join) use ($invoice_id) {
-                $join->on('invoices.user_id', '=', 'users.id');
-            })
-            ->get()
-            ->toArray();
-
+        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product'])->where(['invoices.id' => $invoice_id])->get()->toArray();
         $invoice_data = json_decode(json_encode($invoice_data), true);
         return $invoice_data;
     }
@@ -71,7 +60,6 @@ class Invoice extends Model
     {
         $invoice = new Invoice();
         $invoice->total_price = $data['total_price'];
-        $invoice->user_id = $data['user_id'];
         $invoice->vendor_id = $data['vendor_id'];
         $invoice->qr_code = 'qrcode_' . time() . '.png';
         if ($invoice->save()) {
@@ -99,23 +87,11 @@ class Invoice extends Model
 
     public static function downloadPDF($invoice_id)
     {
-        $invoice_data = DB::table('invoices')->select(['invoice_products.invoice_id', 'invoice_products.quantity', 'invoices.*', 'products.*', 'users.*'])
-            ->join('invoice_products', function ($join) use ($invoice_id) {
-                $join->on('invoices.id', '=', 'invoice_products.invoice_id')
-                    ->join('products', 'invoice_products.product_id', '=', 'products.id')
-                    ->where('invoice_products.invoice_id', $invoice_id);
-            })
-            ->join('users', function ($join) use ($invoice_id) {
-                $join->on('invoices.user_id', '=', 'users.id');
-            })
-            ->where(['invoices.id' => $invoice_id])
-            ->get()
-            ->toArray();
-
+        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product'])->where(['invoices.id' => $invoice_id])->get()->toArray();
         $invoice_data = json_decode(json_encode($invoice_data), true);
 
         $pdf = PDF::loadView('backend.invoice.view', [
-            'invoice_data' => $invoice_data,
+            'invoice_data' => $invoice_data[0],
             'pdf_option' => true
         ])->setPaper('letter', 'landscape')->setPaper('a4', 'landscape');
         return $pdf->download('invoice.pdf');

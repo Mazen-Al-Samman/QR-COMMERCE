@@ -49,12 +49,9 @@ class InvoiceController extends MainController
      */
     public function store(Request $request)
     {
-        $phone = $request->phone ?? -1;
-        if ($phone == -1) {
-            return redirect()->back()->withErrors(['phone', "Phone field is required"]);
-        }
+
         $in_procuts = new InvoiceProduct();
-        if ($invoice = $in_procuts->storeInvoiceProducts($phone)) {
+        if ($invoice = $in_procuts->storeInvoiceProducts()) {
             return redirect()->route('invoice.show', ['invoice_id' => $invoice->id]);
         }
         $request->session()->flash('alert-empty-cart', 'Cart is empty!');
@@ -103,7 +100,7 @@ class InvoiceController extends MainController
         $invoice_data = $invoice->getInvoiceById($id);
 
         return view('backend.invoice.view', [
-            'invoice_data' => $invoice_data,
+            'invoice_data' => $invoice_data[0],
             'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
@@ -111,5 +108,22 @@ class InvoiceController extends MainController
     public function downloadPDF($invoice_id)
     {
         return Invoice::downloadPDF($invoice_id);
+    }
+
+    public function getInvoiceById($id)
+    {
+        $invoice = new Invoice();
+        $invoice_data = $invoice->getInvoiceById($id);
+
+        if(count($invoice_data)) {
+            return response()->json([
+                'status' => true,
+                'data' => $invoice_data
+            ]);
+        }
+        return response()->json([
+            'status' => false,
+            'data' => "There is No Invoice."
+        ]);
     }
 }

@@ -101,7 +101,7 @@ class Vendor extends Model
 
     public function getAllVendorsApi()
     {
-       $vendors =  Vendor::all()
+        $vendors =  Vendor::all()
         ->where('end_subscription', '>', date('Y-m-d'))->groupBy('country');
         $list = [];
         foreach ($vendors as $vendor => $value) {

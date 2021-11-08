@@ -5,7 +5,9 @@ $(document).ready(function() {
         var quantity = $('.quantity_' + product_id).val();
         $.ajax({
             type: "POST",
+
             url: "add-to-cart",
+
             headers: {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
