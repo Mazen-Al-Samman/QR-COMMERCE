@@ -115,7 +115,7 @@ class InvoiceController extends MainController
         $invoice = new Invoice();
         $invoice_data = $invoice->getInvoiceById($id);
 
-        if(count($invoice_data)) {
+        if(count($invoice_data) > 0) {
             return response()->json([
                 'status' => true,
                 'data' => $invoice_data
@@ -123,7 +123,7 @@ class InvoiceController extends MainController
         }
         return response()->json([
             'status' => false,
-            'data' => "There is No Invoice."
+            'data' => []
         ]);
     }
 }
