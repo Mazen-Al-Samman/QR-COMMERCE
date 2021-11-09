@@ -5,7 +5,9 @@ $(document).ready(function() {
         var quantity = $('.quantity_' + product_id).val();
         $.ajax({
             type: "POST",
-            url: "./add-to-cart/",
+
+            url: "add-to-cart",
+
             headers: {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
@@ -23,7 +25,7 @@ $(document).ready(function() {
         var product_id = $(this).attr('data-id');
         $.ajax({
             type: "POST",
-            url: "./delete-from-cart/",
+            url: "delete-from-cart",
             headers: {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
@@ -67,7 +69,7 @@ $(document).ready(function() {
         }
         $.ajax({
             type: "POST",
-            url: "./update-cart/",
+            url: "update-cart",
             headers: {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
@@ -99,7 +101,7 @@ $(document).ready(function() {
         var phone = $("#phone").val();
         $.ajax({
             type: "POST",
-            url: "/phoneCheck/",
+            url: "/phoneCheck",
             headers: {
                 'X-CSRF-Token': $('meta[name="_token"]').attr('content')
             },
