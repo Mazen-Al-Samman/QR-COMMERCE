@@ -26,7 +26,7 @@ Route::group([
     Route::post('refresh', [\App\Http\Controllers\AuthController::class, 'refresh']);
     Route::post('profile', [\App\Http\Controllers\AuthController::class, 'profile']);
     Route::post('profile/update', [\App\Http\Controllers\AuthController::class, 'updateProfile']);
-    Route::get('invoice/get-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'getInvoiceById'])->name('get-invoice-by-id');
+
 
 
     Route::group(['middleware' => 'auth:api'], function () {
@@ -35,6 +35,9 @@ Route::group([
         Route::get('vendors', [\App\Http\Controllers\VendorsController::class, 'vendorsApi'])->name('vendor-api');
         Route::get('vendors/featured', [\App\Http\Controllers\VendorsController::class, 'featuredVendorsSliders'])->name('vendor-api');
         /* End vendors Routes */
+
+        Route::get('invoice/get-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'getInvoiceById'])->name('get-invoice-by-id');
+        Route::get('invoice/update-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'UpdateInvoice'])->name('update-invoice');
 
         /* categories Routes */
         Route::get('categories', [\App\Http\Controllers\CategoryController::class, 'categoriesApi'])->name('product-api');

@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceProduct;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 use PDF;
 use Illuminate\Http\Request;
 
@@ -115,7 +116,7 @@ class InvoiceController extends MainController
         $invoice = new Invoice();
         $invoice_data = $invoice->getInvoiceById($id);
 
-        if(count($invoice_data)) {
+        if(count($invoice_data) > 0) {
             return response()->json([
                 'status' => true,
                 'data' => $invoice_data
@@ -123,7 +124,31 @@ class InvoiceController extends MainController
         }
         return response()->json([
             'status' => false,
-            'data' => "There is No Invoice."
+            'data' => []
+        ]);
+    }
+
+    public function UpdateInvoice($id) {
+
+        $invoice = Invoice::where('id' ,$id)->get();
+        $invoice = $invoice[0];
+        if($invoice && !$invoice['user_id']) {
+            $invoice['user_id'] = auth('api')->id();
+            if($invoice->save()) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Invoice Saved'
+                ]);
+            }
+            return response()->json([
+                'status' => false,
+                'message' => 'Something Wrong'
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Invoice has User'
         ]);
     }
 }
