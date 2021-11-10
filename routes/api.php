@@ -37,7 +37,11 @@ Route::group([
         /* End vendors Routes */
 
         Route::get('invoice/get-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'getInvoiceById'])->name('get-invoice-by-id');
-        Route::get('invoice/update-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'UpdateInvoice'])->name('update-invoice');
+        Route::get('invoice/get-vendor-invoice/{vendor_id}',[\App\Http\Controllers\InvoiceController::class,'getInvoiceByVendor'])->name('get-vendor-invoice');
+        Route::get('invoice/get-my-vendors',[\App\Http\Controllers\InvoiceController::class,'getMyVendors'])->name('get-my-vendors');
+        Route::get('invoice/get-category-invoice/{category_id}',[\App\Http\Controllers\InvoiceController::class,'getInvoiceByCategory'])->name('get-category-invoice');
+        Route::get('invoice/get-my-category',[\App\Http\Controllers\InvoiceController::class,'getMyCategory'])->name('get-my-category');
+//        Route::get('invoice/update-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'UpdateInvoice'])->name('update-invoice');
 
         /* categories Routes */
         Route::get('categories', [\App\Http\Controllers\CategoryController::class, 'categoriesApi'])->name('product-api');

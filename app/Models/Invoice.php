@@ -51,7 +51,7 @@ class Invoice extends Model
 
     public function getInvoiceById($invoice_id)
     {
-        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product'])->where(['invoices.id' => $invoice_id])->get()->toArray();
+        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product'])->where(['invoices.id' => $invoice_id])->get();
         $invoice_data = json_decode(json_encode($invoice_data), true);
         return $invoice_data;
     }
@@ -95,5 +95,20 @@ class Invoice extends Model
             'pdf_option' => true
         ])->setPaper('letter', 'landscape')->setPaper('a4', 'landscape');
         return $pdf->download('invoice.pdf');
+    }
+
+    public function getInvoiceByVendor($vendor_id)
+    {
+        $invoice_data = Invoice::where(['vendor_id' => $vendor_id, 'user_id' => auth('api')->id()])->orderBy('created_at','desc')->get();
+        return $invoice_data;
+    }
+
+    public function getInvoiceByCategory($category_id) {
+        $invoice_data  = Invoice::whereHas('invoiceProduct', function ($q) use ($category_id) {
+            $q->whereHas('product', function ($q) use ($category_id) {
+                $q->where(['category_id' => $category_id]);
+            });
+        })->where(['user_id' => auth('api')->id()])->get();
+        return $invoice_data;
     }
 }

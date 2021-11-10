@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\InvoiceProduct;
 use App\Models\Product;
+use App\Models\Vendor;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use PDF;
@@ -113,15 +115,22 @@ class InvoiceController extends MainController
 
     public function getInvoiceById($id)
     {
+        if($this->UpdateInvoice($id)) {
         $invoice = new Invoice();
         $invoice_data = $invoice->getInvoiceById($id);
 
-        if(count($invoice_data) > 0) {
+            if(count($invoice_data) > 0) {
+                return response()->json([
+                    'status' => true,
+                    'data' => $invoice_data
+                ]);
+            }
             return response()->json([
-                'status' => true,
-                'data' => $invoice_data
+                'status' => false,
+                'data' => []
             ]);
         }
+
         return response()->json([
             'status' => false,
             'data' => []
@@ -134,21 +143,64 @@ class InvoiceController extends MainController
         $invoice = $invoice[0];
         if($invoice && !$invoice['user_id']) {
             $invoice['user_id'] = auth('api')->id();
-            if($invoice->save()) {
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Invoice Saved'
-                ]);
-            }
-            return response()->json([
-                'status' => false,
-                'message' => 'Something Wrong'
-            ]);
+            return $invoice->save();
         }
 
         return response()->json([
             'status' => false,
             'message' => 'Invoice has User'
+        ]);
+    }
+
+    public function getInvoiceByVendor($vendor_id, Invoice $invoice) {
+        $invoices = $invoice->getInvoiceByVendor($vendor_id);
+        if(count($invoices)) {
+            return response()->json([
+                'status' => true,
+                'data' => $invoices
+            ]);
+        }
+        return response()->json([
+            'status' => false,
+            'data' => []
+        ]);
+    }
+
+    public function getMyVendors () {
+        $vendors  = Vendor::whereHas('invoice', function ($q) {
+            $q->where(['user_id' => auth('api')->id()]);
+        })->get();
+        return response()->json([
+            'status' => true,
+            'data' => $vendors
+        ]);
+    }
+
+    public function getInvoiceByCategory($category_id, Invoice $invoice) {
+        $invoices = $invoice->getInvoiceByCategory($category_id);
+        if(count($invoices) > 0) {
+            return response()->json([
+                'status' => true,
+                'data' => $invoices
+            ]);
+        }
+        return response()->json([
+            'status' => false,
+            'data' => []
+        ]);
+    }
+
+    public function getMyCategory() {
+        $vendors  = Category::whereHas('product', function ($q) {
+            $q->whereHas('invoiceProduct', function ($q) {
+                $q->whereHas('invoice', function ($q) {
+                    $q->where(['user_id' => auth('api')->id()]);
+                });
+            });
+        })->get();
+        return response()->json([
+            'status' => true,
+            'data' => $vendors
         ]);
     }
 }

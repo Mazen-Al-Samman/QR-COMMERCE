@@ -31,6 +31,11 @@ class Vendor extends Model
         return $this->hasMany(Category::class);
     }
 
+    public function invoice()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
     public static function getAllVendors()
     {
         return Vendor::where('end_subscription', '>', date('Y-m-d'))->paginate(15);

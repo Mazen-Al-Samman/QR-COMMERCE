@@ -55,7 +55,9 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="phone">Role</label>
-                                                        <input value="SuperAdmin" readonly disabled name="role_id" class="form-control disabled" >
+                                                        <select readonly name="role_id" class="form-control disabled" >
+                                                            <option value="{{$admin->role_id}}">{{$admin->role->role_title}}</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">

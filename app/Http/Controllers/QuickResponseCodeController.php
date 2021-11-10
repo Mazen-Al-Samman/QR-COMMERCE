@@ -13,7 +13,6 @@ class QuickResponseCodeController extends Controller
         $validation = Validator::make($request->all(), [
             'device_type' => ['required'],
             'invoice_id' => ['required','exists:invoices,id'],
-            'user_id' => ['required','exists:users,id']
         ]);
 
         if ($validation->fails()) {
