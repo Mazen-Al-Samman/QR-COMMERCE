@@ -28,7 +28,7 @@ class Role extends Model
         $role = new Role();
         $role->role_title = $request->role_title;
         $role->role_description = $request->role_description;
-        $role->level = ($this->for_admins) ? self::SUPER_ADMIN : self::VENDOR;
+        $role->level = ($request->for_admins) ? self::SUPER_ADMIN : self::VENDOR;
         return $role->save();
     }
 
@@ -36,7 +36,7 @@ class Role extends Model
         $role = Role::find($id);
         $role->role_title = $request->role_title;
         $role->role_description = $request->role_description;
-        $role->level = ($this->for_admins) ? self::SUPER_ADMIN : self::VENDOR;
+        $role->level = ($request->for_admins) ? self::SUPER_ADMIN : self::VENDOR;
         return $role->save();
     }
 }
