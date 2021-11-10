@@ -10,8 +10,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 
 class Admin extends Authenticatable implements JWTSubject
-
 {
+    const ROLE_PREFIX = 'admin';
     use HasFactory;
 
     /**

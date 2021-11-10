@@ -151,13 +151,21 @@
                                                         <td>{{$vendor->city}}</td>
                                                         <td>{{$vendor->end_subscription}}</td>
                                                         <td class="d-flex align-items-center justify-content-center">
+                                                            @if(in_array(\App\Models\Vendor::ROLE_PREFIX . '.show', $userAuthPermission))
                                                             <a href="{{route('vendor.show' , $vendor->id )}}" class="btn btn-info">View</a>
+                                                            @endif
+
+                                                            @if(in_array(\App\Models\Vendor::ROLE_PREFIX . '.edit', $userAuthPermission))
                                                             <a href="{{route('vendor.edit' , $vendor->id )}}" class="btn btn-primary">Edit</a>
+                                                            @endif
+
+                                                            @if(in_array(\App\Models\Vendor::ROLE_PREFIX . '.destroy', $userAuthPermission))
                                                             <form action="{{route('vendor.destroy', $vendor->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
                                                             </form>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach

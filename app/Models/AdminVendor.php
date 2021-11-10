@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminVendor extends Authenticatable
 {
+    const ROLE_PREFIX = 'admin-vendor';
     use HasFactory;
 
     /**

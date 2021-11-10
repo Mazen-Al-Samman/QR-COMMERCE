@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RolePermission extends Model
 {
     use HasFactory;
+    const ROLE_PREFIX = 'role-permission';
 
     public function role()
     {

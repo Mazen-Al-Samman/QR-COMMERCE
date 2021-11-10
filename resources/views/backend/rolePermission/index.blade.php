@@ -27,8 +27,13 @@
                                                         <span class="font-weight-bold" style="font-size: 20px">{{$role->role_title}}</span>
                                                         </th>
                                                         <td>
+                                                            @if(in_array(\App\Models\RolePermission::ROLE_PREFIX . '.edit', $userAuthPermission))
                                                             <a href="{{ route('role-permission.manage',['role_id'=> $role->id]) }}" class="btn btn-primary">Manage Permissions</a>
+                                                            @endif
+
+                                                            @if(in_array(\App\Models\RolePermission::ROLE_PREFIX . '.show', $userAuthPermission))
                                                             <a href="{{ route('role-permission.show',['role_id'=> $role->id]) }}" class="btn btn-info">View</a>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                     <?php $i++; ?>

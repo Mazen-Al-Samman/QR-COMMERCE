@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    const ROLE_PREFIX = 'product';
     use HasFactory;
 
     /**
