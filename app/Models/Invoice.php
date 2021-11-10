@@ -10,6 +10,7 @@ use PDF;
 
 class Invoice extends Model
 {
+    const ROLE_PREFIX = 'invoice';
     use HasFactory;
 
     /**

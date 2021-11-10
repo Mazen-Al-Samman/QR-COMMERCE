@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Validator;
 class AdminVendorController extends MainController
 {
     public function index(Request $request) {
-
         if (empty(auth('vendor')->user()->vendor_id)) {
             abort(404);
         }

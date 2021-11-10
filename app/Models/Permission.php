@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class Permission extends Model
 {
+    const ROLE_PREFIX = 'permission';
     use HasFactory;
 
     public function getAllPermissions()

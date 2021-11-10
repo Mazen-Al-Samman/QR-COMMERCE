@@ -10,6 +10,7 @@ class Role extends Model
     use HasFactory;
     const SUPER_ADMIN = 1;
     const VENDOR = 2;
+    const ROLE_PREFIX = 'role';
     public function admin(){
         return $this->hasMany(Admin::class);
     }

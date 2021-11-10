@@ -126,15 +126,21 @@
                                                         <td>{{$admin->phone}}</td>
                                                         <td>{{$admin->role->role_title}}</td>
                                                         <td class="d-flex align-items-center justify-content-center">
+                                                            @if(in_array(\App\Models\Admin::ROLE_PREFIX . '.show', $userAuthPermission))
                                                             <a href="{{route('admin.show' , $admin->id )}}" class="btn btn-info">View</a>
-                                                            @if(in_array('admin.edit',$userAuthPermission) || auth()->user()->role_id == 1)
+                                                            @endif
+
+                                                            @if(in_array(\App\Models\Admin::ROLE_PREFIX . '.edit', $userAuthPermission))
                                                                 <a href="{{route('admin.edit' , $admin->id )}}" class="btn btn-primary">Edit</a>
                                                             @endif
+
+                                                            @if(in_array(\App\Models\Admin::ROLE_PREFIX . '.destroy', $userAuthPermission))
                                                             <form action="{{route('admin.destroy', $admin->id)}}" method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <button class="btn btn-danger" type="submit" onclick="return confirm('Are You Sure?')">Delete</button>
                                                             </form>
+                                                                @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach

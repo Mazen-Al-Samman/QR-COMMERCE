@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    const ROLE_PREFIX = 'category';
     use HasFactory;
 
     public function category()
