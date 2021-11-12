@@ -113,4 +113,8 @@ class Invoice extends Model
         })->where(['user_id' => auth('api')->id()])->get();
         return $invoice_data;
     }
+
+    public static function myInvoices () {
+        return self::where(['user_id' => auth('api')->id()])->get();
+    }
 }

@@ -203,4 +203,12 @@ class InvoiceController extends MainController
             'data' => $vendors
         ]);
     }
+
+    public function getMyinvoice () {
+        $invoices = Invoice::myInvoices();
+        return response()->json([
+            'status' => true,
+            'data' => $invoices
+        ]);
+    }
 }
