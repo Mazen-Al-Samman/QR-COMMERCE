@@ -101,12 +101,18 @@ class Invoice extends Model
 
     public function getInvoiceByVendor($vendor_id)
     {
-        $invoice_data = Invoice::where(['vendor_id' => $vendor_id, 'user_id' => auth('api')->id()])->orderBy('created_at','desc')->get();
+        // $invoice_data = Invoice::with(['vendor'])->where(['vendor_id' => $vendor_id, 'user_id' => auth('api')->id()])->orderBy('created_at','desc')->get();
+        $invoice_data = Invoice::with(['vendor'])->where(['vendor_id' => $vendor_id, 'user_id' => auth('api')->id()])->orderBy('created_at','desc')->get();
         return $invoice_data;
     }
 
     public function getInvoiceByCategory($category_id) {
-        $invoice_data  = Invoice::whereHas('invoiceProduct', function ($q) use ($category_id) {
+        // $invoice_data  = Invoice::whereHas('invoiceProduct', function ($q) use ($category_id) {
+        //     $q->whereHas('product', function ($q) use ($category_id) {
+        //         $q->where(['category_id' => $category_id]);
+        //     });
+        // })->where(['user_id' => auth('api')->id()])->get();
+        $invoice_data  = Invoice::with(['vendor'])->whereHas('invoiceProduct', function ($q) use ($category_id) {
             $q->whereHas('product', function ($q) use ($category_id) {
                 $q->where(['category_id' => $category_id]);
             });
@@ -115,6 +121,7 @@ class Invoice extends Model
     }
 
     public static function myInvoices () {
-        return self::where(['user_id' => auth('api')->id()])->get();
+        // return self::where(['user_id' => auth('api')->id()])->get();
+        return self::with(['vendor'])->where(['user_id' => auth('api')->id()])->get();
     }
 }
