@@ -81,9 +81,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="country">Country</label>
-                                                        <select name="country" class="form-control" id="">
-                                                            <option value="jordan">Jordan</option>
-                                                        </select>
+                                                        <select name="country" class="form-control" id="countries"></select>
                                                         @error('country')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
@@ -92,11 +90,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="city">City</label>
-                                                        <select name="city" class="form-control" id="">
-                                                            @foreach($jordanian_cities as $city)
-                                                                <option value="{{$city['name']}}">{{$city['name']}}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        <select name="city" class="form-control" id="cities"></select>
                                                         @error('city')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
@@ -187,4 +181,37 @@
         </div>
     </div>
 </div>
+@section('script')
+    <script>
+        let country = "{!! $defaultCountry !!}";
+        let cities = JSON.parse({!! $jordanian_cities !!});
+        $(document).on('ready', function() {
+            fitCountries();
+            fitCitiesByCountry();
+        });
+
+        function fitCitiesByCountry() {
+            $('#cities').empty();
+            let currentCities = cities[country];
+            let cityOptions = "";
+            currentCities.forEach(function (city) {
+                cityOptions += `<option value="${city.name}">${city.name}</option>`;
+            });
+            $('#cities').append(cityOptions);
+        }
+
+        function fitCountries() {
+            let countryOptions = "";
+            for (let country in cities) {
+                countryOptions += `<option value="${country}">${country}</option>`;
+            }
+            $('#countries').append(countryOptions);
+        }
+
+        $('#countries').on('change', function () {
+            country = $('#countries').val();
+            fitCitiesByCountry();
+        });
+    </script>
+
 @include ('backend.layouts.footer')
