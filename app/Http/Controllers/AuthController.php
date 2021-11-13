@@ -172,6 +172,7 @@ class AuthController extends Controller
         $validation = Validator::make($request->all(), [
             'phone' => ['required', 'string'],
             'password' => ['required', 'string'],
+            'reset_code' => ['required', 'string'],
         ]);
 
         if ($validation->fails()) {
@@ -184,6 +185,12 @@ class AuthController extends Controller
         $userModel = User::where(['phone' => $request->phone])->first();
         if (!$userModel) return;
 
+        $matchVerification = VerificationModel::matchUserWithCode($userModel->id, $request->reset_code);
+        if (!$matchVerification) {
+            return response()->json([
+                'status' => false,
+            ]);
+        }
         $reset = $userModel->resetPassword($request->phone, $request->password);
         return response()->json([
             'status' => $reset,
