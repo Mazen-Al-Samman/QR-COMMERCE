@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\VerificationModel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -26,8 +27,14 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login($userModel = null)
     {
+        if (!empty($userModel)) {
+            $token = auth('api')->login($userModel);
+            $cookie = cookie('jwt-token', $token, 68 * 24); // 1 day
+            return $this->respondWithToken($token)->withCookie($cookie);
+        }
+
         $credentials = request(['phone', 'password']);
 
         $validation = Validator::make($credentials, [
@@ -101,8 +108,10 @@ class AuthController extends Controller
         $userModel = User::find($request->user_id);
         if (!$userModel) return;
         $userModel->actived = VerificationModel::ACTIVE;
+        if ($userModel->save()) return $this->login($userModel);
+
         return response()->json([
-            'status' => $userModel->save(),
+            'status' => false,
         ]);
     }
 
