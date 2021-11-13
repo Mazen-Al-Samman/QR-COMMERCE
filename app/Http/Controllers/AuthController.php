@@ -144,7 +144,8 @@ class AuthController extends Controller
         VerificationModel::verificationSent($userModel->id, $code);
         return response()->json([
             'status' => true,
-            'message' => "Code sent successfully."
+            'message' => "Code sent successfully.",
+            'code' => $code
         ]);
     }
 
