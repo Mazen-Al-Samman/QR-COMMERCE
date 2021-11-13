@@ -35,6 +35,11 @@ class VerificationModel extends Model
             ]);
     }
 
+    public static function sendForgetPasswordCode($code, $phone) {
+        $message = "MyBill - رمز تغيير كلمة السر الخاص بك هو {$code}";
+        self::sendSmsMessage($message, $phone);
+    }
+
     public static function sendVerificationCode($verification_code, $phone) {
         $message = "MyBill - رمز التحقق الخاص بك هو {$verification_code}";
         self::sendSmsMessage($message, $phone);

@@ -22,6 +22,8 @@ Route::group([
     Route::post('login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login');
     Route::post('register', [\App\Http\Controllers\AuthController::class, 'register'])->name('register');
     Route::post('activate', [\App\Http\Controllers\AuthController::class, 'activateUser']);
+    Route::post('forget-password', [\App\Http\Controllers\AuthController::class, 'forgetPassword']);
+    Route::post('reset-password', [\App\Http\Controllers\AuthController::class, 'resetPassword']);
     Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout']);
     Route::post('refresh', [\App\Http\Controllers\AuthController::class, 'refresh']);
 
