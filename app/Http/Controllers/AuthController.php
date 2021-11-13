@@ -18,7 +18,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'checkUser', 'activateUser', 'forgetPassword', 'resetPassword']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'checkUser', 'activateUser', 'forgetPassword', 'resetPassword', 'checkUserCode']]);
     }
 
     /**
@@ -148,11 +148,30 @@ class AuthController extends Controller
         ]);
     }
 
+    public function checkUserCode(Request $request) {
+        $validation = Validator::make($request->all(), [
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+            'reset_code' => ['required', 'string']
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validation->errors()
+            ]);
+        }
+        $userModel = User::where(['phone' => $request->phone])->first();
+        if (!$userModel) return response()->json(['status' => false, 'message' => $validation->errors()]);
+
+        return response()->json([
+            'status' => (bool) VerificationModel::matchUserWithCode($userModel->id, $request->reset_code),
+        ]);
+    }
+
     public function resetPassword(Request $request) {
         $validation = Validator::make($request->all(), [
             'phone' => ['required', 'string'],
             'password' => ['required', 'string'],
-            'reset_code' => ['required', 'string'],
         ]);
 
         if ($validation->fails()) {
@@ -165,12 +184,6 @@ class AuthController extends Controller
         $userModel = User::where(['phone' => $request->phone])->first();
         if (!$userModel) return;
 
-        $matchVerification = VerificationModel::matchUserWithCode($userModel->id, $request->reset_code);
-        if (!$matchVerification) {
-            return response()->json([
-                'status' => false,
-            ]);
-        }
         $reset = $userModel->resetPassword($request->phone, $request->password);
         return response()->json([
             'status' => $reset,
