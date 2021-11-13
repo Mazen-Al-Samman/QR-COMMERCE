@@ -112,4 +112,12 @@ class User extends Authenticatable implements JWTSubject
     public function checkUserFromPhone($phone) {
         return self::where(['phone' => $phone])->exists();
     }
+
+    public function resetPassword($phone, $newPassword) {
+        $userModel = self::where(['phone' => $phone])->first();
+        if (empty($userModel)) return false;
+
+        $userModel->password = Hash::make($newPassword);
+        return $userModel->save();
+    }
 }
