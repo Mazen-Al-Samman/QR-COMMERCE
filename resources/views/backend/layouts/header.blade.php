@@ -85,6 +85,11 @@
                     @endif
                 </li>
                 <li class="nav-item">
+                    @if($guard == 'web' && in_array('user.create', $userAuthPermission))
+                        <a href="{{route('user.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">User</span></a>
+                    @endif
+                </li>
+                <li class="nav-item">
                     @if(in_array('vendor.create', $userAuthPermission))
                         <a href="{{route('vendor.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-map"></i></span><span class="pcoded-mtext">Vendor</span></a>
                     @endif
