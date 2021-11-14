@@ -43,6 +43,15 @@ Route::prefix('backend')->group(function () {
                 Route::get('/show/{id}', [\App\Http\Controllers\AdminController::class, 'show'])->name('admin.show');
             });
 
+            Route::prefix('user')->group(function () {
+                Route::get('/', [\App\Http\Controllers\UserController::class, 'create'])->name('user.create');
+                Route::post('/store', [\App\Http\Controllers\UserController::class, 'store'])->name('user.store');
+                Route::delete('/delete/{id}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('user.destroy');
+                Route::put('/update/{id}', [\App\Http\Controllers\UserController::class, 'update'])->name('user.update');
+                Route::get('/edit/{id}', [\App\Http\Controllers\UserController::class, 'edit'])->name('user.edit');
+                Route::get('/show/{id}', [\App\Http\Controllers\UserController::class, 'show'])->name('user.show');
+            });
+
             Route::prefix('role')->group(function () {
                 Route::get('/', [\App\Http\Controllers\RoleController::class, 'create'])->name('role.create');
                 Route::post('/store', [\App\Http\Controllers\RoleController::class, 'store'])->name('role.store');

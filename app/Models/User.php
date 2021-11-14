@@ -94,7 +94,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public static function getAllUsers(){
-        return User::all();
+        return User::paginate(15);
     }
 
     public static function getUsersCount(){
@@ -119,5 +119,23 @@ class User extends Authenticatable implements JWTSubject
 
         $userModel->password = Hash::make($newPassword);
         return $userModel->save();
+    }
+
+    public static function createUser($request) {
+        $user = new self();
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->password = Hash::make($request->password);
+        $user->phone = $request->phone;
+        $user->actived = 1;
+        return $user->save();
+    }
+
+    public function updateUser($id, $request) {
+        $user = User::find($id);
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->phone = $request->phone;
+        return $user->save();
     }
 }
