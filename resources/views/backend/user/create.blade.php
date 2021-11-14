@@ -110,7 +110,7 @@
                                                         <td>{{$user->first_name}}</td>
                                                         <td>{{$user->last_name}}</td>
                                                         <td>{{$user->phone}}</td>
-                                                        <td>@if($user->verified == 1) <span class="text-success">Verified</span> @else <span class="text-danger">Not Verified</span> @endif</td>
+                                                        <td>@if($user->actived == 1) <span class="text-success">Verified</span> @else <span class="text-danger">Not Verified</span> @endif</td>
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             @if(in_array(\App\Models\Admin::ROLE_PREFIX . '.show', $userAuthPermission))
                                                                 <a href="{{route('user.show' , $user->id )}}" class="btn btn-info">View</a>
