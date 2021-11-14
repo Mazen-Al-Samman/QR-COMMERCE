@@ -52,7 +52,7 @@ class Invoice extends Model
 
     public function getInvoiceById($invoice_id)
     {
-        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product'])->where(['invoices.id' => $invoice_id])->get();
+        $invoice_data = Invoice::with(['vendor','user','invoiceProduct','invoiceProduct.product'])->where(['invoices.id' => $invoice_id])->get();
         $invoice_data = json_decode(json_encode($invoice_data), true);
         return $invoice_data;
     }
