@@ -42,6 +42,7 @@
                                                         <td>{{$invoice->vendor->name}}</td>
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             <a href="{{route('invoice.show' , $invoice->id )}}" class="btn btn-info">View</a>
+                                                            <a href="{{route('invoice.streamPdf' , $invoice->id )}}" target="_blank" class="btn btn-warning">View as PDF</a>
                                                             <a href="{{route('invoice.pdf' , $invoice->id )}}" class="btn btn-danger">Download PDF</a>
                                                         </td>
                                                     </tr>

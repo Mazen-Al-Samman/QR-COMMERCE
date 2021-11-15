@@ -126,6 +126,7 @@ Route::prefix('backend')->group(function () {
                 Route::post('/update-cart', [\App\Http\Controllers\InvoiceController::class, 'updateCart'])->name('invoice.updateCart');
                 Route::get('/show/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'show'])->name('invoice.show');
                 Route::get('/download-pdf/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'downloadPDF'])->name('invoice.pdf');
+                Route::get('/stream-pdf/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'streamPdf'])->name('invoice.streamPdf');
             });
 
         });

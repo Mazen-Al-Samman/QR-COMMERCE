@@ -48,6 +48,7 @@ Route::group([
         Route::get('invoice/get-my-category',[\App\Http\Controllers\InvoiceController::class,'getMyCategory'])->name('get-my-category');
         Route::get('invoice/my-invoice',[\App\Http\Controllers\InvoiceController::class,'getMyinvoice'])->name('get-my-invoice');
 //        Route::get('invoice/update-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'UpdateInvoice'])->name('update-invoice');
+        Route::get('invoice/stream-pdf/{invoice_id}',[\App\Http\Controllers\InvoiceController::class,'streamPdfLink'])->name('streamPdf-invoice');
 
         /* categories Routes */
         Route::get('categories', [\App\Http\Controllers\CategoryController::class, 'categoriesApi'])->name('product-api');

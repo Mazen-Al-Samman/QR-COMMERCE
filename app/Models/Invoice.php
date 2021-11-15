@@ -124,4 +124,14 @@ class Invoice extends Model
         // return self::where(['user_id' => auth('api')->id()])->get();
         return self::with(['vendor'])->where(['user_id' => auth('api')->id()])->get();
     }
+
+    public static function streamPDF($invoice_id)
+    {
+        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product'])->where(['invoices.id' => $invoice_id])->get()->toArray();
+        $pdf = PDF::loadView('backend.invoice.view', [
+            'invoice_data' => $invoice_data[0],
+            'pdf_option' => true
+        ])->setPaper('letter', 'landscape')->setPaper('a4', 'landscape');
+        return $pdf->stream('invoice.pdf');
+    }
 }
