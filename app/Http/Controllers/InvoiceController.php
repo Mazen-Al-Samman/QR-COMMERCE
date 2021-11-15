@@ -211,4 +211,25 @@ class InvoiceController extends MainController
             'data' => $invoices
         ]);
     }
+
+    public function streamPdf($invoice_id) {
+        return Invoice::streamPDF($invoice_id);
+
+    }
+
+    public function streamPdfLink($invoice_id) {
+        if(Invoice::where(['id' => $invoice_id])->exists()) {
+            $link = route('invoice.streamPdf',['invoice_id' => $invoice_id]);
+            return response()->json([
+                'status' => true,
+                'data' => $link
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'data' => "This invoice is not exist"
+        ]);
+
+    }
 }
