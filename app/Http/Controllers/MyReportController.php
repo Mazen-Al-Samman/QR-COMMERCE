@@ -54,9 +54,9 @@ class MyReportController extends Controller
         ]);
     }
 
-    public function deleteApi(Request $request)
+    public function deleteApi($id)
     {
-        if (MyReport::deleteReportApi($request)) {
+        if (MyReport::deleteReportApi($id)) {
             return response()->json([
                 'status' => true,
                 'message' => 'Report was successful deleted!'

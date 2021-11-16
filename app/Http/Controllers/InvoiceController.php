@@ -232,4 +232,8 @@ class InvoiceController extends MainController
         ]);
 
     }
+
+    public function deleteInvoice($id) {
+       return Invoice::DeleteInvoiceById($id);
+    }
 }

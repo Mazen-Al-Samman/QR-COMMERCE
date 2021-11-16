@@ -134,4 +134,23 @@ class Invoice extends Model
         ])->setPaper('letter', 'landscape')->setPaper('a4', 'landscape');
         return $pdf->stream('invoice.pdf');
     }
+
+    public static function deleteInvoiceById($id) {
+        if(self::where(['id' => $id])->exists()) {
+           if(Invoice::where(['id' => $id])->delete()) {
+               return response()->json([
+                   'status' => true,
+                   'message' => "Invoice Deleted"
+               ]);
+           }
+            return response()->json([
+                'status' => false,
+                'message' => "Something Wrong"
+            ]);
+        }
+        return response()->json([
+            'status' => false,
+            'message' => "Invoice Not Exist"
+        ]);
+    }
 }

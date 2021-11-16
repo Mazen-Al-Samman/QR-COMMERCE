@@ -49,9 +49,9 @@ class MyReport extends Model
         return $report->save();
     }
 
-    public static function deleteReportApi($request)
+    public static function deleteReportApi($id)
     {
-        return MyReport::where(['id' => $request->id])->delete();
+        return MyReport::where(['id' => $id])->delete();
     }
 
 }

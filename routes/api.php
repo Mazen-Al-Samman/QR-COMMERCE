@@ -47,6 +47,7 @@ Route::group([
         Route::get('invoice/get-category-invoice/{category_id}',[\App\Http\Controllers\InvoiceController::class,'getInvoiceByCategory'])->name('get-category-invoice');
         Route::get('invoice/get-my-category',[\App\Http\Controllers\InvoiceController::class,'getMyCategory'])->name('get-my-category');
         Route::get('invoice/my-invoice',[\App\Http\Controllers\InvoiceController::class,'getMyinvoice'])->name('get-my-invoice');
+        Route::get('invoice/delete-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'deleteInvoice'])->name('delete-invoice');
 //        Route::get('invoice/update-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'UpdateInvoice'])->name('update-invoice');
 
         /* categories Routes */
@@ -67,7 +68,7 @@ Route::group([
 
         /* MyReport Routes */
         Route::post('report/store',[\App\Http\Controllers\MyReportController::class,'storeApi']);
-        Route::post('report/delete',[\App\Http\Controllers\MyReportController::class,'deleteApi']);
+        Route::get('report/delete/{id}',[\App\Http\Controllers\MyReportController::class,'deleteApi']);
         Route::get('reports',[\App\Http\Controllers\MyReportController::class,'showApi']);
     });
 });
