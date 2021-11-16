@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Elibyy\TCPDF\TCPDF;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Meneses\LaravelMpdf\LaravelMpdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use PDF;
+use MPDF;
 
 class Invoice extends Model
 {
@@ -128,11 +131,19 @@ class Invoice extends Model
     public static function streamPDF($invoice_id)
     {
         $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product'])->where(['invoices.id' => $invoice_id])->get()->toArray();
-        $pdf = PDF::loadView('backend.invoice.view', [
+        $pdf = MPDF::loadView('backend.invoice.pdf', [
             'invoice_data' => $invoice_data[0],
             'pdf_option' => true
-        ])->setPaper('letter', 'landscape')->setPaper('a4', 'landscape');
-        return $pdf->stream('invoice.pdf');
+        ]);
+        return $pdf->stream('document.pdf');
+
+
+
+//        $pdf = PDF::loadView('backend.invoice.view', [
+//            'invoice_data' => $invoice_data[0],
+//            'pdf_option' => true
+//        ])->setPaper('letter', 'landscape')->setPaper('a4', 'landscape');
+//        return $pdf->stream('invoice.pdf');
     }
 
     public static function deleteInvoiceById($id) {
