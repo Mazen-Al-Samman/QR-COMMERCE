@@ -111,7 +111,6 @@
                             Created: {{$invoice_data['created_at']}}<br />
                         </td>
                         <td></td>
-                        <td><img src="{{asset('assets/images/uploads/qr/'.$invoice_data['qr_code'])}}" style="width: 100%; max-width: 300px" /></td>
                     </tr>
                 </table>
             </td>
@@ -141,7 +140,7 @@
         <?php $i=1; ?>
         @foreach($invoice_data['invoice_product'] as $product)
             <tr class="item">
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['name']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>{{$product['product']['name']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;X{{$product['quantity']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price'] * $product['quantity']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
