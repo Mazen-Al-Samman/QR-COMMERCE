@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-12 mt-3">
                     @if(!isset($pdf_option))
-                        <a href="{{route('invoice.pdf',['invoice_id' => $invoice_data['id']])}}" class="btn btn-danger">Download PDF</a>
+                        <a href="{{route('invoice.streamPdf',['invoice_id' => $invoice_data['id']])}}" target="_blank" class="btn btn-danger">View as PDF</a>
                     @endif
                 </div>
             </div>
