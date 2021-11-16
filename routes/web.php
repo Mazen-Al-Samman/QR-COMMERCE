@@ -20,6 +20,7 @@ Route::get('/no-permission', [\App\Http\Controllers\MainController::class, 'noPe
 Route::get('/expired', [\App\Http\Controllers\MainController::class, 'expired'])->name('expired');
 
 
+
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::get('/en', [\App\Http\Controllers\HomeController::class, 'index_en'])->name('index_en');
 Route::post('/phoneCheck', [\App\Http\Controllers\AuthController::class, 'checkUser']);
@@ -27,6 +28,7 @@ Route::post('/phoneCheck', [\App\Http\Controllers\AuthController::class, 'checkU
 
 Route::prefix('backend')->group(function () {
     Auth::routes();
+    Route::get('/invoice/stream-pdf/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'streamPdf'])->name('invoice.streamPdf');
     Route::group(['middleware' => ['login-auth', 'prevent-back-history']], function () {
         Route::group(['middleware' => ['auth-permissions']], function () {
             Route::get('/profile', [\App\Http\Controllers\MainController::class, 'profile'])->name('profile.show');
@@ -126,8 +128,7 @@ Route::prefix('backend')->group(function () {
                 Route::post('/update-cart', [\App\Http\Controllers\InvoiceController::class, 'updateCart'])->name('invoice.updateCart');
                 Route::get('/show/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'show'])->name('invoice.show');
                 Route::get('/download-pdf/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'downloadPDF'])->name('invoice.pdf');
-                Route::get('/stream-pdf/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'streamPdf'])->name('invoice.streamPdf');
-            });
+           });
 
         });
     });
