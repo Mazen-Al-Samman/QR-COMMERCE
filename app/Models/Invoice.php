@@ -92,13 +92,12 @@ class Invoice extends Model
 
     public static function downloadPDF($invoice_id)
     {
-        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product'])->where(['invoices.id' => $invoice_id])->get()->toArray();
+        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product', 'vendor'])->where(['invoices.id' => $invoice_id])->get()->toArray();
         $invoice_data = json_decode(json_encode($invoice_data), true);
-
-        $pdf = PDF::loadView('backend.invoice.view', [
+        $pdf = MPDF::loadView('backend.invoice.pdf', [
             'invoice_data' => $invoice_data[0],
             'pdf_option' => true
-        ])->setPaper('letter', 'landscape')->setPaper('a4', 'landscape');
+        ]);
         return $pdf->download('invoice.pdf');
     }
 
@@ -130,7 +129,7 @@ class Invoice extends Model
 
     public static function streamPDF($invoice_id)
     {
-        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product'])->where(['invoices.id' => $invoice_id])->get()->toArray();
+        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product', 'vendor'])->where(['invoices.id' => $invoice_id])->get()->toArray();
         $pdf = MPDF::loadView('backend.invoice.pdf', [
             'invoice_data' => $invoice_data[0],
             'pdf_option' => true

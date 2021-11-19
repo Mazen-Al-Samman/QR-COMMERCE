@@ -54,4 +54,21 @@ class MyReport extends Model
         return MyReport::where(['id' => $request->id])->delete();
     }
 
+    public static function updateReportByID($request) {
+        $data = [
+            'title' => $request->title,
+            'guarantee' => $request->guarantee,
+            'payment_date' => $request->payment_date,
+            'reminder' => $request->reminder,
+        ];
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path() . "/assets/images/uploads/MyReports/", $name);
+            $data = array_merge($data,['image' => $name]);
+        }
+        return self::where(['id' => $request->id])->update($data);
+
+    }
+
 }

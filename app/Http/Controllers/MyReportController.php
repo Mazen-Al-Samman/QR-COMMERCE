@@ -68,4 +68,31 @@ class MyReportController extends Controller
             'message' => 'Something wrong'
         ]);
     }
+
+    public function updateApi(Request $request) {
+        $validation = Validator::make($request->all(), [
+            'id' => ['required'],
+            'title' => ['required'],
+            'guarantee' => ['required'],
+            'payment_date' => ['required'],
+            'reminder' => ['required']
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validation->errors()
+            ]);
+        }
+        $report =  MyReport::updateReportByID($request);
+        if($report) {
+            return response()->json([
+                'status' => true,
+                'message' => "Report was successful Updated"
+            ]);
+        }
+        return response()->json([
+            'status' => false,
+            'message' => "Something wrong !!"
+        ]);
+    }
 }
