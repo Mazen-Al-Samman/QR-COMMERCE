@@ -116,23 +116,16 @@ class InvoiceController extends MainController
     public function getInvoiceById($id)
     {
         if($this->UpdateInvoice($id)) {
-        $invoice = new Invoice();
-        $invoice_data = $invoice->getInvoiceById($id);
-
-            if(count($invoice_data) > 0) {
-                return response()->json([
-                    'status' => true,
-                    'data' => $invoice_data
-                ]);
-            }
+            $invoice = new Invoice();
+            $invoice_data = $invoice->getInvoiceById($id);
             return response()->json([
-                'status' => false,
-                'data' => []
+                'status' => true,
+                'data' => $invoice_data
             ]);
         }
 
         return response()->json([
-            'status' => false,
+            'status' => true,
             'data' => []
         ]);
     }
@@ -154,16 +147,10 @@ class InvoiceController extends MainController
 
     public function getInvoiceByVendor($vendor_id, Invoice $invoice) {
         $invoices = $invoice->getInvoiceByVendor($vendor_id);
-        if(count($invoices)) {
             return response()->json([
                 'status' => true,
                 'data' => $invoices
             ]);
-        }
-        return response()->json([
-            'status' => false,
-            'data' => []
-        ]);
     }
 
     public function getMyVendors () {
@@ -178,16 +165,10 @@ class InvoiceController extends MainController
 
     public function getInvoiceByCategory($category_id, Invoice $invoice) {
         $invoices = $invoice->getInvoiceByCategory($category_id);
-        if(count($invoices) > 0) {
             return response()->json([
                 'status' => true,
                 'data' => $invoices
             ]);
-        }
-        return response()->json([
-            'status' => false,
-            'data' => []
-        ]);
     }
 
     public function getMyCategory() {
@@ -235,5 +216,13 @@ class InvoiceController extends MainController
 
     public function deleteInvoice($id) {
        return Invoice::DeleteInvoiceById($id);
+    }
+
+    public function invoiceAnalysis() {
+        $analysis = Invoice::getAnalysisByMonth();
+        return response()->json([
+            'status' => true,
+            'data' => $analysis
+        ]);
     }
 }
