@@ -164,4 +164,43 @@ class Invoice extends Model
             'message' => "Invoice Not Exist"
         ]);
     }
+
+    public static function getAnalysisByMonth()
+    {
+        $total_invoices = self::select(DB::raw('sum(total_price) as totalSum'), DB::raw('AVG(total_price) as totalAvg'))
+            ->where(DB::raw('YEAR(created_at)'), date('Y'))->get()->toArray();
+//        $total = $total_invoices[0]['totalSum'];
+        $avg = $total_invoices[0]['totalAvg'];
+
+        $invoices = self::select(DB::raw('sum(total_price) as totalSum'), DB::raw('count(id) as `invoiceCount`'), DB::raw('id'), DB::raw("DATE_FORMAT(created_at, '%m-%Y') new_date"), DB::raw('YEAR(created_at) year, MONTH(created_at) month'))
+            ->where(DB::raw('YEAR(created_at)'), date('Y'))->groupBy('month')->get(); /*->pluck('totalSum', 'month')->toArray();*/
+
+        $static_months = ['1' => 'يناير', '2' => 'فبراير', '3' => 'مارس', '4' => 'ابريل', '5' => 'مايو', '6' => 'يونيو', '7' => 'يوليو', '8' => 'أغسطس', '9' => 'سبتمبر', '10' => 'أكتوبر', '11' => 'نوفمبر', '12' => 'ديسمبر'];
+
+//        $pre_percentage = 0;
+        $invoices = $invoices->mapWithKeys(function ($item) use (/*,&$pre_percentage,*/ $avg, $static_months) {
+            $percentage = ($item['totalSum'] / $avg) * 100 - 100;
+            $percentage = number_format((float)$percentage, 2, '.', '');
+
+            $good_message = "في شهر " . $static_months[$item['month']] . " وفرت و صرفت أقل من المتوسط";
+            $bad_message = "في شهر " . $static_months[$item['month']] . " صرفت أكثر من معدل صرفك الشهري ب " . $item['totalSum'] . " ريال, ما يعادل " . $percentage . "% أعلى من المنوسط";
+
+            $month = [
+                $item['month'] =>
+                    [
+                        'month' => $item['month'],
+                        'total' => $item['totalSum'],
+                        'count' => $item['invoiceCount'],
+                        'percentage' => $percentage,
+                        'message' => $avg > $item['totalSum'] ? $good_message : $bad_message,
+                    ]
+            ];
+
+//            $pre_percentage = $percentage;
+            return $month;
+        });
+
+        return $invoices;
+
+    }
 }

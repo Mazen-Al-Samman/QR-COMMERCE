@@ -48,6 +48,7 @@ Route::group([
         Route::get('invoice/get-my-category',[\App\Http\Controllers\InvoiceController::class,'getMyCategory'])->name('get-my-category');
         Route::get('invoice/my-invoice',[\App\Http\Controllers\InvoiceController::class,'getMyinvoice'])->name('get-my-invoice');
         Route::get('invoice/delete-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'deleteInvoice'])->name('delete-invoice');
+        Route::get('invoice/analysis',[\App\Http\Controllers\InvoiceController::class,'invoiceAnalysis'])->name('analysis-invoice');
 //        Route::get('invoice/update-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'UpdateInvoice'])->name('update-invoice');
 
         /* categories Routes */

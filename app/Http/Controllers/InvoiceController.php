@@ -236,4 +236,12 @@ class InvoiceController extends MainController
     public function deleteInvoice($id) {
        return Invoice::DeleteInvoiceById($id);
     }
+
+    public function invoiceAnalysis() {
+        $analysis = Invoice::getAnalysisByMonth();
+        return response()->json([
+            'status' => true,
+            'data' => $analysis
+        ]);
+    }
 }
