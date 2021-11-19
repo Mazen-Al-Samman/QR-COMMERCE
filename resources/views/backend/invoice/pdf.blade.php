@@ -43,7 +43,8 @@
         }
 
         .invoice-box table tr.information table td {
-            padding-bottom: 40px;
+            padding-bottom: 25px;
+            width: 1000%;
         }
 
         .invoice-box table tr.heading td {
@@ -108,9 +109,8 @@
                     <tr>
                         <td colspan="2">
                             Invoice #: {{$invoice_data['id']}}<br />
-                            Created: {{$invoice_data['created_at']}}<br />
+                            Created: {{date($invoice_data['created_at'])}}<br />
                         </td>
-                        <td></td>
                     </tr>
                 </table>
             </td>
@@ -120,11 +120,15 @@
             <td colspan="2">
                 <table>
                     <tr>
-                        @if($user = $invoice_data['user'])
-                        <td colspan="4">
-                            Name: {{$user['first_name'].' '.$user['last_name']}}<br />
-                            Phone: {{$user['phone']}}<br />
+                        <td colspan="2">
+                            Vendor: {{$invoice_data['vendor']['name']}} <br />
+                            Phone: {{$invoice_data['vendor']['phone']}}
                         </td>
+                        @if($user = $invoice_data['user'])
+                            <td colspan="2">
+                                Name: {{$user['first_name'].' '.$user['last_name']}}<br />
+                                Phone: {{$user['phone']}}<br />
+                            </td>
                         @endif
                     </tr>
                 </table>
