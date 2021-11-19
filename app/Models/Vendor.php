@@ -121,6 +121,8 @@ class Vendor extends Model
                 'title' => $title,
                 'data' => $data
             ];
+
+            $data = [];
         }
 
         return $list;
