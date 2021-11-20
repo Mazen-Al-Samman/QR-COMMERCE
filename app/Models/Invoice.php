@@ -177,6 +177,7 @@ class Invoice extends Model
         $static_months = ['1' => 'يناير', '2' => 'فبراير', '3' => 'مارس', '4' => 'ابريل', '5' => 'مايو', '6' => 'يونيو', '7' => 'يوليو', '8' => 'أغسطس', '9' => 'سبتمبر', '10' => 'أكتوبر', '11' => 'نوفمبر', '12' => 'ديسمبر'];
 
 //        $pre_percentage = 0;
+        $i = 0;
         $invoices = $invoices->mapWithKeys(function ($item) use (/*,&$pre_percentage,*/ $avg, $static_months) {
             $percentage = ($item['totalSum'] / $avg) * 100 - 100;
             $percentage = number_format((float)$percentage, 2, '.', '');
@@ -188,9 +189,10 @@ class Invoice extends Model
                 $item['month'] =>
                     [
                         'month' => $item['month'],
+                        'month_name' => $static_months[$item['month']],
                         'total' => $item['totalSum'],
                         'count' => $item['invoiceCount'],
-                        'percentage' => $percentage,
+                        'percentage' => (double)$percentage,
                         'message' => $avg > $item['totalSum'] ? $good_message : $bad_message,
                     ]
             ];
@@ -198,7 +200,8 @@ class Invoice extends Model
 //            $pre_percentage = $percentage;
             return $month;
         });
-
+        $invoices = json_decode($invoices,true);
+        $invoices = array_values($invoices);
         return $invoices;
 
     }

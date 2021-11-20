@@ -115,9 +115,10 @@ class InvoiceController extends MainController
 
     public function getInvoiceById($id)
     {
-        if($this->UpdateInvoice($id)) {
-            $invoice = new Invoice();
-            $invoice_data = $invoice->getInvoiceById($id);
+        $this->UpdateInvoice($id);
+        $invoice = new Invoice();
+        $invoice_data = $invoice->getInvoiceById($id);
+        if($invoice_data) {
             return response()->json([
                 'status' => true,
                 'data' => $invoice_data
@@ -133,16 +134,12 @@ class InvoiceController extends MainController
     public function UpdateInvoice($id) {
 
         $invoice = Invoice::where('id' ,$id)->get();
-        $invoice = $invoice[0];
+        $invoice = count($invoice) > 0 ? $invoice[0] : null;
         if($invoice && !$invoice['user_id']) {
             $invoice['user_id'] = auth('api')->id();
             return $invoice->save();
         }
-
-        return response()->json([
-            'status' => false,
-            'message' => 'Invoice has User'
-        ]);
+        return false;
     }
 
     public function getInvoiceByVendor($vendor_id, Invoice $invoice) {

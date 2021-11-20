@@ -32,6 +32,10 @@ class Vendor extends Model
         return $this->hasMany(Category::class);
     }
 
+    public function vendorAdmin() {
+        return $this->hasMany(AdminVendor::class);
+    }
+
     public function invoice()
     {
         return $this->hasMany(Invoice::class);
