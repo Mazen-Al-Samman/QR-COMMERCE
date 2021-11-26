@@ -107,7 +107,7 @@ class MyReportController extends Controller
         }
 
         return response()->json([
-            'status' => false,
+            'status' => true,
             'data' => []
         ]);
 
