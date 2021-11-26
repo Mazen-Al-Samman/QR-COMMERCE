@@ -71,4 +71,8 @@ class MyReport extends Model
 
     }
 
+    public static function getReportById($id) {
+        return self::where(['id' => $id])->get();
+    }
+
 }
