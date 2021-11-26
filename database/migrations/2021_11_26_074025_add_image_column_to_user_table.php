@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class EditUserIdColumnInInvoiceTable extends Migration
+class AddImageColumnToUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class EditUserIdColumnInInvoiceTable extends Migration
      */
     public function up()
     {
-        Schema::table('invoices', function (Blueprint $table) {
-            $table->integer("user_id")->unsigned()->nullable(true)->after('total_price')->change();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string("image",'500')->nullable(true)->after('password');
         });
     }
 
@@ -25,8 +25,8 @@ class EditUserIdColumnInInvoiceTable extends Migration
      */
     public function down()
     {
-        Schema::table('invoice', function (Blueprint $table) {
-            $table->dropColumn('user_id');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn("image");
         });
     }
 }
