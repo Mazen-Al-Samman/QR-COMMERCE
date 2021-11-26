@@ -40,21 +40,27 @@
     <div class="container d-flex align-items-center justify-content-between">
 
         <div class="logo">
-            <h1><a href="index.html"><span>MY BILL</span></a></h1>
+            <h1><a href="{{route('index')}}"><img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" alt=""> <span>MY BILL</span></a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
         </div>
 
-        <nav id="navbar" class="navbar">
+        <nav id="navbar" class="navbar navbar-mobile_ar">
             <ul>
                 <li><a class="nav-link scrollto active" href="#hero">الرئيسية</a></li>
+                <li><hr></li>
                 <li><a class="nav-link scrollto" href="#features">المميزات</a></li>
-                <li><a class="nav-link scrollto" href="#about">شـرائـح توضـيحية</a></li>
+                <li><hr></li>
+                <li><a class="nav-link scrollto" href="#about">النقاط توضـيحية</a></li>
+                <li><hr></li>
                 <li><a class="nav-link scrollto" href="#team">من نحن</a></li>
+                <li><hr></li>
                 <li><a class="nav-link scrollto" href="#why">لماذا نحن</a></li>
+                <li><hr></li>
                 <li><a class="nav-link scrollto" href="#footer">أتصل بنا</a></li>
+                <li><hr></li>
 
-                <li><a class="nav-link scrollto" href="{{route('index_en')}}"><button type="button" class="btn btn-outline-primary">الأنجليزية</button></a></li>
+                <li><a class="nav-link scrollto" href="{{route('index_en')}}"><button type="button" class="btn btn-primary text-light">الأنجليزية</button></a></li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
@@ -70,7 +76,7 @@
             <div class="col-lg-7 pt-5 pt-lg-0 order-2 order-lg-1 d-flex align-items-center">
                 <div data-aos="zoom-out">
                     <h1>الفاتورة الإلكترونية بنظام الـ QR <br><span>MY BILL</span></h1>
-                    <h2>عبارة عن نظام و تطبيق متخصص بتحويل الفاتورة الورقية الى فاتورة
+                    <h2 class="mt-5 text-justify">عبارة عن نظام و تطبيق متخصص بتحويل الفاتورة الورقية الى فاتورة
                         إلكترونية عبر تقنية QR رمز االستجابة السريع, وذلك يساعد على توفير استهالك
                         الفواتير الورقية سواء كانت فواتير البنوك المصرفية أو فواتير الشراء وبيع السلع
                         وغيرها عدا عن المحافظة على البيئة .</h2>
@@ -79,8 +85,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5 col-md-8 col-sm-10  order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="300">
-                <img src="{{asset('assets/frontend/img/art4.png')}}" class="img-fluid animated" alt="">
+            <div class="col-lg-5 col-md-8 col-sm-10  order-1 order-lg-2 hero-img d-flex align-items-center justify-content-center" data-aos="zoom-out" data-aos-delay="300">
+                <img src="{{asset('assets/frontend/img/mobile.png')}}" class="img-fluid animated" style="height: 460px; border-radius:25px;" alt="">
             </div>
         </div>
     </div>
@@ -149,7 +155,7 @@
                 <div class="col-lg-3 col-md-4 mt-4">
                     <div class="icon-box" data-aos="zoom-in" data-aos-delay="300">
                         <i class="ri-todo-fill" style="color: #ffa76e;"></i>
-                        <h3><a href="">خدمة تتبع مصروفات المستخدم</a></h3>
+                        <h3><a href="">يساعد على ادارة أموالك</a></h3>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 mt-4">
@@ -179,8 +185,8 @@
                     <a href="#" class="glightbox venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
                 </div>
 
-                <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5" data-aos="fade-left">
-                    <h3>شـرائـح توضـيحية</h3>
+                <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5"  data-aos="fade-left">
+                    <h3>النقاط توضـيحية</h3>
                     <!-- <p>Esse voluptas cumque vel exercitationem. Reiciendis est hic accusamus. Non ipsam et sed minima temporibus laudantium. Soluta voluptate sed facere corporis dolores excepturi. Libero laboriosam sint et id nulla tenetur. Suscipit aut voluptate.</p> -->
 
                     <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
@@ -211,6 +217,7 @@
 
         </div>
     </section><!-- End About Section -->
+
     <!-- ======= Details Section ======= -->
     <section id="details" class="details">
         <div class="container">
@@ -222,16 +229,16 @@
                 <div class="col-md-8 pt-5  p-4 " data-aos="fade-up">
                     <h3>ماي بل تستخدم ايضا لتحويل الفواتير الورقية لدى البنوك الى فواتير إلكترونية فقط ألجهزة الصراف ATM
                         حيث تمكنك الخدمة من اختيار تحميل اإليصال إلكترونيا عن طريق مسح الـ QR</h3>
-                    <p class="fst-italic">
+                    <p class="fst-italic mt-4 fst-italic-content">
                         دمج جميع الخدمات ONLINE في منصة وتطبيق واحد. <br>
                         دمج البطاقات البالستيكية منها البنكية ومنها التجارية في بطاقة
                         رقمية عبر تقنية QR.
 
                     </p>
                     <ul>
-                        <li><i class="bi bi-check"></i> أمان</li>
-                        <li><i class="bi bi-check"></i> حماية</li>
-                        <li><i class="bi bi-check"></i>سرعة</li>
+                        <li class="font-weight"><i class="bi bi-check"></i> أمان</li>
+                        <li class="font-weight"><i class="bi bi-check"></i> حماية</li>
+                        <li class="font-weight"><i class="bi bi-check"></i>سرعة</li>
                     </ul>
                 </div>
             </div>
@@ -243,7 +250,7 @@
                 <div class="col-md-8 pt-5 order-2 order-md-1 p-4" data-aos="fade-up">
                     <h3>يصبح الجوال عبر تقنية ال CODE QR هو المصدر الوحيد للفاتورة الإلكترونية والتجارة وتداول
                         األموال عبر الجوال </h3>
-                    <br> <p class="fst-italic">
+                    <br> <p class="fst-italic fst-italic-content">
                         تحويل المتاجر التقليدية لمتاجر ذكية دون تكاليف باهضة وتعقيدات تقنية وذلك عبر تطبيق ماي بل الذي
                         يوفر خوارزميات جديدة تدخل جميع متاجر الهايبر خانة المتاجر الذكية عبر الـ QR
                     </p>
@@ -259,13 +266,13 @@
                 </div>
                 <div class="col-md-8 pt-3 mt-5 p-4" data-aos="fade-up">
                     <br><br><br><h3>عامل للتسويق</h3> <br>
-                    <p>
+                    <p class="fst-italic-content">
                         يمكن استخدام التطبيق ألغراض تسويقية وتعزيز العالمة التجارية بين الشركات وعمالئها من خالل
                         افكار تسويقية حديثة ومدروسة
                     </p>
                     <br>
                     <br>
-                    <p>تقنية الـ QR ستصبح استخدام يومي الحتياجات
+                    <p class="fst-italic-content">تقنية الـ QR ستصبح استخدام يومي الحتياجات
                         الناس ألنها توفر الوقت والجهد والمال وتوفر تداول الوريقات
                         وتحمي الجميع من مالمسة المواد العينية باإلضافة الى األمان
                         الصحي ويمكن دمج العديد من الخدمات في المستقبل.</p>
@@ -279,7 +286,7 @@
 
                 <div class="col-md-8 pt-3 order-2 order-md-1 p-4" data-aos="fade-up">
                     <br><br><br><h3>المتاجر الذكية</h3>
-                    <p class=" fw-normal ">
+                    <p class=" fw-normal smart-store-content mt-4">
                         يمكن لتطبيق BILL MY انشاء تعامالت شراء ذكية حيث يحول المتاجر
                         التقليدية الى متاجر ذكية حيث يمكن للمستخدم ان يقوم بالتسوق داخل المتجر
                         ويقوم بمسح المنتجات حيث سيقوم النظام بعرض خيارين على المستخدم
@@ -301,6 +308,83 @@
 
         </div>
     </section><!-- End Details Section -->
+
+     <!-- ======= Testimonials Section ======= -->
+     <section id="testimonials" class="testimonials">
+        <div class="container">
+
+          <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+            <div class="swiper-wrapper">
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                  <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                    <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                  </div>
+                  <h3>تصميم الجرافيك</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                        <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                    </div>
+                  <h3>برمجة الويب و التطبيقات</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                        <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                    </div>
+                  <h3>برمجة الانظمة و التطبيقات</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                        <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                    </div>
+                  <h3>برمجة الانظمة الالكترونية</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                        <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                    </div>
+                  <h3>انتاج المحتوى</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                        <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                    </div>
+                  <h3>التسويق الالكتروني</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                        <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                    </div>
+                  <h3>ادارة المحتوى الالكتروني</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+
+        </div>
+      </section><!-- End Testimonials Section -->
 
     <!-- ======= Counts Section ======= -->
     <section id="counts" class="counts">
@@ -356,13 +440,17 @@
             </div>
 
             <div class="row text-lg-center p4 fw-light" data-aos="fade-left">
-                <h4 class="fw-light">
-                    شركة سعودية متخصصة منذ عام 2013م في مجال الإعلام والتقنية من تصميم وبرمجة مواقع إلكترونية و أنظمة وتطبيقات الهواتف الذكية نحن في شهرة نسعى دائما نحو هدف محدد وواضح وهو جذب أكثر عدد ممكن من العملاء لشركتك وإشهارها وزيادة أرباحها وذلك من خلال خبراتنا في التسويق و الإعلام الإلكتروني، نحن نستند في عملنا على الإبداع والتميز من خلال فريقنا الحالي والذي يتمتع بخبرة و إحترافية عالية في مجال الإعلام الإلكتروني الممول و الذي كانت بدايته في العام 2010م . أيضا بتصاميمنا الإحترافية وهذه الصفات هي التي جعلتنا متميزين في مجال الإعلام الإلكتروني داخل المملكة العربية السعودية. في مجال البرمجة فنحن نمتلك فريق من المبرمجين المحترفين في برمجة المواقع و الأنظمة الإلكترونية وتطبيقات الهواتف الذكية. باختيارك شهرة تكون قد حققت لنفسك شريكا يقدم لك حلول متكاملة مصممة حسب طلبك وامكانياتك تساعدك على تحقيق أهدافك بشكل مباشر وسريع.
-                </h4>
-                <br><br>
-                <h4 class="fw-light">
+                <p class="fw-light about-us-content">
+                    شركة سعودية متخصصة منذ عام 2013م في مجال الإعلام والتقنية من تصميم وبرمجة مواقع إلكترونية و أنظمة وتطبيقات الهواتف الذكية نحن في شهرة نسعى دائما نحو هدف محدد وواضح وهو جذب أكثر عدد ممكن من العملاء لشركتك وإشهارها وزيادة أرباحها وذلك من خلال خبراتنا في التسويق و الإعلام الإلكتروني، نحن نستند في عملنا على الإبداع والتميز من خلال فريقنا الحالي والذي يتمتع بخبرة و إحترافية عالية في مجال الإعلام الإلكتروني الممول و الذي كانت بدايته في العام 2010م .
+                </p>
+
+                <p class="fw-light about-us-content mt-5">
+                    أيضا بتصاميمنا الإحترافية وهذه الصفات هي التي جعلتنا متميزين في مجال الإعلام الإلكتروني داخل المملكة العربية السعودية. في مجال البرمجة فنحن نمتلك فريق من المبرمجين المحترفين في برمجة المواقع و الأنظمة الإلكترونية وتطبيقات الهواتف الذكية. باختيارك شهرة تكون قد حققت لنفسك شريكا يقدم لك حلول متكاملة مصممة حسب طلبك وامكانياتك تساعدك على تحقيق أهدافك بشكل مباشر وسريع.
+                </p>
+
+                <p class="fw-light about-us-content">
                     نحن في مهمة لصناعة المحتوى الأكثر إبداعا وابتكارا نفتخر بتقديم خدماتنا في التسويق الإلكتروني وتصميم الجرافيك وبرمجة الأنظمة الإلكترونية والتطبيقات.
-                </h4>
+                </p>
             </div>
         </div>
     </section><!-- End Team Section -->
@@ -377,14 +465,14 @@
             </div>
 
             <div class="row text-lg-center p4 fw-light" data-aos="fade-left">
-                <h4 class="fw-light">
+                <p class="fw-light about-us-content">
                     فريق عمل مبدع
                     تعمل شهرة بلس على توطيد العلاقات وبتقوية روابط التواصل الفعال وتوثيق الشراكات الاستراتيجية لبناء مشاريع احترافية. إننا نجمع الكفاءات المنالكلية معا وفي الوقت المناسب لمشاريعكم
                     تساهيل الدفع
                     تقدم شهرة بلس إطار تنظيمية وهيكلة أسعار واضحة وشفافة لضمان عدم وجود اي تكاليف خفية تتعلق بالتاسيل أو التشغيل. وتكوين رؤية المشروع المناسبة لميزانيتكم
                     تواصل دائم
                     تتوفر شهرة بلس على كافة وسائل التواصل التي تناسبكم. بالإضافة إلي استحداث الوسائل الأكثر تيسيرا لكم فقط لنبقي على تواصل دائم معكم دائم.
-                </h4>
+                </p>
 
 
 
@@ -403,15 +491,15 @@
             <div class="section-title text-center" data-aos="fade-up">
                 <!-- <h2>Features</h2> -->
                 <h2></h2>
-                <p>قريبا</p>
+                <p>متوفر حاليا</p>
             </div>
 
             <div class="row">
                 <div class="col-md-6 p-3 ">
-                    <h3 class="fw-light">قريبا تطبيق  MY BILL متوفر على جميع الهواتف الذكية</h3>
-                    <div class="app">
-                        <a href="https://www.google.com"><img src="{{asset('assets/frontend/img/app (1).png')}}" alt="" class="img-fluid mt-5 d-block"></a>
-                        <a href="https://www.youtube.com"><img src="{{asset('assets/frontend/img/app (2).png')}}" alt="" class="img-fluid "></a>
+                    <h3 class="fw-light"> تطبيق  MY BILL متوفر حاليا على جميع الهواتف الذكية</h3>
+                    <div class="app d-flex flex-column align-items-center justify-content-center">
+                        <a href=""><img src="{{asset('assets/frontend/img/app (1).png')}}" alt="" class="img-fluid mt-5 d-block"></a>
+                        <a href=""><img src="{{asset('assets/frontend/img/app (2).png')}}" alt="" class="img-fluid "></a>
 
                     </div>
                 </div>

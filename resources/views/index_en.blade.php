@@ -39,18 +39,24 @@
     <div class="container d-flex align-items-center justify-content-between">
 
         <div class="logo">
-            <h1><a href="index.html"><span>MY BILL</span></a></h1>
+            <h1><a href="{{route('index_en')}}"><img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" alt=""> <span>MY BILL</span></a></h1>
         </div>
 
         <nav id="navbar" class="navbar">
             <ul>
                 <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+                <li><hr></li>
                 <li><a class="nav-link scrollto" href="#features">Features</a></li>
+                <li><hr></li>
                 <li><a class="nav-link scrollto" href="#about">Slides</a></li>
+                <li><hr></li>
                 <li><a class="nav-link scrollto" href="#team">who are we</a></li>
+                <li><hr></li>
                 <li><a class="nav-link scrollto" href="#why">why us</a></li>
+                <li><hr></li>
                 <li><a class="nav-link scrollto" href="#footer">Contact Us</a></li>
-                <li><a class="nav-link scrollto" href="{{route('index')}}"><button type="button" class="btn btn-outline-primary">Arabic</button></a></li>
+                <li><hr></li>
+                <li><a class="nav-link scrollto" href="{{route('index')}}"><button type="button" class="btn btn-primary text-light">Arabic</button></a></li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
@@ -64,7 +70,7 @@
     <div class="container">
         <div class="row justify-content-between">
             <div class="col-lg-7 pt-5 pt-lg-0 order-2 order-lg-1 d-flex align-items-center">
-                <div data-aos="zoom-out">
+                <div data-aos="zoom-out text-justify">
                     <h1>E-Bill with QR system<br><span>MY BILL</span></h1>
                     <h2>Is a specialized system and application that converts paper bills into electronic invoices using QR rapid response code technology, which helps to reduce the consumption of paper bills, whether bank bills or purchase bills, and the sale of goods and services, among other things, while also preserving the environment</h2>
                     <div class="text-center text-lg-start">
@@ -72,8 +78,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5 col-md-8 col-sm-10  order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="300">
-                <img src="{{asset('assets/frontend/img/art4.png')}}" class="img-fluid animated" alt="">
+            <div class="col-lg-5 col-md-8 col-sm-10  order-1 order-lg-2 hero-img d-flex align-items-center justify-content-center" data-aos="zoom-out" data-aos-delay="300">
+                <img src="{{asset('assets/frontend/img/mobile.png')}}" class="img-fluid animated" style="height: 460px; border-radius:25px;" alt="">
             </div>
         </div>
     </div>
@@ -208,15 +214,15 @@
                     <img src="{{asset('assets/frontend/assets/img/details-1.png')}}" class="img-fluid" alt="">
                 </div>
                 <div class="col-md-8 pt-5  p-4 " data-aos="fade-up">
-                    <h3>My bill is also used to convert paper bank bills into electronic invoices, but only at ATMs where you can choose to download the receipt electronically by scanning the QR code</h3>
+                    <h3 style="font-size:18px !important">My bill is also used to convert paper bank bills into electronic invoices, but only at ATMs where you can choose to download the receipt electronically by scanning the QR code</h3>
                     <p class="fst-italic">
                         All ONLINE services be integrated into a single platform and application <br>
                         Using QR technology, integrating plastic cards, including banking and commercial cards, into a digital card.
                     </p>
                     <ul>
-                        <li><i class="bi bi-check"></i>Speed</li>
-                        <li><i class="bi bi-check"></i> Safety</li>
-                        <li><i class="bi bi-check"></i>rotection</li>
+                        <li class="font-weight"><i class="bi bi-check"></i>Speed</li>
+                        <li class="font-weight"><i class="bi bi-check"></i> Safety</li>
+                        <li class="font-weight"><i class="bi bi-check"></i>rotection</li>
                     </ul>
 
                 </div>
@@ -262,11 +268,11 @@
 
                 <div class="col-md-8 pt-3 order-2 order-md-1 p-4" data-aos="fade-up">
                     <br><br><br><h3>Smart Stores</h3>
-                    <p class=" fw-normal ">
+                    <p class=" fw-normal smart-store-content mt-4 ">
                         MY Bill can create smart purchase transactions by converting traditional stores into smart stores where the user can shop in-store and scan products where the system will offer the user two options to display product details or add the product to the electronic shopping cart and when the user is finished shopping the user can pay the bill without going to the cashier because the market verification process is carried out with the appearance of a green barcode that the customer paid for all the products in the basket where a device installed at the top of the shopping cart automatically scans to a product entering the cart. Furthermore, the red color indicates that the shopper did not pay the bill.
                     </p>
                     <br>
-                    <p>
+                    <p class="smart-store-content mt-4">
                         BILL MY allows users to obtain their original invoices using CODE QR technology, allowing you to obtain the invoice without having to record any user-specific data.
                     </p>
 
@@ -275,6 +281,83 @@
 
         </div>
     </section><!-- End Details Section -->
+
+     <!-- ======= Testimonials Section ======= -->
+     <section id="testimonials" class="testimonials">
+        <div class="container">
+
+          <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+            <div class="swiper-wrapper">
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                  <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                    <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                  </div>
+                  <h3>Graphic design</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                        <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                    </div>
+                  <h3>Web and applications Development</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                        <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                    </div>
+                  <h3>System Development</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                        <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                    </div>
+                  <h3>Elctronic systems Development</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                        <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                    </div>
+                  <h3>Making and Editing videos</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                        <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                    </div>
+                  <h3>Online marketing</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+              <div class="swiper-slide">
+                <div class="testimonial-item">
+                    <div class="testimonial-img" style="width: 100px; height:100px; background-color: white;">
+                        <img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" style="width: 50px; height:80px;" alt="">
+                    </div>
+                  <h3>Content moderating</h3>
+                </div>
+              </div><!-- End testimonial item -->
+
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+
+        </div>
+      </section><!-- End Testimonials Section -->
 
     <!-- ======= Counts Section ======= -->
     <section id="counts" class="counts">
@@ -333,8 +416,11 @@
             </div>
 
             <div class="row text-lg-center p4 fw-light" data-aos="fade-left">
-                <h4 class="fw-light p-3 m-2">Since 2013, we have been a Saudi company specializing in media and technology, designing and programming websites, systems, and applications for smartphones. We are in the early media and are always looking for a specific and clear goal, which is to attract as many customers as possible to your company, publicize it, and increase profits. We are founded on creativity and excellence in marketing and electronic media by our current team, which has extensive experience and professionalism in the field of funded electronic media since its beginnings in 2010.We have also distinguished ourselves in the field of electronic media in Saudi Arabia due to our professional designs and these qualities. We have a team of expert programmers in web development, electronic systems, and smartphone applications.You have gained a partner who can provide you with integrated solutions tailored to your needs as well as capabilities that will assist you in achieving your goals in a direct and timely manner by selecting the first media.We are on a mission to create the most creative and innovative content possible, and we are proud to offer our services in e-marketing, graphic design, electronic systems programming, and applications
-                </h4>
+                <p class="fw-light about-us-content p-3 m-2" style="font-size: 19px; !important">Since 2013, we have been a Saudi company specializing in media and technology, designing and programming websites, systems, and applications for smartphones. We are in the early media and are always looking for a specific and clear goal, which is to attract as many customers as possible to your company, publicize it, and increase profits. We are founded on creativity and excellence in marketing and electronic media by our current team, which has extensive experience and professionalism in the field of funded electronic media since its beginnings in 2010.
+                </p>
+                <p class="fw-light about-us-content p-3 m-2" style="font-size: 19px; !important">
+                    We have also distinguished ourselves in the field of electronic media in Saudi Arabia due to our professional designs and these qualities. We have a team of expert programmers in web development, electronic systems, and smartphone applications.You have gained a partner who can provide you with integrated solutions tailored to your needs as well as capabilities that will assist you in achieving your goals in a direct and timely manner by selecting the first media.We are on a mission to create the most creative and innovative content possible, and we are proud to offer our services in e-marketing, graphic design, electronic systems programming, and applications
+                </p>
                 <br><br>
 
             </div>
@@ -352,8 +438,8 @@
             </div>
 
             <div class="row text-lg-center p4 fw-light" data-aos="fade-left">
-                <h4 class="fw-light">A Sohora puls group that works to build professional projects by fortifying relationships, improving communication, and documenting strategic alliances. We bring together competencies in time for your projects to facilitate payment and provide a well-known plus clear and transparent price structure to ensure that there are no hidden costs associated with establishment or operation.In addition, develop a project vision that is appropriate for your budget. Continuous
-                </h4>
+                <p class="fw-light about-us-content" style="font-size: 19px; !important">A Sohora puls group that works to build professional projects by fortifying relationships, improving communication, and documenting strategic alliances. We bring together competencies in time for your projects to facilitate payment and provide a well-known plus clear and transparent price structure to ensure that there are no hidden costs associated with establishment or operation.In addition, develop a project vision that is appropriate for your budget. Continuous
+                </p>
 
 
 
@@ -372,7 +458,7 @@
         <div class="container">
 
             <div class="section-title text-center" data-aos="fade-up">
-                <p>Soon</p>
+                <p>Available</p>
             </div>
 
 
@@ -380,7 +466,7 @@
             <div class="row">
                 <div class="col-md-6 p-3 ">
                     <h3 class="fw-light">Stay tune MY BILL will be available on Androind and IOS Devices</h3>
-                    <div class="app">
+                    <div class="app d-flex flex-column align-items-center justify-content-center">
                         <a href="https://www.google.com"><img src="{{asset('assets/frontend/img/app (1).png')}}" alt="" class="img-fluid mt-5 d-block"></a>
                         <a href="https://www.youtube.com"><img src="{{asset('assets/frontend/img/app (2).png')}}" alt="" class="img-fluid "></a>
 
