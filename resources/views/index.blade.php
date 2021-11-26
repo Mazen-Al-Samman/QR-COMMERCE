@@ -40,7 +40,7 @@
     <div class="container d-flex align-items-center justify-content-between">
 
         <div class="logo">
-            <h1><a href="{{route('index')}}"><img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" alt=""> <span>MY BILL</span></a></h1>
+            <h1><a href="{{route('index')}}"><img src="{{asset('assets/frontend/img/my_bill_logo.png')}}"  alt=""> <span style="font-size: 20px;">MY BILL</span></a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
         </div>
@@ -503,9 +503,9 @@
 
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 d-flex justify-content-center align-items-center">
 
-                    <img src="{{asset('assets/frontend/img/soon.jpg')}}" alt="" class="img-fluid">
+                    <img src="{{asset('assets/frontend/img/mobile.png')}}" alt="" class="img-fluid" style="height: 460px; border-radius:25px;" >
 
                 </div>
             </div>

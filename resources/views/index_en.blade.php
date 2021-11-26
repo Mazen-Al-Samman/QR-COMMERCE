@@ -39,7 +39,7 @@
     <div class="container d-flex align-items-center justify-content-between">
 
         <div class="logo">
-            <h1><a href="{{route('index_en')}}"><img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" alt=""> <span>MY BILL</span></a></h1>
+            <h1><a href="{{route('index_en')}}"><img src="{{asset('assets/frontend/img/my_bill_logo.png')}}" alt=""> <span style="font-size: 20px;">MY BILL</span></a></h1>
         </div>
 
         <nav id="navbar" class="navbar">
@@ -465,7 +465,7 @@
 
             <div class="row">
                 <div class="col-md-6 p-3 ">
-                    <h3 class="fw-light">Stay tune MY BILL will be available on Androind and IOS Devices</h3>
+                    <h3 class="fw-light">MY BILL will is now available on Androind and IOS Devices</h3>
                     <div class="app d-flex flex-column align-items-center justify-content-center">
                         <a href="https://www.google.com"><img src="{{asset('assets/frontend/img/app (1).png')}}" alt="" class="img-fluid mt-5 d-block"></a>
                         <a href="https://www.youtube.com"><img src="{{asset('assets/frontend/img/app (2).png')}}" alt="" class="img-fluid "></a>
@@ -474,9 +474,9 @@
 
 
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 d-flex justify-content-center align-items-center">
 
-                    <img src="{{asset('assets/frontend/img/soon.jpg')}}" alt="" class="img-fluid">
+                    <img src="{{asset('assets/frontend/img/mobile.png')}}" alt="" class="img-fluid" style="height: 460px; border-radius:25px;" >
 
                 </div>
             </div>
