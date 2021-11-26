@@ -21,7 +21,7 @@
                                                 {{ session()->get('success') }}
                                             </div>
                                         @endif
-                                        <form action="{{route('user.store')}}" method="post">
+                                        <form action="{{route('user.store')}}" method="post" enctype="multipart/form-data">
                                             @csrf
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -66,6 +66,15 @@
                                                         <input type="phone" name="phone" class="form-control" id="phone" placeholder="Phone">
                                                         @error('phone')
                                                         <small id="phoneHelp" class="form-text text-muted text-danger">{{$message}}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="image">Image</label>
+                                                        <input type="file" name="image" class="form-control" id="image" placeholder="image">
+                                                        @error('image')
+                                                        <small id="imageHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
                                                     </div>
                                                 </div>

@@ -22,7 +22,8 @@ class User extends Authenticatable implements JWTSubject
         'last_name',
         'phone',
         'password',
-        'actived'
+        'actived',
+        'image',
     ];
 
     /**
@@ -71,6 +72,12 @@ class User extends Authenticatable implements JWTSubject
         $user->phone = $request->phone;
         $user->password = Hash::make($request->password);
         $user->actived = VerificationModel::DISABLED;
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path() . "/assets/images/uploads/users/", $name);
+            $user->image = $name;
+        }
         if($user->save()){
             return $user;
         }
@@ -83,6 +90,12 @@ class User extends Authenticatable implements JWTSubject
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->phone = $request->phone;
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path() . "/assets/images/uploads/users/", $name);
+            $user->image = $name;
+        }
         return $user->save();
     }
 
@@ -128,6 +141,12 @@ class User extends Authenticatable implements JWTSubject
         $user->password = Hash::make($request->password);
         $user->phone = $request->phone;
         $user->actived = 1;
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path() . "/assets/images/uploads/users/", $name);
+            $user->image = $name;
+        }
         return $user->save();
     }
 
@@ -136,6 +155,12 @@ class User extends Authenticatable implements JWTSubject
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->phone = $request->phone;
+        if ($request->hasfile('image')) {
+            $file = $request->file('image');
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path() . "/assets/images/uploads/users/", $name);
+            $user->image = $name;
+        }
         return $user->save();
     }
 }
