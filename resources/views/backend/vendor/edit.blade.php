@@ -46,9 +46,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="country">Country</label>
-                                                        <select value="{{$vendor->country}}" name="country" class="form-control" id="">
-                                                            <option value="jordan">Jordan</option>
-                                                        </select>
+                                                        <select name="country" class="form-control" id="countries"></select>
                                                         @error('country')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
@@ -57,11 +55,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="city">City</label>
-                                                        <select name="city" class="form-control" id="">
-                                                            @foreach($jordanian_cities as $city)
-                                                                <option {{$city['name'] == $vendor->city ? 'selected' : ''}} value="{{$city['name']}}">{{$city['name']}}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        <select name="city" class="form-control" id="cities"></select>
                                                         @error('city')
                                                         <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
                                                         @enderror
@@ -94,4 +88,49 @@
         </div>
     </div>
 </div>
+
+@section('script')
+    <script>
+        let vendor = {!! $vendor !!};
+        let vendor_country = vendor['country'];
+        let vendor_city = vendor['city'];
+        let default_country = "{!! $defaultCountry !!}";
+        let cities = JSON.parse({!! $jordanian_cities !!});
+        $(document).on('ready', function() {
+            fitCountries();
+            fitCitiesByCountry();
+        });
+
+        function fitCitiesByCountry() {
+            $('#cities').empty();
+            let currentCities = cities[default_country];
+            let cityOptions = "";
+            currentCities.forEach(function (city) {
+                if (city.name == vendor_city) {
+                    cityOptions += `<option selected value="${city.name}">${city.name}</option>`;
+                } else {
+                    cityOptions += `<option value="${city.name}">${city.name}</option>`;
+                }
+            });
+            $('#cities').append(cityOptions);
+        }
+
+        function fitCountries() {
+            let countryOptions = "";
+            for (let country in cities) {
+                if (country == default_country) {
+                    countryOptions += `<option selected value="${country}">${country}</option>`;
+                } else {
+                    countryOptions += `<option value="${country}">${country}</option>`;
+                }
+            }
+            $('#countries').append(countryOptions);
+        }
+
+        $('#countries').on('change', function () {
+            default_country = $('#countries').val();
+            fitCitiesByCountry();
+        });
+    </script>
+
 @include ('backend.layouts.footer')

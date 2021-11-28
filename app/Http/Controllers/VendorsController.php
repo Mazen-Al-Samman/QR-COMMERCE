@@ -96,11 +96,12 @@ class VendorsController extends MainController
     {
         $vendor = Vendor::find($id);
         $path = storage_path() . "/app/public/json_files/jordanian_cities.json";
-        $jordanian_cities = json_decode(file_get_contents($path), true);
+        $jordanian_cities = json_encode(file_get_contents($path));
         return view('backend.vendor.edit', [
             'vendor' => $vendor,
             'jordanian_cities' => $jordanian_cities,
             'userAuthPermission' => $this->getUserPermissionns($request),
+            'defaultCountry' => $vendor->country,
         ]);
     }
 
