@@ -65,6 +65,7 @@ class AuthController extends Controller
             'last_name' => ['required', 'string'],
             'phone' => ['required', 'unique:users', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
             'password' => ['required', 'string'],
+            'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
         if ($validation->fails()) {
@@ -214,6 +215,7 @@ class AuthController extends Controller
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
             'phone' => ['required', Rule::unique('users')->ignore(auth('api')->user()->id, 'id'), 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+            'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
         if ($validation->fails()) {

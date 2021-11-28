@@ -95,4 +95,21 @@ class MyReportController extends Controller
             'message' => "Something wrong !!"
         ]);
     }
+
+    public function viewReportById($id) {
+
+        $report = MyReport::getReportById($id);
+        if($report) {
+            return response()->json([
+                'status' => true,
+                'data' => $report
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => []
+        ]);
+
+    }
 }

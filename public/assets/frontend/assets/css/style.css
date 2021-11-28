@@ -8,8 +8,9 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@400;800&family=Cairo&display=swap');
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Almarai', sans-serif;
   color: #444444;
 }
 
@@ -24,8 +25,9 @@ a:hover {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Almarai", sans-serif;
 }
+
 
 /*--------------------------------------------------------------
 # Preloader
@@ -151,14 +153,15 @@ h1, h2, h3, h4, h5, h6 {
 #header .logo img {
   padding: 0;
   margin: 0;
-  max-height: 40px;
+  max-height: 60px;
+  max-width: 60px;
 }
 
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
 /**
-* Desktop Navigation 
+* Desktop Navigation
 */
 .navbar {
   padding: 0;
@@ -183,7 +186,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 10px 0 10px 30px;
   font-size: 15px;
   font-weight: 500;
-  font-family: "Poppins", sans-serif;
+  font-family: "Almarai", sans-serif;
   color: rgba(255, 255, 255, 0.7);
   white-space: nowrap;
   transition: 0.3s;
@@ -282,7 +285,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /**
-* Mobile Navigation 
+* Mobile Navigation
 */
 .mobile-nav-toggle {
   color: #fff;
@@ -338,9 +341,13 @@ h1, h2, h3, h4, h5, h6 {
   left: 20px;
 }
 
+.navbar-mobile_ar > ul > li > a:before {
+    right: 20px !important;
+}
+
 .navbar-mobile a {
   padding: 10px 20px;
-  font-size: 15px;
+  font-size: 18px;
   color: #0205a1;
 }
 
@@ -424,7 +431,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #hero .btn-get-started {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Almarai", sans-serif;
   font-weight: 500;
   font-size: 16px;
   letter-spacing: 1px;
@@ -609,7 +616,7 @@ section {
   letter-spacing: 2px;
   text-transform: uppercase;
   color: #aaaaaa;
-  font-family: "Poppins", sans-serif;
+  font-family: "Almarai", sans-serif;
 }
 
 .section-title h2::after {
@@ -627,7 +634,7 @@ section {
   font-size: 36px;
   font-weight: 700;
   text-transform: uppercase;
-  font-family: "Poppins", sans-serif;
+  font-family: "Almarai", sans-serif;
   color: #010483;
 }
 
@@ -736,7 +743,7 @@ section {
 }
 
 .about .icon-box .title {
-  margin-left: 85px;
+  /* margin-left: 85px; */
   font-weight: 700;
   margin-bottom: 10px;
   font-size: 18px;
@@ -752,9 +759,10 @@ section {
 }
 
 .about .icon-box .description {
-  margin-left: 85px;
+  /* margin-left: 85px; */
   line-height: 24px;
-  font-size: 14px;
+  font-size: 18px;
+  text-align: justify;
 }
 
 .about .video-box {
@@ -940,7 +948,7 @@ section {
 .counts .count-box p {
   padding: 0;
   margin: 0;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Almarai", sans-serif;
   font-size: 14px;
 }
 
@@ -951,10 +959,28 @@ section {
   margin-top: 100px;
 }
 
+.smart-store-content {
+    font-size: 18px;
+    text-align: justify;
+}
+
+.about-us-content {
+    text-align: justify;
+    font-size: 20px;
+    line-height: 35px;
+}
+
+.fst-italic-content {
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .details .content h3 {
   font-weight: 600;
-  font-size: 26px;
+  font-size: 21px;
   color: #010483;
+  text-align: justify;
+  line-height: 30px;
 }
 
 .details .content ul {
@@ -964,6 +990,8 @@ section {
 
 .details .content ul li {
   padding-bottom: 10px;
+  font-size: 20px;
+
 }
 
 .details .content ul i {
@@ -1204,7 +1232,7 @@ section {
   font-size: 36px;
   color: #1acc8d;
   font-weight: 600;
-  font-family: "Poppins", sans-serif;
+  font-family: "Almarai", sans-serif;
   margin-bottom: 20px;
 }
 
@@ -1269,7 +1297,7 @@ section {
   transition: none;
   font-size: 14px;
   font-weight: 400;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Almarai", sans-serif;
   font-weight: 600;
   transition: 0.3s;
 }
@@ -1322,7 +1350,7 @@ section {
 .faq .faq-list a {
   display: block;
   position: relative;
-  font-family: "Poppins", sans-serif;
+  font-family: "Almarai", sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 500;
@@ -1554,7 +1582,7 @@ section {
   font-size: 14px;
   line-height: 24px;
   margin-bottom: 0;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Almarai", sans-serif;
 }
 
 #footer .footer-top .social-links a {

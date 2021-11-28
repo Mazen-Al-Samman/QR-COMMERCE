@@ -47,6 +47,7 @@ class UserController extends MainController
             'last_name' => ['required'],
             'password' => ['required', 'string', 'confirmed'],
             'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/', 'unique:users'],
+            'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
         if ($validation->fails()) {
@@ -105,6 +106,7 @@ class UserController extends MainController
             'first_name' => ['required', 'string', Rule::unique('users')->ignore($id, 'id')],
             'last_name' => ['required', 'string', Rule::unique('users')->ignore($id, 'id')],
             'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/', Rule::unique('users')->ignore($id, 'id')],
+            'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
         if ($validation->fails()) {
