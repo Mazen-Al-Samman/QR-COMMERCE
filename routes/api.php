@@ -44,12 +44,13 @@ Route::group([
         Route::get('invoice/get-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'getInvoiceById'])->name('get-invoice-by-id');
         Route::get('invoice/get-vendor-invoice/{vendor_id}',[\App\Http\Controllers\InvoiceController::class,'getInvoiceByVendor'])->name('get-vendor-invoice');
         Route::get('invoice/get-my-vendors',[\App\Http\Controllers\InvoiceController::class,'getMyVendors'])->name('get-my-vendors');
-        Route::get('invoice/get-category-invoice/{category_id}',[\App\Http\Controllers\InvoiceController::class,'getInvoiceByCategory'])->name('get-category-invoice');
-        Route::get('invoice/get-my-category',[\App\Http\Controllers\InvoiceController::class,'getMyCategory'])->name('get-my-category');
+        Route::get('invoice/get-category-invoice/{vendor_id}/{category_id}',[\App\Http\Controllers\InvoiceController::class,'getInvoiceByCategory'])->name('get-category-invoice');
+        Route::get('invoice/get-my-category/{vendor_id}',[\App\Http\Controllers\InvoiceController::class,'getMyCategory'])->name('get-my-category');
         Route::get('invoice/my-invoice',[\App\Http\Controllers\InvoiceController::class,'getMyinvoice'])->name('get-my-invoice');
         Route::get('invoice/delete-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'deleteInvoice'])->name('delete-invoice');
         Route::get('invoice/analysis',[\App\Http\Controllers\InvoiceController::class,'invoiceAnalysis'])->name('analysis-invoice');
         Route::get('invoice/analysis/{vendor_id}',[\App\Http\Controllers\InvoiceController::class,'invoiceVendorAnalysis'])->name('analysis-vendor-invoice');
+        Route::get('invoice/analysis/category/{vendor_id}/{category_id}',[\App\Http\Controllers\InvoiceController::class,'invoiceVendorCategoryAnalysis'])->name('analysis-vendor-category-invoice');
 //        Route::get('invoice/update-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'UpdateInvoice'])->name('update-invoice');
 
         /* categories Routes */

@@ -103,28 +103,112 @@ class Invoice extends Model
 
     public function getInvoiceByVendor($vendor_id)
     {
-        // $invoice_data = Invoice::with(['vendor'])->where(['vendor_id' => $vendor_id, 'user_id' => auth('api')->id()])->orderBy('created_at','desc')->get();
         $invoice_data = Invoice::with(['vendor'])->where(['vendor_id' => $vendor_id, 'user_id' => auth('api')->id()])->orderBy('created_at','desc')->get();
-        return $invoice_data;
+
+        // To Get Total for all User Invoices.
+        $total_invoices = self::select(
+            DB::raw('sum(total_price) as totalSum'),
+            DB::raw('AVG(total_price) as totalAvg')
+            )
+            ->where([
+                'user_id' => auth('api')->id()
+            ])->get()->toArray();
+        $sum = $total_invoices[0]['totalSum'];
+
+
+        $invoices = self::select(
+            DB::raw('sum(total_price) as totalSum'),
+            DB::raw('count(id) as `invoiceCount`'),
+            DB::raw('id')
+            )
+            ->where([
+                'user_id' => auth('api')->id(),
+                'vendor_id' => $vendor_id
+            ])->get();
+
+        $vendor_sum = $invoices[0]['totalSum'];
+        $percentage = ($invoices[0]['totalSum'] / $sum) * 100;
+        $percentage = number_format((float)$percentage, 2, '.', '');
+
+        $analysis_data = [
+            'sum' => $sum,
+            'vendor_sum' => $vendor_sum,
+            'invoice_count' => $invoices[0]['invoiceCount'],
+            'percentage' => $percentage
+
+        ];
+
+        return [
+            'invoice_data' => $invoice_data,
+            'analysis_data' => $analysis_data
+        ];
+
     }
 
-    public function getInvoiceByCategory($category_id) {
-        // $invoice_data  = Invoice::whereHas('invoiceProduct', function ($q) use ($category_id) {
-        //     $q->whereHas('product', function ($q) use ($category_id) {
-        //         $q->where(['category_id' => $category_id]);
-        //     });
-        // })->where(['user_id' => auth('api')->id()])->get();
-        $invoice_data  = Invoice::with(['vendor'])->whereHas('invoiceProduct', function ($q) use ($category_id) {
-            $q->whereHas('product', function ($q) use ($category_id) {
-                $q->where(['category_id' => $category_id]);
+    public function getInvoiceByCategory($vendor_id, $category_id) {
+        $invoice_data  = Invoice::with(['vendor'])->whereHas('invoiceProduct', function ($q) use ($vendor_id, $category_id) {
+            $q->whereHas('product', function ($q) use ($vendor_id, $category_id) {
+                $q->where(['category_id' => $category_id, 'vendor_id' => $vendor_id]);
             });
         })->where(['user_id' => auth('api')->id()])->get();
-        return $invoice_data;
+
+
+
+        $total_invoices = self::select(
+            DB::raw('sum(total_price) as totalSum'),
+            DB::raw('AVG(total_price) as totalAvg')
+            )->where([
+                'user_id' => auth('api')->id()
+            ])->get()->toArray();
+        $sum = $total_invoices[0]['totalSum'];
+
+        $invoices = self::join('invoice_products','invoices.id', '=', 'invoice_products.invoice_id')
+        ->join('products', function ($join) {
+            $join->on('invoice_products.product_id', '=', 'products.id');
+        })
+        ->select(
+            DB::raw('sum(products.price) as totalprice'),
+            DB::raw('count(products.id) as `productCount`'),
+            DB::raw('invoice_products.quantity as `quantity`'),
+            DB::raw('(sum(products.price) * invoice_products.quantity) as totalPriceWithQuantity'),
+        )
+        ->where([
+            'invoices.vendor_id' => $vendor_id,
+            'products.vendor_id' => $vendor_id,
+            'products.category_id' => $category_id,
+            'invoices.user_id' => auth('api')->id()
+        ])->groupBy('products.id')->get();
+
+        $invoices_sum = 0;
+        foreach($invoices as $invoice) {
+            $invoices_sum += $invoice['totalPriceWithQuantity'];
+        }
+
+        $percentage = ($invoices_sum / $sum) * 100;
+        $percentage = number_format((float)$percentage, 2, '.', '');
+
+        $analysis_data = [
+            'sum' => $sum,
+            'invoices_sum' => $invoices_sum,
+            'percentage' => $percentage
+        ];
+
+
+        return [
+            'invoice_data' => $invoice_data,
+            'analysis_data' => $analysis_data
+        ];
+
     }
 
     public static function myInvoices () {
-        // return self::where(['user_id' => auth('api')->id()])->get();
-        return self::with(['vendor'])->where(['user_id' => auth('api')->id()])->get();
+        $my_invoices = self::with(['vendor'])->where(['user_id' => auth('api')->id()])->get()->toArray();
+        $total = array_sum(array_column($my_invoices, 'total_price'));
+        $data = [
+            'my_invoices' => $my_invoices,
+            'total' => $total
+        ];
+        return $data;
     }
 
     public static function streamPDF($invoice_id)
@@ -167,16 +251,23 @@ class Invoice extends Model
     public static function getAnalysisByMonth()
     {
         $total_invoices = self::select(DB::raw('sum(total_price) as totalSum'), DB::raw('AVG(total_price) as totalAvg'))
-            ->where(DB::raw('YEAR(created_at)'), date('Y'))->get()->toArray();
-//        $total = $total_invoices[0]['totalSum'];
+            ->where(DB::raw('YEAR(created_at)'), date('Y'))->where(['user_id' => auth('api')->id()])->get()->toArray();
         $avg = $total_invoices[0]['totalAvg'];
 
-        $invoices = self::select(DB::raw('sum(total_price) as totalSum'), DB::raw('count(id) as `invoiceCount`'), DB::raw('id'), DB::raw("DATE_FORMAT(created_at, '%m-%Y') new_date"), DB::raw('YEAR(created_at) year, MONTH(created_at) month'))
-            ->where(DB::raw('YEAR(created_at)'), date('Y'))->groupBy('month')->get(); /*->pluck('totalSum', 'month')->toArray();*/
+        $invoices = self::select(
+            DB::raw('sum(total_price) as totalSum'),
+            DB::raw('count(id) as `invoiceCount`'),
+            DB::raw('id'),
+            DB::raw("DATE_FORMAT(created_at, '%m-%Y') new_date"),
+            DB::raw('YEAR(created_at) year, MONTH(created_at) month')
+            )
+            ->where(DB::raw('YEAR(created_at)'), date('Y'))
+            ->where([
+                'user_id' => auth('api')->id()
+            ])->groupBy('month')->get();
 
         $static_months = ['1' => 'يناير', '2' => 'فبراير', '3' => 'مارس', '4' => 'ابريل', '5' => 'مايو', '6' => 'يونيو', '7' => 'يوليو', '8' => 'أغسطس', '9' => 'سبتمبر', '10' => 'أكتوبر', '11' => 'نوفمبر', '12' => 'ديسمبر'];
 
-//        $pre_percentage = 0;
         $i = 0;
         $invoices = $invoices->mapWithKeys(function ($item) use (/*,&$pre_percentage,*/ $avg, $static_months) {
             $percentage = ($item['totalSum'] / $avg) * 100 - 100;
@@ -197,7 +288,6 @@ class Invoice extends Model
                     ]
             ];
 
-//            $pre_percentage = $percentage;
             return $month;
         });
         $invoices = json_decode($invoices,true);
@@ -208,11 +298,24 @@ class Invoice extends Model
 
 
     public static function getVendorAnalysis($vendor_id) {
-        $total_invoices = self::select(DB::raw('sum(total_price) as totalSum'), DB::raw('AVG(total_price) as totalAvg'))->where(['user_id' => auth('api')->id()])->get()->toArray();
+        $total_invoices = self::select(
+            DB::raw('sum(total_price) as totalSum'),
+            DB::raw('AVG(total_price) as totalAvg')
+            )
+            ->where([
+                'user_id' => auth('api')->id()
+            ])->get()->toArray();
         $sum = $total_invoices[0]['totalSum'];
 
-        $invoices = self::select(DB::raw('sum(total_price) as totalSum'), DB::raw('count(id) as `invoiceCount`'), DB::raw('id'))
-            ->where(['user_id' => auth('api')->id(),'vendor_id' => $vendor_id])->get();
+        $invoices = self::select(
+            DB::raw('sum(total_price) as totalSum'),
+            DB::raw('count(id) as `invoiceCount`'),
+            DB::raw('id')
+            )
+            ->where([
+                'user_id' => auth('api')->id(),
+                'vendor_id' => $vendor_id
+            ])->get();
 
         $vendor_sum = $invoices[0]['totalSum'];
         $percentage = ($invoices[0]['totalSum'] / $sum) * 100;
@@ -227,6 +330,46 @@ class Invoice extends Model
         ];
 
         return $data;
+    }
 
+    public static function getVendorCategoryAnalysis($vendor_id, $category_id) {
+        $total_invoices = self::select(
+            DB::raw('sum(total_price) as totalSum'),
+            DB::raw('AVG(total_price) as totalAvg')
+            )->where([
+                'user_id' => auth('api')->id()
+            ])->get()->toArray();
+        $sum = $total_invoices[0]['totalSum'];
+
+        $invoices = self::join('invoice_products','invoices.id', '=', 'invoice_products.invoice_id')
+        ->join('products', function ($join) {
+            $join->on('invoice_products.product_id', '=', 'products.id');
+        })
+        ->select(
+            DB::raw('sum(products.price) as totalprice'),
+            DB::raw('count(products.id) as `productCount`'),
+            DB::raw('invoice_products.quantity as `quantity`'),
+            DB::raw('(sum(products.price) * invoice_products.quantity) as totalPriceWithQuantity'),
+        )
+        ->where([
+            'invoices.vendor_id' => $vendor_id,
+            'products.vendor_id' => $vendor_id,
+            'products.category_id' => $category_id,
+            'invoices.user_id' => auth('api')->id()
+        ])->groupBy('products.id')->get();
+
+        $invoices_sum = 0;
+        foreach($invoices as $invoice) {
+            $invoices_sum += $invoice['totalPriceWithQuantity'];
+        }
+
+        $percentage = ($invoices_sum / $sum) * 100;
+        $percentage = number_format((float)$percentage, 2, '.', '');
+
+        return [
+            'sum' => $sum,
+            'invoices_sum' => $invoices_sum,
+            'percentage' => $percentage
+        ];
     }
 }

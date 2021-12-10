@@ -143,10 +143,12 @@ class InvoiceController extends MainController
     }
 
     public function getInvoiceByVendor($vendor_id, Invoice $invoice) {
-        $invoices = $invoice->getInvoiceByVendor($vendor_id);
+        $data = $invoice->getInvoiceByVendor($vendor_id);
             return response()->json([
                 'status' => true,
-                'data' => $invoices
+                'color_number' => 2,
+                'analysis_data' => $data['analysis_data'],
+                'data' => $data['invoice_data']
             ]);
     }
 
@@ -160,17 +162,19 @@ class InvoiceController extends MainController
         ]);
     }
 
-    public function getInvoiceByCategory($category_id, Invoice $invoice) {
-        $invoices = $invoice->getInvoiceByCategory($category_id);
+    public function getInvoiceByCategory($vendor_id, $category_id, Invoice $invoice) {
+        $data = $invoice->getInvoiceByCategory($vendor_id, $category_id);
             return response()->json([
                 'status' => true,
-                'data' => $invoices
+                'color_number' => 3,
+                'analysis_data' => $data['analysis_data'],
+                'data' => $data['invoice_data']
             ]);
     }
 
-    public function getMyCategory() {
-        $vendors  = Category::whereHas('product', function ($q) {
-            $q->whereHas('invoiceProduct', function ($q) {
+    public function getMyCategory($vendor_id) {
+        $vendors  = Category::whereHas('product', function ($q) use ($vendor_id) {
+            $q->where(['vendor_id' => $vendor_id])->whereHas('invoiceProduct', function ($q) {
                 $q->whereHas('invoice', function ($q) {
                     $q->where(['user_id' => auth('api')->id()]);
                 });
@@ -186,7 +190,9 @@ class InvoiceController extends MainController
         $invoices = Invoice::myInvoices();
         return response()->json([
             'status' => true,
-            'data' => $invoices
+            'total' => $invoices['total'],
+            'color_number' => 1,
+            'data' => $invoices['my_invoices']
         ]);
     }
 
@@ -225,6 +231,14 @@ class InvoiceController extends MainController
 
     public function invoiceVendorAnalysis($vendor_id) {
         $analysis = Invoice::getVendorAnalysis($vendor_id);
+        return response()->json([
+            'status' => true,
+            'data' => $analysis
+        ]);
+    }
+
+    public function invoiceVendorCategoryAnalysis($vendor_id, $category_id) {
+        $analysis = Invoice::getVendorCategoryAnalysis($vendor_id, $category_id);
         return response()->json([
             'status' => true,
             'data' => $analysis
