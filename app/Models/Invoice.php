@@ -205,4 +205,28 @@ class Invoice extends Model
         return $invoices;
 
     }
+
+
+    public static function getVendorAnalysis($vendor_id) {
+        $total_invoices = self::select(DB::raw('sum(total_price) as totalSum'), DB::raw('AVG(total_price) as totalAvg'))->where(['user_id' => auth('api')->id()])->get()->toArray();
+        $sum = $total_invoices[0]['totalSum'];
+
+        $invoices = self::select(DB::raw('sum(total_price) as totalSum'), DB::raw('count(id) as `invoiceCount`'), DB::raw('id'))
+            ->where(['user_id' => auth('api')->id(),'vendor_id' => $vendor_id])->get();
+
+        $vendor_sum = $invoices[0]['totalSum'];
+        $percentage = ($invoices[0]['totalSum'] / $sum) * 100;
+        $percentage = number_format((float)$percentage, 2, '.', '');
+
+        $data = [
+            'sum' => $sum,
+            'vendor_sum' => $vendor_sum,
+            'invoice_count' => $invoices[0]['invoiceCount'],
+            'percentage' => $percentage
+
+        ];
+
+        return $data;
+
+    }
 }

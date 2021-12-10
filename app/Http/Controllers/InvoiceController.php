@@ -222,4 +222,12 @@ class InvoiceController extends MainController
             'data' => $analysis
         ]);
     }
+
+    public function invoiceVendorAnalysis($vendor_id) {
+        $analysis = Invoice::getVendorAnalysis($vendor_id);
+        return response()->json([
+            'status' => true,
+            'data' => $analysis
+        ]);
+    }
 }
