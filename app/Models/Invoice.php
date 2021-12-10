@@ -114,7 +114,7 @@ class Invoice extends Model
                 'user_id' => auth('api')->id()
             ])->get()->toArray();
         $sum = $total_invoices[0]['totalSum'];
-
+        $sum = number_format((float)$sum, 2, '.', '');
 
         $invoices = self::select(
             DB::raw('sum(total_price) as totalSum'),
@@ -127,15 +127,14 @@ class Invoice extends Model
             ])->get();
 
         $vendor_sum = $invoices[0]['totalSum'];
+        $vendor_sum = number_format((float)$vendor_sum, 2, '.', '');;
         $percentage = ($invoices[0]['totalSum'] / $sum) * 100;
         $percentage = number_format((float)$percentage, 2, '.', '');
 
         $analysis_data = [
-            'sum' => $sum,
+            'invoices_sum' => $sum,
             'vendor_sum' => $vendor_sum,
-            'invoice_count' => $invoices[0]['invoiceCount'],
-            'percentage' => $percentage
-
+            'vendor_percentage' => $percentage
         ];
 
         return [
@@ -146,13 +145,12 @@ class Invoice extends Model
     }
 
     public function getInvoiceByCategory($vendor_id, $category_id) {
+
         $invoice_data  = Invoice::with(['vendor'])->whereHas('invoiceProduct', function ($q) use ($vendor_id, $category_id) {
             $q->whereHas('product', function ($q) use ($vendor_id, $category_id) {
                 $q->where(['category_id' => $category_id, 'vendor_id' => $vendor_id]);
             });
         })->where(['user_id' => auth('api')->id()])->get();
-
-
 
         $total_invoices = self::select(
             DB::raw('sum(total_price) as totalSum'),
@@ -161,8 +159,9 @@ class Invoice extends Model
                 'user_id' => auth('api')->id()
             ])->get()->toArray();
         $sum = $total_invoices[0]['totalSum'];
+        $sum = number_format((float)$sum, 2, '.', '');
 
-        $invoices = self::join('invoice_products','invoices.id', '=', 'invoice_products.invoice_id')
+        $category_invoices = self::join('invoice_products','invoices.id', '=', 'invoice_products.invoice_id')
         ->join('products', function ($join) {
             $join->on('invoice_products.product_id', '=', 'products.id');
         })
@@ -179,18 +178,34 @@ class Invoice extends Model
             'invoices.user_id' => auth('api')->id()
         ])->groupBy('products.id')->get();
 
-        $invoices_sum = 0;
-        foreach($invoices as $invoice) {
-            $invoices_sum += $invoice['totalPriceWithQuantity'];
+        $category_sum = 0;
+        foreach($category_invoices as $invoice) {
+            $category_sum += $invoice['totalPriceWithQuantity'];
         }
+        $category_sum = number_format((float)$category_sum, 2, '.', '');
 
-        $percentage = ($invoices_sum / $sum) * 100;
-        $percentage = number_format((float)$percentage, 2, '.', '');
+        $category_percentage = ($category_sum / $sum) * 100;
+        $category_percentage = number_format((float)$category_percentage, 2, '.', '');
+
+
+        $vendor_invoices = self::select(DB::raw('sum(total_price) as totalSum'))
+            ->where([
+                'user_id' => auth('api')->id(),
+                'vendor_id' => $vendor_id
+            ])->get();
+
+        $vendor_sum = $vendor_invoices[0]['totalSum'];
+        $vendor_sum = number_format((float)$vendor_sum, 2, '.', '');
+        $vendor_percentage = ($vendor_invoices[0]['totalSum'] / $sum) * 100;
+        $vendor_percentage = number_format((float)$vendor_percentage, 2, '.', '');
+
 
         $analysis_data = [
-            'sum' => $sum,
-            'invoices_sum' => $invoices_sum,
-            'percentage' => $percentage
+            'invoices_sum' => $sum,
+            'vendor_sum' => $vendor_sum,
+            'vendor_percentage' => $vendor_percentage,
+            'category_sum' => $category_sum,
+            'category_percentage' => $category_percentage
         ];
 
 
@@ -204,6 +219,7 @@ class Invoice extends Model
     public static function myInvoices () {
         $my_invoices = self::with(['vendor'])->where(['user_id' => auth('api')->id()])->get()->toArray();
         $total = array_sum(array_column($my_invoices, 'total_price'));
+        $total = number_format((float)$total, 2, '.', '');
         $data = [
             'my_invoices' => $my_invoices,
             'total' => $total
