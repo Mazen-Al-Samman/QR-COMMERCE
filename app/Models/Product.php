@@ -150,6 +150,13 @@ class Product extends Model
         $products = null;
         if ($category_id) {
             $products = Product::where(['category_id' => $category_id])->get();
+            // $user_prod = InvoiceProduct::join('invoices', function($q) {
+            //     $q->where(['user_id' => auth('api')->id()]);
+            //     $q->on('invoice_products.invoice_id', '=', 'invoices.id');
+            // })->select(['user_id','product_id'])->get()->toArray();
+            // foreach($products as $product) {
+            // }
+
         } else {
             $products = Product::all();
         }
