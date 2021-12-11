@@ -116,6 +116,7 @@ class Invoice extends Model
         $sum = $total_invoices[0]['totalSum'];
         $sum = number_format((float)$sum, 2, '.', '');
 
+        // To get invoice calc for specific vendor
         $invoices = self::select(
             DB::raw('sum(total_price) as totalSum'),
             DB::raw('count(id) as `invoiceCount`'),
@@ -166,17 +167,14 @@ class Invoice extends Model
             $join->on('invoice_products.product_id', '=', 'products.id');
         })
         ->select(
-            DB::raw('sum(products.price) as totalprice'),
-            DB::raw('count(products.id) as `productCount`'),
-            DB::raw('invoice_products.quantity as `quantity`'),
-            DB::raw('(sum(products.price) * invoice_products.quantity) as totalPriceWithQuantity'),
+            DB::raw('(products.price * invoice_products.quantity) as totalPriceWithQuantity'),
         )
         ->where([
             'invoices.vendor_id' => $vendor_id,
             'products.vendor_id' => $vendor_id,
             'products.category_id' => $category_id,
             'invoices.user_id' => auth('api')->id()
-        ])->groupBy('products.id')->get();
+        ])->get()->toArray();
 
         $category_sum = 0;
         foreach($category_invoices as $invoice) {
