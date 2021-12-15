@@ -150,17 +150,32 @@ class Product extends Model
         $products = null;
         if ($category_id) {
             $products = Product::where(['category_id' => $category_id])->get();
-            // $user_prod = InvoiceProduct::join('invoices', function($q) {
-            //     $q->where(['user_id' => auth('api')->id()]);
-            //     $q->on('invoice_products.invoice_id', '=', 'invoices.id');
-            // })->select(['user_id','product_id'])->get()->toArray();
-            // foreach($products as $product) {
-            // }
+            $user_prod = InvoiceProduct::join('invoices', function($q) {
+                $q->where(['user_id' => auth('api')->id()]);
+                $q->on('invoice_products.invoice_id', '=', 'invoices.id');
+            })->select(['user_id','product_id'])->distinct()->get()->toArray();
+
+            $products_data = [];
+            foreach($products as $product) {
+                $products_data [] = [
+                    'id' => $product['id'],
+                    'name' => $product['name'],
+                    'description' => $product['description'] ,
+                    'price' => $product['price'],
+                    'old_price' => $product['old_price'],
+                    'barcode' => $product['barcode'],
+                    'main_image' => $product['main_image'],
+                    'category_id' => $product['category_id'],
+                    'vendor_id' => $product['vendor_id'],
+                    'from_user_purchase' => in_array($product['id'],array_column($user_prod, 'product_id')),
+                    'created_at' => $product['created_at'],
+                ];
+            }
 
         } else {
-            $products = Product::all();
+            $products_data = Product::all();
         }
-        return $products;
+        return $products_data;
     }
 
     public function getVendorProductsApi($vendor_id)
