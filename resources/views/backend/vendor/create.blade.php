@@ -96,8 +96,13 @@
                                                         @enderror
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <input type="checkbox" name="is_featured"><span class="font-weight-bold" style="font-size: 20px"> Is Featured</span>
+                                                <div class="col-auto d-flex align-items-center justify-content-center">
+                                                    <input type="checkbox" name="is_featured" style="zoom: 2;">
+                                                    <span class="mx-1 font-weight-bold" style="font-size: 20px"> Is Featured</span>
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center justify-content-center">
+                                                    <input type="checkbox" name="active" style="zoom: 2;">
+                                                    <span class="mx-1 font-weight-bold" style="font-size: 20px"> Active</span>
                                                 </div>
                                                 <div class="col-md-12 mt-2">
                                                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -132,6 +137,7 @@
                                                     <th>Country</th>
                                                     <th>City</th>
                                                     <th>End of subscription</th>
+                                                    <th>Status</th>
                                                     <th>Actions</th>
                                                 </tr>
                                                 </thead>
@@ -144,6 +150,14 @@
                                                         <td>{{$vendor->country}}</td>
                                                         <td>{{$vendor->city}}</td>
                                                         <td>{{$vendor->end_subscription}}</td>
+                                                        {{-- <td>{{$vendor->end_subscription > date('Y-m-d') ? "Active" : "Inactive"}}</td> --}}
+                                                        <td>
+                                                            <select name="status" id="changeStatusField" data-id="{{ $vendor->id }}" data-type="update-vendor-status" class="form-control">
+                                                                @foreach ($statusList as $status)
+                                                                    <option value="{{ $status }}" @if ($status == $vendor->status) selected @endif>{{ $status }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </td>
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             @if(in_array(\App\Models\Vendor::ROLE_PREFIX . '.show', $userAuthPermission))
                                                             <a href="{{route('vendor.show' , $vendor->id )}}" class="btn btn-info">View</a>

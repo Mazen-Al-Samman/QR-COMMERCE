@@ -63,6 +63,24 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
+                                                        <label for="exampleInputPassword1">Password</label>
+                                                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="Password">
+                                                        @error('password')
+                                                        <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="confirm-password">Confirm Password</label>
+                                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password_confirmation">
+                                                        @error('password')
+                                                        <small id="emailHelp" class="form-text text-muted text-danger">{{$message}}</small>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
                                                         <label for="image">Image</label>
                                                         <input type="file" name="image" class="form-control" id="image">
                                                         @error('image')
@@ -70,8 +88,12 @@
                                                         @enderror
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <input type="checkbox" name="is_featured" @if($vendor->is_featured == 1) checked @endif><span class="font-weight-bold" style="font-size: 20px"> Is Featured</span>
+                                                <div class="col-auto d-flex align-items-center justify-content-center">
+                                                    <input type="checkbox" name="is_published" style="zoom: 2;" @if($vendor->is_featured == 1) checked @endif><span class="mx-1 font-weight-bold" style="font-size: 20px"> Is Featured</span>
+                                                </div>
+                                                <div class="col-auto d-flex align-items-center justify-content-center">
+                                                    <input type="checkbox" name="active" style="zoom: 2;"  @if($vendor->status == \App\Models\Vendor::STATUS_ACTIVE) checked @endif>
+                                                    <span class="mx-1 font-weight-bold" style="font-size: 20px"> Active</span>
                                                 </div>
                                                 <div class="col-md-12 mt-2">
                                                     <button type="submit" class="btn btn-primary">Submit</button>

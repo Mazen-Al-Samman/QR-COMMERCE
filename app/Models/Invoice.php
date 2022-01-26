@@ -48,6 +48,11 @@ class Invoice extends Model
         return $this->hasMany(InvoiceProduct::class);
     }
 
+    public static function getAllVendorInvoices()
+    {
+        return Invoice::with(['user', 'vendor'])->where(['vendor_id' => auth('vendor')->user()->vendor_id])->get();
+    }
+
     public static function getAllInvoices()
     {
         return Invoice::with(['user', 'vendor'])->get();

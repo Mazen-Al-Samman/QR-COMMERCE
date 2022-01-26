@@ -26,7 +26,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login($userModel = null)
+    public function login($userModel = null, Request $request)
     {
         if (!empty($userModel)) {
             $token = auth('api')->login($userModel);
@@ -48,7 +48,7 @@ class AuthController extends Controller
             ]);
         }
 
-        if (!$token = auth('api')->attempt($credentials)) {
+        if (!$token = auth('api')->attempt(['phone' => $request->input('phone'), 'password' => $request->input('password'), 'status' => 'active'])) {
             return response()->json([
                 'status' => false,
                 'error' => 'Unauthorized'

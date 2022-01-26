@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\RedirectsUsers;
+use App\Models\Vendor;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -80,6 +80,10 @@ class LoginController extends Controller
         }
 
         if (Auth::guard('vendor')->attempt(['email' => $request->input('vendor-email'), 'password' => $request->input('vendor-password')], $request->get('remember'))) {
+            if (auth('vendor')->user()->vendor->status != Vendor::STATUS_ACTIVE) {
+                auth('vendor')->logout();
+                return redirect()->back()->withErrors(['inactive-vendor' => 'Vendor Inactive']);
+            }
             return $this->sendLoginResponse($request);
         }
         $this->incrementLoginAttempts($request);

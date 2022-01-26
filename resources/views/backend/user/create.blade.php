@@ -110,6 +110,7 @@
                                                     <th>Last Name</th>
                                                     <th>phone</th>
                                                     <th>Verified</th>
+                                                    <th>Status</th>
                                                     <th>Actions</th>
                                                 </tr>
                                                 </thead>
@@ -120,6 +121,13 @@
                                                         <td>{{$user->last_name}}</td>
                                                         <td>{{$user->phone}}</td>
                                                         <td>@if($user->actived == 1) <span class="text-success">Verified</span> @else <span class="text-danger">Not Verified</span> @endif</td>
+                                                        <td>
+                                                            <select name="status" id="changeStatusField" data-id="{{ $user->id }}" data-type="update-user-status" class="form-control">
+                                                                @foreach ($statusList as $status)
+                                                                    <option value="{{ $status }}" @if ($status == $user->status) selected @endif>{{ $status }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </td>
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             @if(in_array(\App\Models\Admin::ROLE_PREFIX . '.show', $userAuthPermission))
                                                                 <a href="{{route('user.show' , $user->id )}}" class="btn btn-info">View</a>

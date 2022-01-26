@@ -94,6 +94,9 @@
                     <a href="#" class="ForgetPwd" value="Login">Forget Password?</a>
                 </div>
             </form>
+            @error('inactive-vendor')
+                <p class="text-danger font-weight-bold" style="font-size: 20px">{{ $message }}</p>
+            @enderror
         </div>
     </div>
 </div>
