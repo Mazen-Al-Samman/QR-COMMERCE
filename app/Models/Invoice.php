@@ -269,12 +269,27 @@ class Invoice extends Model
 
     public static function getAnalysisByMonth()
     {
-        $total_invoices = self::select(DB::raw('sum(total_price) as totalSum'), DB::raw('AVG(total_price) as totalAvg'))
-            ->where(DB::raw('YEAR(created_at)'), date('Y'))->where(['user_id' => auth('api')->id()])->get()->toArray();
-        $avg = $total_invoices[0]['totalAvg'];
+        // To Get Year (Total & AVG) For User.
+        $total_invoices = self::select(
+            DB::raw('sum(total_price) as totalSum'),
+            DB::raw('AVG(total_price) as totalAvg'),
+            DB::raw('count(id) as `invoiceCount`')
+            )
+            ->where(
+                DB::raw('YEAR(created_at)'),
+                date('Y')
+            )->where([
+                'user_id' => auth('api')->id()
+            ])
+            ->get()->toArray();
 
+        $year_avg = number_format((float)$total_invoices[0]['totalAvg'], 2, '.', '');
+        $year_total = $total_invoices[0]['totalSum'];
+
+        // To Get Month (Total, AVG & COUNT ) For User.
         $invoices = self::select(
             DB::raw('sum(total_price) as totalSum'),
+            DB::raw('AVG(total_price) as totalAvg'),
             DB::raw('count(id) as `invoiceCount`'),
             DB::raw('id'),
             DB::raw("DATE_FORMAT(created_at, '%m-%Y') new_date"),
@@ -285,25 +300,47 @@ class Invoice extends Model
                 'user_id' => auth('api')->id()
             ])->groupBy('month')->get();
 
+        // To Send month name with response.
         $static_months = ['1' => 'يناير', '2' => 'فبراير', '3' => 'مارس', '4' => 'ابريل', '5' => 'مايو', '6' => 'يونيو', '7' => 'يوليو', '8' => 'أغسطس', '9' => 'سبتمبر', '10' => 'أكتوبر', '11' => 'نوفمبر', '12' => 'ديسمبر'];
 
-        $i = 0;
-        $invoices = $invoices->mapWithKeys(function ($item) use (/*,&$pre_percentage,*/ $avg, $static_months) {
-            $percentage = ($item['totalSum'] / $avg) * 100 - 100;
+        $invoices = $invoices->mapWithKeys(function ($item) use ($year_avg, $year_total, $static_months) {
+
+            $month_avg = number_format((float)$item['totalAvg'], 2, '.', '');
+            $month_total = $item['totalSum'];
+
+            $percentage = ($month_total / $year_avg) * 100 - 100;
+//            $percentage = ($month_total / $month_avg) * 100 - 100;
+//            $percentage = ($month_total / $year_total) * 100;
             $percentage = number_format((float)$percentage, 2, '.', '');
 
             $good_message = "في شهر " . $static_months[$item['month']] . " وفرت و صرفت أقل من المتوسط";
             $bad_message = "في شهر " . $static_months[$item['month']] . " صرفت أكثر من معدل صرفك الشهري ب " . $item['totalSum'] . " ريال, ما يعادل " . $percentage . "% أعلى من المنوسط";
+
+            $message = "في شهر " . $static_months[$item['month']] . " معدل الصرف معتدل";
+            $arrow_image = 'arrow-fair.png';
+
+            if($year_avg > $month_avg) {
+                $message = $good_message;
+                $arrow_image = "arrow-up.png";
+            }
+            else if($year_avg < $month_avg) {
+                $message = $bad_message;
+                $arrow_image = "arrow-down.png";
+            }
 
             $month = [
                 $item['month'] =>
                     [
                         'month' => $item['month'],
                         'month_name' => $static_months[$item['month']],
-                        'total' => $item['totalSum'],
+                        'total' => $month_total,
+                        'total_year' => $year_total,
                         'count' => $item['invoiceCount'],
                         'percentage' => (double)$percentage,
-                        'message' => $avg > $item['totalSum'] ? $good_message : $bad_message,
+                        'average' => $month_avg,
+                        'average_year' => $year_avg,
+                        'message' => $message,
+                        'image' => $arrow_image
                     ]
             ];
 
