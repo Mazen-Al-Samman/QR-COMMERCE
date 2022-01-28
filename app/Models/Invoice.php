@@ -308,8 +308,9 @@ class Invoice extends Model
             $month_avg = number_format((float)$item['totalAvg'], 2, '.', '');
             $month_total = $item['totalSum'];
 
+            $percentage = ($month_total / $year_avg) * 100 - 100;
 //            $percentage = ($month_total / $month_avg) * 100 - 100;
-            $percentage = ($month_total / $year_total) * 100;
+//            $percentage = ($month_total / $year_total) * 100;
             $percentage = number_format((float)$percentage, 2, '.', '');
 
             $good_message = "في شهر " . $static_months[$item['month']] . " وفرت و صرفت أقل من المتوسط";
