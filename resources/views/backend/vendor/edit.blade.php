@@ -111,6 +111,61 @@
     </div>
 </div>
 
+
+
+
+
+/*
+
+
+[
+{
+"month": 1,
+"total": 454,
+"average": 300,
+"lessAverage": 154,
+"name": "يناير",
+"count": 2,
+"percentage": "50",
+"image": "assets/images/high-removebg-preview.png",
+"message":
+"في شهر يناير صرفت أكثر من معدل صرفك الشهري ب 454 دينار, ما يعادل 28.00% أعلى من المنوسط"
+},
+{
+"month": 2,
+"name": "فبراير",
+"total": 450,
+"count": 2,
+"percentage": "10",
+"message":"في شهر فبراير صرفت أكثر من معدل صرفك الشهري ب 450 دينار, ما يعادل 25.00% أعلى من المنوسط"
+
+"average": 350,
+"lessAverage": 100,
+"image": "assets/images/high-removebg-preview.png",
+}
+]
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @section('script')
     <script>
         let vendor = {!! $vendor !!};
