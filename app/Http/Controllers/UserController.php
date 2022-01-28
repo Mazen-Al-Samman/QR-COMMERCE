@@ -21,15 +21,16 @@ class UserController extends MainController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create(Request $request)
     {
         $users = User::getAllUsers();
+        $statusList = User::userStatusList();
         return view('backend.user.create', [
             'users' => $users,
+            'statusList' => $statusList,
             'userAuthPermission' => $this->getUserPermissionns($request)
         ]);
     }

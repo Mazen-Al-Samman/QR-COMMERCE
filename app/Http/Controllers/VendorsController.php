@@ -29,14 +29,16 @@ class VendorsController extends MainController
     public function create(Request $request)
     {
         $vendorModel = new Vendor();
-        $vendors = $vendorModel->getAllVendors();
+        $vendors = $vendorModel->getAllVendorsList();
         $path = storage_path() . "/app/public/json_files/jordanian_cities.json";
         $jordanian_cities = json_encode(file_get_contents($path));
+        $vendor_status_list = $vendorModel->getVendorStatusList();
         return view('backend.vendor.create', [
             'vendors' => $vendors,
             'jordanian_cities' => $jordanian_cities,
             'userAuthPermission' => $this->getUserPermissionns($request),
             'defaultCountry' => 'Jordan',
+            'statusList' => $vendor_status_list,
         ]);
     }
 
@@ -119,11 +121,12 @@ class VendorsController extends MainController
             'phone' => ['required', 'numeric', 'unique:admins', 'regex:(^[07][7|8|9][0-9]{8})'],
             'country' => ['required', 'string'],
             'city' => ['required', 'string'],
-            'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048']
+            'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
+            'password' => ['sometimes', 'confirmed'],
         ]);
 
         if ($validation->fails()) {
-            return Redirect::route('vendor.create')->withErrors($validation);
+            return Redirect::back()->withErrors($validation);
         }
 
         $vendor = new Vendor();

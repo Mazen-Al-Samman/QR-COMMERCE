@@ -12,6 +12,9 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
+    const STATUS_ACTIVE = 'active';
+    const STATUS_BLOCKED = 'blocked';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +26,7 @@ class User extends Authenticatable implements JWTSubject
         'phone',
         'password',
         'actived',
+        'status',
         'image',
     ];
 
@@ -132,6 +136,13 @@ class User extends Authenticatable implements JWTSubject
 
         $userModel->password = Hash::make($newPassword);
         return $userModel->save();
+    }
+
+    public static function userStatusList() {
+        return [
+            self::STATUS_ACTIVE => self::STATUS_ACTIVE,
+            self::STATUS_BLOCKED => self::STATUS_BLOCKED,
+        ];
     }
 
     public static function createUser($request) {

@@ -29,6 +29,12 @@ Route::post('/phoneCheck', [\App\Http\Controllers\AuthController::class, 'checkU
 Route::prefix('backend')->group(function () {
     Auth::routes();
     Route::get('/invoice/stream-pdf/{invoice_id}', [\App\Http\Controllers\InvoiceController::class, 'streamPdf'])->name('invoice.streamPdf');
+
+    Route::prefix('ajax')->group(function (){
+        Route::post('/updateStatusField', [\App\Http\Controllers\AjaxController::class, 'updateStatusField']);
+        Route::get('/updateFlagField', [\App\Http\Controllers\AjaxController::class, 'updateFlagField']);
+    });
+
     Route::group(['middleware' => ['login-auth', 'prevent-back-history']], function () {
         Route::group(['middleware' => ['auth-permissions']], function () {
             Route::get('/profile', [\App\Http\Controllers\MainController::class, 'profile'])->name('profile.show');

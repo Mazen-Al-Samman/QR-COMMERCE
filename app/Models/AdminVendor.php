@@ -17,6 +17,7 @@ class AdminVendor extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'is_main_vendor',
         'name',
         'email',
         'password',
@@ -37,9 +38,13 @@ class AdminVendor extends Authenticatable
         return self::where(['vendor_id' => $vendor_id])->get();
     }
 
-    public function createAdmin($request, $vendor_id)
+    public function createAdmin($request, $vendor_id, $is_main_vendor = false)
     {
         $admin = new AdminVendor();
+
+        if($is_main_vendor)
+            $admin->is_main_vendor = 1;
+
         $admin->name = $request->username;
         $admin->email = $request->email;
         $admin->password = Hash::make($request->password);
@@ -56,6 +61,8 @@ class AdminVendor extends Authenticatable
         $admin->email = $request->email;
         $admin->phone = $request->phone;
         $admin->role_id = $request->role_id ;
+        if($request->password)
+            $admin->password = Hash::make($request->password);
         return $admin->save();
     }
 }

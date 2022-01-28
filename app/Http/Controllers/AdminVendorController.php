@@ -125,6 +125,7 @@ class AdminVendorController extends MainController
         $validation = Validator::make($request->all(), [
             'username' => ['required', 'string'],
             'email' => ['required', 'email'],
+            'password' => ['nullable','string', 'confirmed'],
             'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
         ]);
 

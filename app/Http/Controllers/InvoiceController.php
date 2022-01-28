@@ -21,7 +21,7 @@ class InvoiceController extends MainController
      */
     public function index(Request $request)
     {
-        $invoice_data = Invoice::getAllInvoices();
+        $invoice_data = Invoice::getAllVendorInvoices();
         return view('backend.invoice.index', [
             'invoice_data' => $invoice_data,
             'userAuthPermission' => $this->getUserPermissionns($request),

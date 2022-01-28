@@ -122,4 +122,42 @@ $(document).ready(function() {
         });
     });
 
+
+    $(document).on('change','#changeStatusField', function(){
+        var value = $(this).val();
+        var type = $(this).data('type');
+        var id = $(this).data('id');
+        $.ajax({
+            type: "POST",
+            url: "ajax/updateStatusField",
+            headers: {
+                'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+            },
+            data: {
+                'value': value,
+                'type': type,
+                'id': id
+            },
+            success: function(response) {
+                return "Request successfully";
+            }
+        });
+    })
+
+    $(document).on('click','.user-status', function() {
+        var id = $(this).data('id');
+        var type = $(this).data('type');
+        $.ajax({
+            type: "GET",
+            url: "ajax/updatePublishedField",
+            data: {
+                'id': id,
+                'type': type
+            },
+            success: function(response) {
+                return "Request successfully";
+            }
+        });
+    })
+
 });
