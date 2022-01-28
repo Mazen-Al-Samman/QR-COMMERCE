@@ -94,6 +94,11 @@
                         <a href="{{route('vendor.create')}}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-map"></i></span><span class="pcoded-mtext">Vendor</span></a>
                     @endif
                 </li>
+                @if(in_array('banner.create', $userAuthPermission))
+                    <li class="nav-item">
+                        <a href="{{route('banner.create')}}" class="nav-link"><span class="pcoded-micon"><i class="fa fa-list-alt"></i></span><span class="pcoded-mtext">Banner</span></a>
+                    </li>
+                @endif
                 @if(in_array('role.create', $userAuthPermission) || in_array('permission.create', $userAuthPermission) || in_array('role-permission.create', $userAuthPermission))
                 <li class="nav-item pcoded-hasmenu">
                     <a class="nav-link" style="cursor:pointer;"><span class="pcoded-micon"><i class="feather icon-star"></i></span><span class="pcoded-mtext">Roles & Permissions</span></a>
