@@ -111,6 +111,7 @@
                                                     <th>phone</th>
                                                     <th>Verified</th>
                                                     <th>Status</th>
+                                                    <th>Verify</th>
                                                     <th>Actions</th>
                                                 </tr>
                                                 </thead>
@@ -127,6 +128,9 @@
                                                                     <option value="{{ $status }}" @if ($status == $user->status) selected @endif>{{ $status }}</option>
                                                                 @endforeach
                                                             </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="checkbox" class="verify-user" data-id="{{ $user->id }}" data-type="verify-user" @if ($user->actived == 1) checked @endif name="actived" style="zoom: 2;">
                                                         </td>
                                                         <td class="d-flex align-items-center justify-content-center">
                                                             @if(in_array(\App\Models\Admin::ROLE_PREFIX . '.show', $userAuthPermission))

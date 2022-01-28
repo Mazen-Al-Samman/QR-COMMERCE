@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
@@ -31,7 +32,12 @@ class AjaxController extends Controller
         $id = $request->id;
         $type = $request->type;
         switch($type) {
-            case $type == "user-active-status" :
+            case "banner-published-status" :
+                $model = Banner::find($id);
+                $model->is_published = !$model->is_published;
+                $model->save();
+                break;
+            case "verify-user" :
                 $model = User::find($id);
                 $model->actived = !$model->actived;
                 $model->save();

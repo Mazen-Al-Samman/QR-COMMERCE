@@ -114,6 +114,15 @@ Route::prefix('backend')->group(function () {
                 Route::put('/update/{id}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('category.update');
             });
 
+            Route::prefix('banner')->group(function () {
+                Route::get('/', [\App\Http\Controllers\BannerController::class, 'create'])->name('banner.create');
+                Route::post('/store', [\App\Http\Controllers\BannerController::class, 'store'])->name('banner.store');
+                Route::delete('/delete/{id}', [\App\Http\Controllers\BannerController::class, 'destroy'])->name('banner.destroy');
+                Route::get('/edit/{id}', [\App\Http\Controllers\BannerController::class, 'edit'])->name('banner.edit');
+                Route::get('/show/{id}', [\App\Http\Controllers\BannerController::class, 'show'])->name('banner.show');
+                Route::put('/update/{id}', [\App\Http\Controllers\BannerController::class, 'update'])->name('banner.update');
+            });
+
             Route::prefix('product')->group(function () {
                 Route::get('/', [\App\Http\Controllers\ProductController::class, 'create'])->name('product.create');
                 Route::post('/store', [\App\Http\Controllers\ProductController::class, 'store'])->name('product.store');

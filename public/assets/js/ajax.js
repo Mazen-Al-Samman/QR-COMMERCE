@@ -144,12 +144,12 @@ $(document).ready(function() {
         });
     })
 
-    $(document).on('click','.user-status', function() {
+    $(document).on('click','.published_status,.verify-user', function() {
         var id = $(this).data('id');
         var type = $(this).data('type');
         $.ajax({
             type: "GET",
-            url: "ajax/updatePublishedField",
+            url: "ajax/updateFlagField",
             data: {
                 'id': id,
                 'type': type
