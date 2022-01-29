@@ -26,9 +26,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login($userModel = null)
+    public function login($userModel = null, Request $request)
     {
-        $request = new Request();
         if (!empty($userModel)) {
             $token = auth('api')->login($userModel);
             $cookie = cookie('jwt-token', $token, 68 * 24 * 365); // 1 year
