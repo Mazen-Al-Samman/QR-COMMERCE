@@ -76,6 +76,8 @@ class User extends Authenticatable implements JWTSubject
         $user->phone = $request->phone;
         $user->password = Hash::make($request->password);
         $user->actived = VerificationModel::DISABLED;
+        $user->sms_retries += 1;
+
         if ($request->hasfile('image')) {
             $file = $request->file('image');
             $name = time() . '_' . $file->getClientOriginalName();

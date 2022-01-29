@@ -26,11 +26,12 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login($userModel = null, Request $request)
+    public function login($userModel = null)
     {
+        $request = new Request();
         if (!empty($userModel)) {
             $token = auth('api')->login($userModel);
-            $cookie = cookie('jwt-token', $token, 68 * 24); // 1 day
+            $cookie = cookie('jwt-token', $token, 68 * 24 * 365); // 1 year
             return $this->respondWithToken($token)->withCookie($cookie);
         }
 
@@ -48,13 +49,13 @@ class AuthController extends Controller
             ]);
         }
 
-        if (!$token = auth('api')->attempt(['phone' => $request->input('phone'), 'password' => $request->input('password'), 'status' => 'active'])) {
+        if (!$token = auth('api')->attempt(['phone' => $request->input('phone'), 'password' => $request->input('password'), 'status' => User::STATUS_ACTIVE])) {
             return response()->json([
                 'status' => false,
                 'error' => 'Unauthorized'
                 ], 401);
         }
-        $cookie = cookie('jwt-token', $token, 68 * 24); // 1 day
+        $cookie = cookie('jwt-token', $token, 68 * 24 * 365); // 1 year
         return $this->respondWithToken($token)->withCookie($cookie);
     }
 
@@ -124,9 +125,11 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function forgetPassword(Request $request) {
+
         $validation = Validator::make($request->all(), [
             'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
         ]);
+
         if ($validation->fails()) {
             return response()->json([
                 'status' => false,
@@ -136,13 +139,24 @@ class AuthController extends Controller
 
         if (!$this->checkUser($request)) return response()->json(['status' => false]);
 
+        $userModel = User::where(['phone' => $request->phone])->first();
+
+        if (!$userModel) return response()->json(['status' => false, 'message' => 'User not found']);
+
+        if(!VerificationModel::checkResendAndRetries($userModel)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'otp blocked',
+                'date' => $userModel->sms_can_resend_date
+            ]);
+        }
+
         $formattedPhone = '+962' . substr($request->phone, 1);
         $code = VerificationModel::generateRandomVerificationCode();
         VerificationModel::sendForgetPasswordCode($code, $formattedPhone);
-        $userModel = User::where(['phone' => $request->phone])->first();
-        if (!$userModel) return response()->json(['status' => false, 'message' => 'User not found']);
-
         VerificationModel::verificationSent($userModel->id, $code);
+        $userModel->sms_retries += 1;
+        $userModel->save();
         return response()->json([
             'status' => true,
             'message' => "Code sent successfully.",
@@ -168,6 +182,44 @@ class AuthController extends Controller
         return response()->json([
             'status' => (bool) VerificationModel::matchUserWithCode($userModel->id, $request->reset_code),
         ]);
+    }
+
+    public function resendCode(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validation->errors()
+            ]);
+        }
+
+        $userModel = User::where(['phone' => $request->phone])->first();
+        if (!$userModel) return response()->json(['status' => false, 'message' => "Invalid Phone"]);
+
+        if(!VerificationModel::checkResendAndRetries($userModel)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'otp blocked',
+                'date' => $userModel->sms_can_resend_date
+            ]);
+        }
+
+        $formattedPhone = '+962' . substr($request->phone, 1);
+        $code = VerificationModel::generateRandomVerificationCode();
+        VerificationModel::sendForgetPasswordCode($code, $formattedPhone);
+        VerificationModel::verificationSent($userModel->id, $code);
+        $userModel->sms_retries += 1;
+        $userModel->save();
+        return response()->json([
+            'status' => true,
+            'message' => "Code sent successfully.",
+            'code' => $code
+        ]);
+
     }
 
     public function resetPassword(Request $request) {
