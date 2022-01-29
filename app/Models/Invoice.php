@@ -314,7 +314,7 @@ class Invoice extends Model
             $percentage = number_format((float)$percentage, 2, '.', '');
 
             $good_message = "في شهر " . $static_months[$item['month']] . " وفرت و صرفت أقل من المتوسط";
-            $bad_message = "في شهر " . $static_months[$item['month']] . " صرفت أكثر من معدل صرفك الشهري ب " . $item['totalSum'] . " ريال, ما يعادل " . $percentage . "% أعلى من المنوسط";
+            $bad_message = "في شهر " . $static_months[$item['month']] . " صرفت أكثر من معدل صرفك الشهري ب " . $item['totalSum'] . " دينار, ما يعادل " . $percentage . "% أعلى من المنوسط";
 
             $message = "في شهر " . $static_months[$item['month']] . " معدل الصرف معتدل";
             $arrow_image = 'arrow-fair.png';

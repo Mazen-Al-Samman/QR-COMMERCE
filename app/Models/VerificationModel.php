@@ -53,7 +53,30 @@ class VerificationModel extends Model
         return $verification->save();
     }
 
-    public static function matchUserWithCode($userId, $verificationCode) {
-        return self::where(['user_id' => $userId, 'verification_code' => $verificationCode])->exists();
+    public static function matchUserWithCode($userId, $verificationCode)
+    {
+        $match_check = self::where(['user_id' => $userId, 'verification_code' => $verificationCode])->exists();
+        if ($match_check) VerificationModel::where(['user_id' => $userId])->delete();
+        return $match_check;
+    }
+
+    public static function checkResendAndRetries($userModel)
+    {
+        $cannot_resend = true;
+        if($userModel->sms_can_resend_date <= date('Y-m-d H:i:s') && $userModel->sms_can_resend_date) {
+            $userModel->sms_retries = 0;
+            $userModel->sms_can_resend_date = null;
+            $userModel->save();
+            $cannot_resend = false;
+        }
+
+        if($userModel->sms_retries >= 4 && $cannot_resend) {
+            if(!$userModel->sms_can_resend_date) {
+                $userModel->sms_can_resend_date = date('Y-m-d H:i:s', strtotime('+1 day', time()));
+                $userModel->save();
+            }
+            return false;
+        }
+        return true;
     }
 }
