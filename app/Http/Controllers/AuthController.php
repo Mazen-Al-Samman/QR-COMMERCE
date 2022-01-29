@@ -219,7 +219,7 @@ class AuthController extends Controller
 
         $formattedPhone = '+962' . substr($request->phone, 1);
         $code = VerificationModel::generateRandomVerificationCode();
-        VerificationModel::sendForgetPasswordCode($code, $formattedPhone);
+        VerificationModel::sendVerificationCode($code, $formattedPhone);
         VerificationModel::verificationSent($userModel->id, $code);
         $userModel->sms_retries += 1;
         $userModel->save();
