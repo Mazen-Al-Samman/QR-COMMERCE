@@ -113,6 +113,8 @@ class AuthController extends Controller
         $userModel = User::find($request->user_id);
         if (!$userModel) return;
         $userModel->actived = VerificationModel::ACTIVE;
+        $userModel->sms_retries = 0;
+        $userModel->sms_can_resend_date = null;
         if ($userModel->save()) return $this->login($userModel);
 
         return response()->json([
@@ -179,8 +181,16 @@ class AuthController extends Controller
         $userModel = User::where(['phone' => $request->phone])->first();
         if (!$userModel) return response()->json(['status' => false, 'message' => $validation->errors()]);
 
+        $matchCode = (bool) VerificationModel::matchUserWithCode($userModel->id, $request->reset_code);
+
+        if($matchCode) {
+            $userModel->sms_retries = 0;
+            $userModel->sms_can_resend_date = null;
+            $userModel->save();
+        }
+
         return response()->json([
-            'status' => (bool) VerificationModel::matchUserWithCode($userModel->id, $request->reset_code),
+            'status' => $matchCode,
         ]);
     }
 

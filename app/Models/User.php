@@ -136,6 +136,8 @@ class User extends Authenticatable implements JWTSubject
         $userModel = self::where(['phone' => $phone])->first();
         if (empty($userModel)) return false;
 
+        $userModel->sms_retries = 0;
+        $userModel->sms_can_resend_date = null;
         $userModel->password = Hash::make($newPassword);
         return $userModel->save();
     }
