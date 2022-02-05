@@ -76,6 +76,7 @@ Route::group([
         Route::post('report/update',[\App\Http\Controllers\MyReportController::class,'updateApi']);
         Route::get('report/view/{id}',[\App\Http\Controllers\MyReportController::class,'viewReportById']);
         Route::get('reports',[\App\Http\Controllers\MyReportController::class,'showApi']);
+        Route::get('reports-date-filter/{year}/{month?}',[\App\Http\Controllers\MyReportController::class,'reportsDateFilter']);
 
         Route::get('banners',[\App\Http\Controllers\BannerController::class,'bannersApi']);
     });

@@ -75,4 +75,10 @@ class MyReport extends Model
         return self::where(['id' => $id])->get();
     }
 
+    public static function filterByDate($year, $month)
+    {
+        return self::whereYear('created_at',$year)->when($month, function ($q, $v) use ($month) {
+            $q->whereMonth('created_at', $month);
+        })->get();
+    }
 }
