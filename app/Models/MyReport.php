@@ -51,7 +51,7 @@ class MyReport extends Model
 
     public static function deleteReportApi($id)
     {
-        return MyReport::where(['id' => $id])->delete();
+        return MyReport::where(['id' => $id, ''])->delete();
     }
 
     public static function updateReportByID($request) {
@@ -77,8 +77,10 @@ class MyReport extends Model
 
     public static function filterByDate($year, $month)
     {
-        return self::whereYear('created_at',$year)->when($month, function ($q, $v) use ($month) {
-            $q->whereMonth('created_at', $month);
-        })->get();
+        return self::where(['user_id' => auth('api')->user()->id])
+            ->whereYear('created_at', $year)
+            ->when($month, function ($q, $v) use ($month) {
+                $q->whereMonth('created_at', $month);
+            })->get();
     }
 }
