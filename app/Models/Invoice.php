@@ -249,18 +249,13 @@ class Invoice extends Model
     }
 
     public static function deleteInvoiceById($id) {
-        if(self::where(['id' => $id])->exists()) {
-           if(Invoice::where(['id' => $id])->delete()) {
-               return response()->json([
-                   'status' => true,
-                   'message' => "Invoice Deleted"
-               ]);
-           }
+        if (Invoice::where(['id' => $id])->delete()) {
             return response()->json([
-                'status' => false,
-                'message' => "Something Wrong"
+                'status' => true,
+                'message' => "Invoice Deleted"
             ]);
         }
+
         return response()->json([
             'status' => false,
             'message' => "Invoice Not Exist"
