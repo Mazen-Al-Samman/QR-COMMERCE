@@ -112,4 +112,13 @@ class MyReportController extends Controller
         ]);
 
     }
+
+    public function reportsDateFilter($year, $month = null)
+    {
+        $my_reports = MyReport::filterByDate($year, $month);
+        return response()->json([
+            'status' => true,
+            'data' => $my_reports
+        ]);
+    }
 }
