@@ -24,9 +24,11 @@ class AuthController extends Controller
     /**
      * Get a JWT via given credentials.
      *
+     * @param null $userModel
+     * @param Request|null $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login($userModel = null, Request $request)
+    public function login($userModel = null, Request $request = null)
     {
         if (!empty($userModel)) {
             $token = auth('api')->login($userModel);
