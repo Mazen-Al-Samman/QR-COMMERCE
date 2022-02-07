@@ -28,7 +28,7 @@ class AuthController extends Controller
      * @param Request|null $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login($userModel = null, Request $request = null)
+    public function login($userModel = null, Request $request)
     {
         if (!empty($userModel)) {
             $token = auth('api')->login($userModel);
@@ -116,7 +116,7 @@ class AuthController extends Controller
         $userModel->actived = VerificationModel::ACTIVE;
         $userModel->sms_retries = 0;
         $userModel->sms_can_resend_date = null;
-        if ($userModel->save()) return $this->login($userModel);
+        if ($userModel->save()) return $this->login($userModel, $request);
 
         return response()->json([
             'status' => false,
