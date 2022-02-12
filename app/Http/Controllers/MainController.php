@@ -49,7 +49,7 @@ class MainController extends Controller
         $validation = Validator::make($request->all(), [
             'username' => ['required', 'string', Rule::unique('admins')->ignore(Auth::user()->id, 'id')],
             'email' => ['required', 'email', Rule::unique('admins')->ignore(Auth::user()->id, 'id')],
-            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/', Rule::unique('admins')->ignore(Auth::user()->id, 'id')],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/', Rule::unique('admins')->ignore(Auth::user()->id, 'id')],
         ]);
 
         if ($validation->fails()) {

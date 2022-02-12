@@ -86,7 +86,7 @@ class AdminController extends MainController
             'username' => ['required', 'string', 'unique:admins'],
             'email' => ['required', 'email', 'unique:admins'],
             'password' => ['required', 'string', 'confirmed'],
-            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/', 'unique:admins'],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/', 'unique:admins'],
         ]);
 
         if ($validation->fails()) {
@@ -148,7 +148,7 @@ class AdminController extends MainController
         $validation = Validator::make($request->all(), [
             'username' => ['required', 'string', Rule::unique('admins')->ignore($id, 'id')],
             'email' => ['required', 'email', Rule::unique('admins')->ignore($id, 'id')],
-            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/', Rule::unique('admins')->ignore($id, 'id')],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/', Rule::unique('admins')->ignore($id, 'id')],
         ]);
 
         if ($validation->fails()) {

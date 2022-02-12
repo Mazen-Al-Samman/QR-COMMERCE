@@ -58,7 +58,7 @@ class AdminVendorController extends MainController
             'username' => ['required', 'string'],
             'email' => ['required', 'email'],
             'password' => ['required', 'string', 'confirmed'],
-            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
             'role_id' => ['required', 'numeric'],
         ]);
 
@@ -126,7 +126,7 @@ class AdminVendorController extends MainController
             'username' => ['required', 'string'],
             'email' => ['required', 'email'],
             'password' => ['nullable','string', 'confirmed'],
-            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
         ]);
 
         if ($validation->fails()) {

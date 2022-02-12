@@ -39,7 +39,7 @@ class AuthController extends Controller
         $credentials = request(['phone', 'password']);
 
         $validation = Validator::make($credentials, [
-            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
             'password' => ['required', 'string'],
         ]);
 
@@ -65,7 +65,7 @@ class AuthController extends Controller
         $validation = Validator::make($request->all(), [
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
-            'phone' => ['required', 'unique:users', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+            'phone' => ['required', 'unique:users', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
             'password' => ['required', 'string'],
             'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
@@ -76,7 +76,14 @@ class AuthController extends Controller
                 'message' => $validation->errors()
             ]);
         }
-        $formattedPhone = '+962' . substr($request->phone, 1);
+
+        $formattedPhone = VerificationModel::phoneWithCountryCode($request->phone);
+        if (!$formattedPhone) {
+            return response()->json([
+                'status' => false,
+                'message' => "Invalid Phone"
+            ]);
+        }
         $verificationCode = VerificationModel::generateRandomVerificationCode();
         VerificationModel::sendVerificationCode($verificationCode, $formattedPhone);
 
@@ -130,7 +137,7 @@ class AuthController extends Controller
     public function forgetPassword(Request $request) {
 
         $validation = Validator::make($request->all(), [
-            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
         ]);
 
         if ($validation->fails()) {
@@ -154,7 +161,13 @@ class AuthController extends Controller
             ]);
         }
 
-        $formattedPhone = '+962' . substr($request->phone, 1);
+        $formattedPhone = VerificationModel::phoneWithCountryCode($request->phone);
+        if (!$formattedPhone) {
+            return response()->json([
+                'status' => false,
+                'message' => "Invalid Phone"
+            ]);
+        }
         $code = VerificationModel::generateRandomVerificationCode();
         VerificationModel::sendForgetPasswordCode($code, $formattedPhone);
         VerificationModel::verificationSent($userModel->id, $code);
@@ -169,7 +182,7 @@ class AuthController extends Controller
 
     public function checkUserCode(Request $request) {
         $validation = Validator::make($request->all(), [
-            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
             'reset_code' => ['required', 'string']
         ]);
 
@@ -198,7 +211,7 @@ class AuthController extends Controller
     public function resendCode(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
         ]);
 
         if ($validation->fails()) {
@@ -219,7 +232,13 @@ class AuthController extends Controller
             ]);
         }
 
-        $formattedPhone = '+962' . substr($request->phone, 1);
+        $formattedPhone = VerificationModel::phoneWithCountryCode($request->phone);
+        if (!$formattedPhone) {
+            return response()->json([
+                'status' => false,
+                'message' => "Invalid Phone"
+            ]);
+        }
         $code = VerificationModel::generateRandomVerificationCode();
         VerificationModel::sendVerificationCode($code, $formattedPhone);
         VerificationModel::verificationSent($userModel->id, $code);
@@ -235,7 +254,7 @@ class AuthController extends Controller
 
     public function resetPassword(Request $request) {
         $validation = Validator::make($request->all(), [
-            'phone' => ['required', 'string'],
+            'phone' => ['required', 'string', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
             'password' => ['required', 'string'],
             'reset_code' => ['required', 'string'],
         ]);
@@ -277,7 +296,7 @@ class AuthController extends Controller
         $validation = Validator::make($request->all(), [
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
-            'phone' => ['required', Rule::unique('users')->ignore(auth('api')->user()->id, 'id'), 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/'],
+            'phone' => ['required', Rule::unique('users')->ignore(auth('api')->user()->id, 'id'), 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
             'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
@@ -342,7 +361,7 @@ class AuthController extends Controller
 
     public function checkUser(Request $request) {
         $validation = Validator::make($request->all(), [
-            'phone' => ['required', 'exists:users,phone'],
+            'phone' => ['required', 'exists:users,phone', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
         ]);
         if ($validation->fails()) {
             return response()->json([

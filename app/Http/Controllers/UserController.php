@@ -47,7 +47,7 @@ class UserController extends MainController
             'first_name' => ['required', 'string'],
             'last_name' => ['required'],
             'password' => ['required', 'string', 'confirmed'],
-            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/', 'unique:users'],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/', 'unique:users'],
             'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
@@ -106,7 +106,7 @@ class UserController extends MainController
         $validation = Validator::make($request->all(), [
             'first_name' => ['required', 'string', Rule::unique('users')->ignore($id, 'id')],
             'last_name' => ['required', 'string', Rule::unique('users')->ignore($id, 'id')],
-            'phone' => ['required', 'min:10', 'max:15', 'regex:/^(079|078|077)[0-9]{7}$/', Rule::unique('users')->ignore($id, 'id')],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/', Rule::unique('users')->ignore($id, 'id')],
             'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
 
