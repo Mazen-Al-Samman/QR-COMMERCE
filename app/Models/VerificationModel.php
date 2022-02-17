@@ -41,7 +41,7 @@ class VerificationModel extends Model
         $client = new Client($account_sid, $auth_token);
         $client->messages->create($recipients,
             [
-                'from' => $twilio_number,
+                'from' => "MyBill",
                 'body' => $message,
                 'messagingServiceSid' => $msid
             ]);
