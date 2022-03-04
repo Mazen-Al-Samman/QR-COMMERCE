@@ -250,9 +250,8 @@ class InvoiceController extends MainController
         $validation = Validator::make($request->all(), [
             'title' => ['required'],
             'total_price' => ['required'],
-            'user_id' => ['exists:users,id'],
             'file' => ['file', 'mimes:jpg,png,jpeg,gif,svg,pdf,xls,ppt,doc,docx,csv', 'max:2048'],
-            'manual_invoice_date' => ['required','date'],
+            'manual_invoice_date' => ['required','date_format:Y-m-d'],
         ]);
 
         if ($validation->fails()) {

@@ -18,7 +18,7 @@ class AddManualColumnsToInvoicesTable extends Migration
             $table->string("title")->after('id')->nullable();
             $table->string("note")->after('is_manual')->nullable();
             $table->string("file", 1000)->after('note')->nullable();
-            $table->string("manual_invoice_date")->after('file')->nullable();
+            $table->date("manual_invoice_date")->after('file')->nullable();
             $table->integer("vendor_id")->unsigned()->nullable()->change();
         });
     }
