@@ -244,4 +244,36 @@ class InvoiceController extends MainController
             'data' => $analysis
         ]);
     }
+
+    public function storeManualInvoice(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'title' => ['required'],
+            'total_price' => ['required'],
+            'user_id' => ['exists:users,id'],
+            'file' => ['file', 'mimes:jpg,png,jpeg,gif,svg,pdf,xls,ppt,doc,docx,csv', 'max:2048'],
+            'manual_invoice_date' => ['required','date'],
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validation->errors()
+            ]);
+        }
+
+        $invoice = new Invoice();
+
+        if($invoice->createManualInvoice($request)) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Invoice was successfully added'
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'something wrong !!'
+        ]);
+    }
 }

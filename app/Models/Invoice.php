@@ -25,7 +25,12 @@ class Invoice extends Model
         'total_price',
         'qr_code',
         'user_id',
-        'vendor_id'
+        'vendor_id',
+        'is_manual',
+        'title',
+        'note',
+        'file',
+        'manual_invoice_date',
     ];
 
     public static function getInvoicesCount()
@@ -422,5 +427,27 @@ class Invoice extends Model
             'invoices_sum' => $invoices_sum,
             'percentage' => $percentage
         ];
+    }
+
+    /**
+     * @param $request
+     */
+    public function createManualInvoice($request)
+    {
+        $invoice = new self();
+        $invoice->title = $request->title;
+        $invoice->total_price = $request->total_price;
+        $invoice->user_id = auth('api')->user()->id;
+        $invoice->is_manual = 1;
+        $invoice->note = $request->note;
+        $invoice->manual_invoice_date = $request->manual_invoice_date;
+
+        if ($request->hasfile('file')) {
+            $file = $request->file('file');
+            $name = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path() . "/assets/images/uploads/manual_invoices/", $name);
+            $invoice->file = $name;
+        }
+        return $invoice->save();
     }
 }

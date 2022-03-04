@@ -45,4 +45,26 @@ class AjaxController extends Controller
         }
 
     }
+
+    public function resubscribeVendor(Request $request) {
+        $id = $request->id;
+        $vendor = Vendor::find($id);
+        $vendor->subscribe = (new Vendor())->generateRandomString(20);
+        $vendor->start_subscription = date("Y-m-d");
+        $vendor->end_subscription = date('Y-m-d', strtotime("+1 months", strtotime("NOW")));
+
+        if($vendor->save()) {
+            return [
+                'status' => 200,
+                'msg' => 'success'
+            ];
+        }
+
+        return [
+            'status' => 424,
+            'msg' => 'failed'
+        ];
+
+
+    }
 }
