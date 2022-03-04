@@ -33,6 +33,7 @@ Route::prefix('backend')->group(function () {
     Route::prefix('ajax')->group(function (){
         Route::post('/updateStatusField', [\App\Http\Controllers\AjaxController::class, 'updateStatusField']);
         Route::get('/updateFlagField', [\App\Http\Controllers\AjaxController::class, 'updateFlagField']);
+        Route::get('/resubscribeVendor', [\App\Http\Controllers\AjaxController::class, 'resubscribeVendor']);
     });
 
     Route::group(['middleware' => ['login-auth', 'prevent-back-history']], function () {

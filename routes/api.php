@@ -52,6 +52,7 @@ Route::group([
         Route::get('invoice/analysis',[\App\Http\Controllers\InvoiceController::class,'invoiceAnalysis'])->name('analysis-invoice');
         Route::get('invoice/analysis/{vendor_id}',[\App\Http\Controllers\InvoiceController::class,'invoiceVendorAnalysis'])->name('analysis-vendor-invoice');
         Route::get('invoice/analysis/category/{vendor_id}/{category_id}',[\App\Http\Controllers\InvoiceController::class,'invoiceVendorCategoryAnalysis'])->name('analysis-vendor-category-invoice');
+        Route::post('invoice/store-manual-invoice',[\App\Http\Controllers\InvoiceController::class,'storeManualInvoice'])->name('analysis-vendor-category-invoice');
 //        Route::get('invoice/update-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'UpdateInvoice'])->name('update-invoice');
 
         /* categories Routes */

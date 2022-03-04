@@ -139,7 +139,12 @@ $(document).ready(function() {
                 'id': id
             },
             success: function(response) {
-                return "Request successfully";
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Request successfully',
+                    showConfirmButton: false,
+                    timer: 1000
+                })
             }
         });
     })
@@ -155,7 +160,42 @@ $(document).ready(function() {
                 'type': type
             },
             success: function(response) {
-                return "Request successfully";
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Request successfully',
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+            }
+        });
+    })
+
+    $(document).on('click', '.resubscribe-vendor', function () {
+        var id = $(this).data('id');
+        $.ajax({
+            type: "GET",
+            url: "ajax/resubscribeVendor",
+            data: {
+                'id': id,
+            },
+            success: function(response) {
+                if(response.status != 200) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'SomeThing Wrong',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+
+                }else {
+                    $(".resubscribe-vendor").parent().find("[data-id='" + id + "']").hide();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Request successfully',
+                        showConfirmButton: false,
+                        timer: 1000
+                    })
+                }
             }
         });
     })

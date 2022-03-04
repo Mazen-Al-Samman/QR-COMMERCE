@@ -137,6 +137,7 @@
                                                     <th>Country</th>
                                                     <th>City</th>
                                                     <th>End of subscription</th>
+                                                    <th>Resubscribe</th>
                                                     <th>Status</th>
                                                     <th>Actions</th>
                                                 </tr>
@@ -150,7 +151,11 @@
                                                         <td>{{$vendor->country}}</td>
                                                         <td>{{$vendor->city}}</td>
                                                         <td>{{$vendor->end_subscription}}</td>
-                                                        {{-- <td>{{$vendor->end_subscription > date('Y-m-d') ? "Active" : "Inactive"}}</td> --}}
+                                                        <td>
+                                                            @if ($vendor->end_subscription < date('Y-m-d'))
+                                                                <button class="btn btn-success resubscribe-vendor" data-id="{{$vendor->id}}">Resubscribe</button>
+                                                            @endif
+                                                        </td>
                                                         <td>
                                                             <select name="status" id="changeStatusField" data-id="{{ $vendor->id }}" data-type="update-vendor-status" class="form-control">
                                                                 @foreach ($statusList as $status)
