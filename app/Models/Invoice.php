@@ -28,6 +28,7 @@ class Invoice extends Model
         'vendor_id',
         'is_manual',
         'title',
+        'type',
         'note',
         'file',
         'manual_invoice_date',
@@ -439,6 +440,7 @@ class Invoice extends Model
         $invoice->total_price = $request->total_price;
         $invoice->user_id = auth('api')->user()->id;
         $invoice->is_manual = 1;
+        $invoice->type = $request->type;
         $invoice->note = $request->note;
         $invoice->manual_invoice_date = $request->manual_invoice_date;
 
