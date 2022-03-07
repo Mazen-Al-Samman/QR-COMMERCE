@@ -30,8 +30,6 @@ class MyReportController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'title' => ['required'],
-            'guarantee' => ['required'],
-            'payment_date' => ['required'],
             'reminder' => ['required']
         ]);
 
