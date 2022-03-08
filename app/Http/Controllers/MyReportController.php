@@ -30,7 +30,7 @@ class MyReportController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'title' => ['required'],
-            'reminder' => ['required']
+            'image' => ['required'],
         ]);
 
         if ($validation->fails()) {
