@@ -5,79 +5,82 @@
     <title>A simple, clean, and responsive HTML invoice template</title>
 
     <style>
-        .invoice-box {
-            max-width: 800px;
-            margin: auto;
-            padding: 30px;
-            border: 1px solid #eee;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-            font-size: 16px;
-            line-height: 24px;
-            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-            color: #555;
+        /*.invoice-box {*/
+        /*    max-width: 800px;*/
+        /*    margin: auto;*/
+        /*    padding: 30px;*/
+        /*    border: 1px solid #eee;*/
+        /*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);*/
+        /*    font-size: 16px;*/
+        /*    line-height: 50px;*/
+        /*    font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;*/
+        /*    color: #555;*/
+        /*}*/
+        .title {
+            margin: 10px 5px;
         }
-
-        .invoice-box table {
+        table {
             width: 100%;
             line-height: inherit;
             text-align: left;
+            padding: 10px;
         }
 
-        .invoice-box table td {
+        table td {
             padding: 5px;
             vertical-align: top;
         }
 
-        .invoice-box table tr td:nth-child(2) {
+        table tr td:nth-child(2) {
             text-align: right;
         }
 
-        .invoice-box table tr.top table td {
+        table tr.top table td {
             padding-bottom: 20px;
         }
 
-        .invoice-box table tr.top table td.title {
+        table tr.top table td.title {
             font-size: 45px;
             line-height: 45px;
             color: #333;
         }
 
-        .invoice-box table tr.information table td {
+        table tr.information table td {
             padding-bottom: 25px;
             width: 1000%;
         }
 
-        .invoice-box table tr.heading td {
+        table tr.heading td {
             background: #eee;
             border-bottom: 1px solid #ddd;
             font-weight: bold;
         }
 
-        .invoice-box table tr.details td {
+        table tr.details td {
             padding-bottom: 20px;
         }
 
-        .invoice-box table tr.item td {
+        table tr.item td {
             border-bottom: 1px solid #eee;
         }
 
-        .invoice-box table tr.item.last td {
+        table tr.item.last td {
             border-bottom: none;
         }
 
-        .invoice-box table tr.total td:nth-child(2) {
+        table tr.total td:nth-child(2) {
             border-top: 2px solid #eee;
             font-weight: bold;
         }
 
         @media only screen and (max-width: 600px) {
-            .invoice-box table tr.top table td {
+            table tr.top table td {
                 width: 100%;
                 display: block;
                 text-align: center;
             }
 
-            .invoice-box table tr.information table td {
+            table tr.information table td {
                 width: 100%;
                 display: block;
                 text-align: center;
@@ -90,26 +93,34 @@
             font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
         }
 
-        .invoice-box.rtl table {
+        .rtl table {
             text-align: right;
         }
 
-        .invoice-box.rtl table tr td:nth-child(2) {
+        .rtl table tr td:nth-child(2) {
             text-align: left;
+        }
+        .title {
+            font-size: 20px;
+            text-decoration: underline;
+        }
+        @page {
+            footer: page-footer;
+            margin-footer: 5mm;
         }
     </style>
 </head>
 
 <body>
-<div class="invoice-box">
+{{--<div class="invoice-box" style="height:10.6cm; vertical-align: text-top;">--}}
     <table cellpadding="0" cellspacing="0">
         <tr class="top">
             <td colspan="2">
                 <table>
                     <tr>
                         <td colspan="2">
-                            Invoice #: {{$invoice_data['id']}}<br />
-                            Created: {{date($invoice_data['created_at'])}}<br />
+                            <span class="title" style=" color: #0a58ca">Invoice #: {{$invoice_data['id']}}</span><br />
+                            <span style="text-decoration: underline; color: #0a58ca"><span class="title">Created: </span>{{date($invoice_data['created_at'])}}</span><br />
                         </td>
                     </tr>
                 </table>
@@ -119,45 +130,89 @@
         <tr class="information">
             <td colspan="2">
                 <table>
+                    @if($invoice_data['is_manual'])
+                        <tr>
+                            <td colspan="4">
+                                <span class="title">Title:</span> <br />{{$invoice_data['title']}} <br />
+                            </td>
+                        </tr>
+
+                    @endif
                     <tr>
-                        <td colspan="2">
-                            Vendor: {{$invoice_data['vendor']['name']}} <br />
-                            Phone: {{$invoice_data['vendor']['phone']}}
-                        </td>
-                        @if($user = $invoice_data['user'])
-                            <td colspan="2">
-                                Name: {{$user['first_name'].' '.$user['last_name']}}<br />
-                                Phone: {{$user['phone']}}<br />
+                        @if(!$invoice_data['is_manual'])
+                            <td colspan="6">
+                                <span class="title">Vendor:</span> <br /> {{$invoice_data['vendor']['name']}} <br />
+                            </td>
+                            <td colspan="6">
+                                <span class="title">Phone:</span> <br /> {{$invoice_data['vendor']['phone']}}
                             </td>
                         @endif
                     </tr>
+                    <tr>
+                        @if($user = $invoice_data['user'])
+                            <td colspan="6">
+                                <span class="title">Name:</span> <br /> {{$user['first_name'].' '.$user['last_name']}}<br />
+                            </td>
+                            <td colspan="6">
+                                <span class="title">Phone:</span> <br /> {{$user['phone']}}<br />
+                            </td>
+                        @endif
+                    </tr>
+                    @if($invoice_data['is_manual'])
+                        <tr>
+                            <td colspan="6">
+                                <span class="title">Total:</span>  {{$invoice_data['total_price']}} JOD<br/>
+                            </td>
+                        </tr>
+                    @endif
                 </table>
             </td>
         </tr>
 
-        <tr class="heading">
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;Item&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;Unit Cost&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;</td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;Total&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        </tr>
-        <?php $i=1; ?>
-        @foreach($invoice_data['invoice_product'] as $product)
-            <tr class="item">
-                <td>{{$product['product']['name']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;X{{$product['quantity']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price'] * $product['quantity']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        @if(!$invoice_data['is_manual'])
+            <tr class="heading">
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;Item&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;Unit Cost&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;Total&nbsp;&nbsp;&nbsp;&nbsp;</td>
             </tr>
-            <?php $i++; ?>
-        @endforeach
+            <?php $i=1; ?>
+            @foreach($invoice_data['invoice_product'] as $product)
+                <tr class="item">
+                    <td>{{$product['product']['name']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;X{{$product['quantity']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price'] * $product['quantity']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <?php $i++; ?>
+            @endforeach
+                <tr class="total">
+                    <td></td>
 
-        <tr class="total">
-            <td></td>
+                    <td colspan="4">&nbsp;&nbsp;&nbsp;&nbsp;{{$invoice_data['total_price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+            @endif
 
-            <td colspan="4">&nbsp;&nbsp;&nbsp;&nbsp;{{$invoice_data['total_price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        </tr>
+            @if($invoice_data['is_manual'])
+                <table>
+                    <tr>
+                        <td colspan="6">
+                            <span class="title">Note: </span><br /><br />
+                            {{$invoice_data['note']}} <br />
+                        </td>
+                    </tr>
+                </table>
+            @endif
+
+            <table>
+                <tr style="text-align: center">
+                    <td colspan="3" style="text-decoration: underline; font-size: 15px; color: darkred"></td>
+                </tr>
+            </table>
     </table>
-</div>
+{{--</div>--}}
+<htmlpagefooter name="page-footer">
+    <span style="text-decoration: underline; font-size: 18px; color: darkred">Made By "My-Bill" ({{date('Y')}})</span>
+</htmlpagefooter>
 </body>
 </html>

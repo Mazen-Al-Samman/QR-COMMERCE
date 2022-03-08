@@ -1,3 +1,11 @@
+<?php
+//
+//    echo "<pre>";
+//    print_r($invoice_data);
+//    die;
+//
+//?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -22,14 +30,19 @@
         </div>
         <div class="card-body">
             <div class="row mb-4">
-                <div class="col-8 col-xl-10 col-lg-10 col-md-8 col-sm-8">
+                <div class="col-8 @if (!$invoice_data['is_manual']) col-xl-10 @else col-xl-8 @endif  col-lg-10 col-md-8 col-sm-8">
                     <h2 class="mt-2">MY BILL</h2>
                     <div class="row mt-4">
-                        <div class="col-4">
-                            <div><span class="font-weight-bold m-0">Vendor:</span> {{$invoice_data['vendor']['name']}}</div>
-                            <div><span class="font-weight-bold m-0">Phone:</span> {{$invoice_data['vendor']['phone']}}</div>
-                        </div>
-                        <div class="col-4">
+                        @if (!$invoice_data['is_manual'])
+                            <div class="col-4">
+                                <div><span class="font-weight-bold m-0">Vendor:</span> {{$invoice_data['vendor']['name']}}</div>
+                                <div><span class="font-weight-bold m-0">Phone:</span> {{$invoice_data['vendor']['phone']}}</div>
+                            </div>
+                        @endif
+                        <div class="@if (!$invoice_data['is_manual']) col-4 @else col-12 @endif">
+                            @if ($invoice_data['is_manual'])
+                                <div class="mb-3"><span class="font-weight-bold m-0">Title:</span> {{$invoice_data['title']}}</div>
+                            @endif
                             @if($user = $invoice_data['user'])
                                 <div><span class="font-weight-bold m-0">Full Name:</span> {{$user['first_name'].' '.$user['last_name']}}</div>
                                 <div><span class="font-weight-bold m-0">Phone:</span> {{$user['phone']}}</div>
@@ -40,10 +53,25 @@
                             @endif
                         </div>
                     </div>
+                    @if ($invoice_data['is_manual'] && $invoice_data['note'])
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <div class="note">
+                                    <span class="font-weight-bold m-0">Note:</span>
+                                </div>
+                                <p>{{$invoice_data['note']}}</p>
+                            </div>
+                        </div>
+                    @endif
 
                 </div>
-                <div class="col-4 col-xl-2 col-lg-2 col-md-4 col-sm-4 float-right">
-                    <img src="{{asset('assets/images/uploads/qr/'.$invoice_data['qr_code'])}}" width="100%" style="min-height: 50px; min-width: 50px;" alt="">
+                <div class="col-4 @if (!$invoice_data['is_manual']) col-xl-2 @else col-xl-4 d-flex justify-content-center align-items-center @endif  col-lg-2 col-md-4 col-sm-4 float-right">
+                    @if($invoice_data['is_manual'])
+                        <img src="{{asset('assets/images/uploads/manual_invoices/'.$invoice_data['file'])}}" width="100%" height="auto" style="min-height: 50px; min-width: 50px;" alt="">
+                    @else
+                        <img src="{{asset('assets/images/uploads/qr/'.$invoice_data['qr_code'])}}" width="100%" style="min-height: 50px; min-width: 50px;" alt="">
+                    @endif
+
                     {{--                        {!! QrCode::size(200)->generate(route('invoice.show',['invoice_id' => $invoice_data[0]['invoice_id']])) !!}--}}
                 </div>
                 <div class="col-12 mt-3">
@@ -51,32 +79,34 @@
                 </div>
             </div>
 
-            <div class="mt-5 table-responsive">
-                <table class="table table-striped" style="">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Item</th>
-                        <th class="right">Unit Cost</th>
-                        <th class="center">Qty</th>
-                        <th class="right">Total</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php $i=1; ?>
-                    @foreach($invoice_data['invoice_product'] as $product)
+            @if (!$invoice_data['is_manual'])
+                <div class="mt-5 table-responsive">
+                    <table class="table table-striped" style="">
+                        <thead>
                         <tr>
-                            <td class="center">{{$i}}</td>
-                            <td class="left" >{{$product['product']['name']}}</td>
-                            <td class="left">{{$product['product']['price']}} JOD</td>
-                            <td class="left">X{{$product['quantity']}}</td>
-                            <td class="left">{{$product['product']['price'] * $product['quantity']}} JOD</td>
+                            <th>#</th>
+                            <th>Item</th>
+                            <th class="right">Unit Cost</th>
+                            <th class="center">Qty</th>
+                            <th class="right">Total</th>
                         </tr>
-                        <?php $i++; ?>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                        <?php $i=1; ?>
+                        @foreach($invoice_data['invoice_product'] as $product)
+                            <tr>
+                                <td class="center">{{$i}}</td>
+                                <td class="left" >{{$product['product']['name']}}</td>
+                                <td class="left">{{$product['product']['price']}} JOD</td>
+                                <td class="left">X{{$product['quantity']}}</td>
+                                <td class="left">{{$product['product']['price'] * $product['quantity']}} JOD</td>
+                            </tr>
+                            <?php $i++; ?>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
             <div class="row">
                 <div class="col-lg-12 col-sm-12 ml-auto">
                     <table class="table table-clear">
