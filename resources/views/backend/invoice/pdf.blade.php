@@ -36,7 +36,7 @@
         }
 
         table tr.top table td {
-            padding-bottom: 20px;
+            /*padding-bottom: 20px;*/
         }
 
         table tr.top table td.title {
@@ -108,6 +108,22 @@
             footer: page-footer;
             margin-footer: 5mm;
         }
+        table tr.top table td.img {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+        .image {
+            width: 100%;
+            max-width: 70px;
+        }
+        .title-total {
+            font-weight: bold;
+        }
+        .total {
+            color: #1c7430;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -115,12 +131,18 @@
 {{--<div class="invoice-box" style="height:10.6cm; vertical-align: text-top;">--}}
     <table cellpadding="0" cellspacing="0">
         <tr class="top">
-            <td colspan="2">
+            <td colspan="6">
                 <table>
                     <tr>
                         <td colspan="2">
                             <span class="title" style=" color: #0a58ca">Invoice #: {{$invoice_data['id']}}</span><br />
-                            <span style="text-decoration: underline; color: #0a58ca"><span class="title">Created: </span>{{date($invoice_data['created_at'])}}</span><br />
+                            <span style="text-decoration: underline; color: #0a58ca"><span class="title">Created: </span>{{date($invoice_data['created_at'])}}</span><br /><br />
+                            @if($invoice_data['is_manual'])
+                                <span class="title-total">Total: </span><span class="total">  {{$invoice_data['total_price']}} JOD </span><br/>
+                            @endif
+                        </td>
+                        <td colspan="2" class="img">
+                            <img class="image" src="http://mybill-sa.com/assets/frontend/img/my_bill_logo.png" alt="My Bill" />
                         </td>
                     </tr>
                 </table>
@@ -128,11 +150,11 @@
         </tr>
 
         <tr class="information">
-            <td colspan="2">
+            <td colspan="6">
                 <table>
                     @if($invoice_data['is_manual'])
                         <tr>
-                            <td colspan="4">
+                            <td colspan="2">
                                 <span class="title">Title:</span> <br />{{$invoice_data['title']}} <br />
                             </td>
                         </tr>
@@ -140,47 +162,40 @@
                     @endif
                     <tr>
                         @if(!$invoice_data['is_manual'])
-                            <td colspan="6">
+                            <td colspan="2">
                                 <span class="title">Vendor:</span> <br /> {{$invoice_data['vendor']['name']}} <br />
                             </td>
-                            <td colspan="6">
+                            <td colspan="2">
                                 <span class="title">Phone:</span> <br /> {{$invoice_data['vendor']['phone']}}
                             </td>
                         @endif
                     </tr>
                     <tr>
                         @if($user = $invoice_data['user'])
-                            <td colspan="6">
+                            <td colspan="3">
                                 <span class="title">Name:</span> <br /> {{$user['first_name'].' '.$user['last_name']}}<br />
                             </td>
-                            <td colspan="6">
+                            <td colspan="3">
                                 <span class="title">Phone:</span> <br /> {{$user['phone']}}<br />
                             </td>
                         @endif
                     </tr>
-                    @if($invoice_data['is_manual'])
-                        <tr>
-                            <td colspan="6">
-                                <span class="title">Total:</span>  {{$invoice_data['total_price']}} JOD<br/>
-                            </td>
-                        </tr>
-                    @endif
                 </table>
             </td>
         </tr>
 
         @if(!$invoice_data['is_manual'])
             <tr class="heading">
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;Item&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;Unit Cost&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Item&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;Unit Cost&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Total&nbsp;&nbsp;&nbsp;&nbsp;</td>
             </tr>
             <?php $i=1; ?>
             @foreach($invoice_data['invoice_product'] as $product)
                 <tr class="item">
-                    <td>{{$product['product']['name']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td colspan="2">{{$product['product']['name']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;X{{$product['quantity']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price'] * $product['quantity']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 </tr>
@@ -189,7 +204,7 @@
                 <tr class="total">
                     <td></td>
 
-                    <td colspan="4">&nbsp;&nbsp;&nbsp;&nbsp;{{$invoice_data['total_price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td colspan="6">&nbsp;&nbsp;&nbsp;&nbsp;{{$invoice_data['total_price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 </tr>
             @endif
 
