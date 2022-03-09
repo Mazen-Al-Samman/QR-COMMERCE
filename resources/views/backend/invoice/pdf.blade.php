@@ -154,7 +154,7 @@
                 <table>
                     @if($invoice_data['is_manual'])
                         <tr>
-                            <td colspan="2">
+                            <td colspan="6">
                                 <span class="title">Title:</span> <br />{{$invoice_data['title']}} <br />
                             </td>
                         </tr>
@@ -162,10 +162,10 @@
                     @endif
                     <tr>
                         @if(!$invoice_data['is_manual'])
-                            <td colspan="2">
+                            <td colspan="3">
                                 <span class="title">Vendor:</span> <br /> {{$invoice_data['vendor']['name']}} <br />
                             </td>
-                            <td colspan="2">
+                            <td colspan="3">
                                 <span class="title">Phone:</span> <br /> {{$invoice_data['vendor']['phone']}}
                             </td>
                         @endif
