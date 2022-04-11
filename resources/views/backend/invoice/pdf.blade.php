@@ -142,7 +142,7 @@
                             @endif
                         </td>
                         <td colspan="2" class="img">
-                            <img class="image" src="http://mybill-sa.com/assets/frontend/img/my_bill_logo.png" alt="My Bill" />
+                            <img class="image" src="{{$path_img}}" alt="My Bill" />
                         </td>
                     </tr>
                 </table>
