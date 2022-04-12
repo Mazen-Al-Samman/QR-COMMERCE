@@ -142,7 +142,7 @@
                             @endif
                         </td>
                         <td colspan="2" class="img">
-                            <img class="image" src="http://mybill-sa.com/assets/frontend/img/mybillLogo.jpg" alt="My Bill" />
+                            <img class="image" src="http://mybill-sa.com/assets/frontend/assets/img/icon-mybill.jpg" alt="My Bill" />
                         </td>
                     </tr>
                 </table>
