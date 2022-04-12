@@ -244,14 +244,9 @@ class Invoice extends Model
                 "verify_peer"=>false,
                 "verify_peer_name"=>false,
             ),);
-        $img_path = "http://mybill-sa.com/assets/frontend/img/my_bill_logo.png";
-        $extencion = pathinfo($img_path, PATHINFO_EXTENSION);
-        $data = file_get_contents($img_path, false, stream_context_create($opciones_ssl));
-        $img_base_64 = base64_encode($data);
-        $path_img = 'data:image/' . $extencion . ';base64,' . $img_base_64;
+
         $pdf = MPDF::loadView('backend.invoice.pdf', [
             'invoice_data' => $invoice_data[0],
-            'path_img' => $path_img,
             'pdf_option' => true
         ]);
         return $pdf->stream('document.pdf');
