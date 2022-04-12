@@ -5,17 +5,6 @@
     <title>A simple, clean, and responsive HTML invoice template</title>
 
     <style>
-        /*.invoice-box {*/
-        /*    max-width: 800px;*/
-        /*    margin: auto;*/
-        /*    padding: 30px;*/
-        /*    border: 1px solid #eee;*/
-        /*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);*/
-        /*    font-size: 16px;*/
-        /*    line-height: 50px;*/
-        /*    font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;*/
-        /*    color: #555;*/
-        /*}*/
         .title {
             margin: 10px 5px;
         }
@@ -106,7 +95,7 @@
         }
         @page {
             footer: page-footer;
-            margin-footer: 5mm;
+            margin-footer: 15mm;
         }
         table tr.top table td.img {
             font-size: 45px;
@@ -123,6 +112,14 @@
         .total {
             color: #1c7430;
             font-weight: bold;
+        }
+        .go-play {
+            width: 100%;
+            max-width: 135px !important;
+        }
+        .app-store {
+            width: 100%;
+            max-width: 120px !important;
         }
     </style>
 </head>
@@ -142,7 +139,7 @@
                             @endif
                         </td>
                         <td colspan="2" class="img">
-                            <img class="image" src="http://mybill-sa.com/assets/frontend/assets/img/icon-mybill.jpg" alt="My Bill" />
+                            <img class="image" src="http://mybill-sa.com/assets/frontend/assets/img/my_bill_logo.jpg" alt="My Bill" />
                         </td>
                     </tr>
                 </table>
@@ -227,7 +224,28 @@
     </table>
 {{--</div>--}}
 <htmlpagefooter name="page-footer">
-    <span style="text-decoration: underline; font-size: 18px; color: darkred">Made By "My-Bill" ({{date('Y')}})</span>
+
+        <table>
+            <tr>
+                <td colspan="4" style="font-width: bold; font-size: 20px; color: gray;">
+                    Produced by mybill
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td colspan="2">
+                    <img class="app-store" src="http://mybill-sa.com/assets/frontend/assets/img/appStore.jpg" alt="My Bill" />
+                </td>
+                <td colspan="2">
+                    <img class="go-play" src="http://mybill-sa.com/assets/frontend/assets/img/googlePlay.jpg" alt="My Bill" />
+                </td>
+            </tr>
+        </table>
+
 </htmlpagefooter>
 </body>
 </html>
