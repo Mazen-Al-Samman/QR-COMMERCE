@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Invoice;
+use App\Models\InvoiceOtherProduct;
 use App\Models\InvoiceProduct;
 use App\Models\Product;
 use App\Models\Vendor;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use PDF;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class InvoiceController extends MainController
 {
@@ -275,5 +278,112 @@ class InvoiceController extends MainController
             'status' => false,
             'message' => 'something wrong !!'
         ]);
+    }
+
+    public function generateInvoice(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $products = $request->post();
+            if(!$this->filterOtherProductSkeleton($products)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Messing parameters !"
+                ]);
+            }
+
+            $total_amount = 0 ;
+            foreach ($products as $product) {
+                $validator = Validator::make(
+                    $product,
+                    [
+                        'name' => 'required|string',
+                        'price' => 'required',
+                        'quantity' => 'required',
+                        'total_price' => 'required',
+                    ]
+                );
+
+                if ($validator->fails())
+                {
+                    return response()->json([
+                        'status' => false,
+                        'message' => $validator->errors()
+                    ]);
+                }
+                $total_amount+= $product['total_price'];
+            }
+
+            $accessKey = $request->header('accessKey');
+            $vendor = Vendor::where(['access_key' => $accessKey])->get()[0];
+            if(!$vendor) {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'message' => "Something wrong !!"
+                ]);
+            }
+
+            $invoice = new Invoice();
+            $invoice->total_price = $total_amount;
+            $invoice->type = "out-source";
+            $invoice->qr_code = 'qrcode_' . time() . '.png';
+            $invoice->vendor_id = $vendor->id;
+
+            if(!$invoice->save()) {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'message' => "Something wrong !!"
+                ]);
+            }
+
+            $products = array_map(function ($product) use ($invoice) {
+                return $product + [
+                    'invoice_id' => $invoice->id ,
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'updated_at' => date("Y-m-d h:i:s"),
+                ];
+            }, $products);
+
+            if (!InvoiceOtherProduct::insert($products)) {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'message' => "Something wrong !!"
+                ]);
+            }
+
+            QrCode::size(500)
+                ->format('png')
+                // ->generate(route('invoice.show', ['invoice_id' => $invoice->id]), public_path() . "/assets/images/uploads/qr/" . $invoice->qr_code);
+                ->generate(route('get-invoice-by-id',['id' => $invoice->id]), public_path() . "/assets/images/uploads/qr/" . $invoice->qr_code);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => "success"
+            ]);
+
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => $exception->getMessage()
+            ]);
+        }
+    }
+
+    public function filterOtherProductSkeleton($products)
+    {
+        $otherProductsFields = ["name", "description", "price", "quantity", "total_price"];
+        foreach ($products as $product) {
+            $product = array_unique($product);
+            if (!empty(array_diff_key(array_flip($otherProductsFields), $product)) && count($product) != count($otherProductsFields)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

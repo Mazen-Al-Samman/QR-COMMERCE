@@ -32,7 +32,7 @@ class MainController extends Controller
 
     public function profile(Request $request)
     {
-        if (\auth()->user()) {
+        if (\auth()->user() || auth("vendor")->user()) {
             return view('backend.auth.profile', ['userAuthPermission' => $this->getUserPermissionns($request),]);
         }
         return redirect()->route('login');
@@ -46,21 +46,26 @@ class MainController extends Controller
      */
     public function updateProfile(Request $request)
     {
+        $auth = Auth::user() ?? auth("vendor")->user();
         $validation = Validator::make($request->all(), [
-            'username' => ['required', 'string', Rule::unique('admins')->ignore(Auth::user()->id, 'id')],
-            'email' => ['required', 'email', Rule::unique('admins')->ignore(Auth::user()->id, 'id')],
-            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/', Rule::unique('admins')->ignore(Auth::user()->id, 'id')],
+            'username' => ['required', 'string', Rule::unique('admins')->ignore($auth->id, 'id')],
+            'email' => ['required', 'email', Rule::unique('admins')->ignore($auth->id, 'id')],
+            'phone' => ['required', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/', Rule::unique('admins')->ignore($auth->id, 'id')],
         ]);
 
         if ($validation->fails()) {
             return Redirect::back()->withErrors($validation);
         }
 
-        $update = Admin::find(Auth::user()->id);
-        $update->username = $request->username;
-        $update->email = $request->email;
-        $update->phone = $request->phone;
-        $update->save();
+        $auth->email = $request->email;
+        $auth->phone = $request->phone;
+        if(Auth::user()) {
+            $auth->username = $request->username;
+        } else if (auth("vendor")->user()) {
+            $auth->name = $request->username;
+        }
+        $auth->save();
+
 
             $request->session()->flash('update', 'User was successful updated!');
             return Redirect::back();

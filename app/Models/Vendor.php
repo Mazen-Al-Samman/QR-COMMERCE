@@ -31,7 +31,8 @@ class Vendor extends Model
         'subscribe',
         'phone',
         'start_subscription',
-        'end_subscription'
+        'end_subscription',
+        'access_key'
     ];
 
     public function category()
@@ -90,6 +91,7 @@ class Vendor extends Model
         $vendor->subscribe = $this->generateRandomString(20);
         $vendor->start_subscription = date("Y-m-d");
         $vendor->end_subscription = date('Y-m-d', strtotime("+1 months", strtotime("NOW")));
+        $vendor->access_key = strtoupper(md5(uniqid(rand(), true)));
         if(isset($request->is_featured)) {
             $vendor->is_featured = 1;
         }

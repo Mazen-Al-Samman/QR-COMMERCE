@@ -189,15 +189,28 @@
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;Total&nbsp;&nbsp;&nbsp;&nbsp;</td>
             </tr>
             <?php $i=1; ?>
-            @foreach($invoice_data['invoice_product'] as $product)
-                <tr class="item">
-                    <td colspan="2">{{$product['product']['name']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                    <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;X{{$product['quantity']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price'] * $product['quantity']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                </tr>
-                <?php $i++; ?>
-            @endforeach
+            @if(!empty($invoice_data['invoice_product']))
+                @foreach($invoice_data['invoice_product'] as $product)
+                    <tr class="item">
+                        <td colspan="2">{{$product['product']['name']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;X{{$product['quantity']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;{{$product['product']['price'] * $product['quantity']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <?php $i++; ?>
+                @endforeach
+            @endif
+            @if(!empty($invoice_data['invoice_other_product']))
+                @foreach($invoice_data['invoice_other_product'] as $product)
+                    <tr class="item">
+                        <td colspan="2">{{$product['name']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;{{$product['price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;X{{$product['quantity']}}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;{{$product['total_price']}} JOD&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <?php $i++; ?>
+                @endforeach
+            @endif
                 <tr class="total">
                     <td></td>
 

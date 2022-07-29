@@ -103,6 +103,7 @@ Route::prefix('backend')->group(function () {
                     Route::get('/show/{id}', [\App\Http\Controllers\AdminVendorController::class, 'show'])->name('admin-vendor.show');
                     Route::get('/edit/{id}', [\App\Http\Controllers\AdminVendorController::class, 'edit'])->name('admin-vendor.edit');
                     Route::put('/update/{id}', [\App\Http\Controllers\AdminVendorController::class, 'update'])->name('admin-vendor.update');
+                    Route::post('/generate-access-key', [\App\Http\Controllers\AdminVendorController::class, 'generateAccessKey'])->name('admin-vendor.generate-access-key');
                 });
 
             });

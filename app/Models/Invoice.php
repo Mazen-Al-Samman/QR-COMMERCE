@@ -54,6 +54,11 @@ class Invoice extends Model
         return $this->hasMany(InvoiceProduct::class);
     }
 
+    public function invoiceOtherProduct()
+    {
+        return $this->hasMany(InvoiceOtherProduct::class);
+    }
+
     public static function getAllVendorInvoices()
     {
         return Invoice::with(['user', 'vendor'])->where(['vendor_id' => auth('vendor')->user()->vendor_id])->get();
@@ -66,7 +71,7 @@ class Invoice extends Model
 
     public function getInvoiceById($invoice_id)
     {
-        $invoice_data = Invoice::with(['vendor','user','invoiceProduct','invoiceProduct.product'])->where(['invoices.id' => $invoice_id])->get();
+        $invoice_data = Invoice::with(['vendor','user','invoiceProduct','invoiceProduct.product', 'invoiceOtherProduct'])->where(['invoices.id' => $invoice_id])->get();
         $invoice_data = json_decode(json_encode($invoice_data), true);
         return $invoice_data;
     }
@@ -103,7 +108,7 @@ class Invoice extends Model
 
     public static function downloadPDF($invoice_id)
     {
-        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product', 'vendor'])->where(['invoices.id' => $invoice_id])->get()->toArray();
+        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product', 'invoiceOtherProduct', 'vendor'])->where(['invoices.id' => $invoice_id])->get()->toArray();
         $invoice_data = json_decode(json_encode($invoice_data), true);
         $pdf = MPDF::loadView('backend.invoice.pdf', [
             'invoice_data' => $invoice_data[0],
@@ -238,7 +243,7 @@ class Invoice extends Model
 
     public static function streamPDF($invoice_id)
     {
-        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product', 'vendor'])->where(['invoices.id' => $invoice_id])->get()->toArray();
+        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product', 'invoiceOtherProduct', 'vendor'])->where(['invoices.id' => $invoice_id])->get()->toArray();
         $opciones_ssl=array(
             "ssl"=>array(
                 "verify_peer"=>false,
