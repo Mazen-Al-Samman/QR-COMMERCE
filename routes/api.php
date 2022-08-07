@@ -30,11 +30,13 @@ Route::group([
     Route::post('refresh', [\App\Http\Controllers\AuthController::class, 'refresh']);
 
 
-
+    Route::group(['middleware' => 'vendor-access-key'], function () {
+        Route::post('invoice/generate-invoice', [\App\Http\Controllers\InvoiceController::class, 'generateInvoice']);
+    });
 
     Route::group(['middleware' => 'auth:api'], function () {
 
-        Route::post('profile', [\App\Http\Controllers\AuthController::class, 'profile']);
+        Route::get('profile', [\App\Http\Controllers\AuthController::class, 'profile']);
         Route::post('profile/update', [\App\Http\Controllers\AuthController::class, 'updateProfile']);
 
         /* vendors Routes */

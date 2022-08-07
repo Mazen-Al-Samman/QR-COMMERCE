@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
@@ -158,5 +159,18 @@ class AdminVendorController extends MainController
 
     public function getLoggedInVendorId() {
         return Auth::guard('vendor')->user()->vendor_id ?? -1;
+    }
+
+    public function generateAccessKey(Request $request)
+    {
+        if (Hash::check($request->password, auth("vendor")->user()->password)) {
+            auth("vendor")->user()->vendor->access_key = strtoupper(md5(uniqid(rand(), true)));
+            auth("vendor")->user()->vendor->save();
+            return Redirect::back();
+        }
+        if(!$request->password) {
+            return redirect()->back()->with('invalid-password', 'Password cannot be blank !');
+        }
+        return redirect()->back()->with('invalid-password', 'Incorrect password');
     }
 }

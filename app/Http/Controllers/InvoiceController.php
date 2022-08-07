@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Invoice;
+use App\Models\InvoiceOtherProduct;
 use App\Models\InvoiceProduct;
 use App\Models\Product;
 use App\Models\Vendor;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use PDF;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Http\Controllers\Helpers\CommonHelper;
 
 class InvoiceController extends MainController
 {
@@ -22,8 +26,17 @@ class InvoiceController extends MainController
     public function index(Request $request)
     {
         $invoice_data = Invoice::getAllVendorInvoices();
+        $invoices = [];
+        foreach ($invoice_data as $invoice) {
+            $common_helper = new CommonHelper();
+            if ($invoice['type'] == Invoice::TYPE_OUTSOURCE) {
+                $common_helper->decryptInvoice($invoice);
+            }
+            $invoices [] = $invoice;
+        }
+
         return view('backend.invoice.index', [
-            'invoice_data' => $invoice_data,
+            'invoice_data' => $invoices,
             'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
@@ -100,10 +113,21 @@ class InvoiceController extends MainController
     public function show($id, Request $request)
     {
         $invoice = new Invoice();
-        $invoice_data = $invoice->getInvoiceById($id);
+        $invoice_data = $invoice->getInvoiceById($id)[0];
 
+        if($invoice_data['type'] == Invoice::TYPE_OUTSOURCE) {
+            $common_helper = new CommonHelper();
+            $common_helper->decryptInvoice($invoice_data);
+            if (!empty($invoice_data['invoice_other_product'])) {
+                $otherProducts = [];
+                foreach ($invoice_data['invoice_other_product'] as $product) {
+                    $otherProducts [] = $common_helper->decryptInvoiceProducts($product);
+                }
+                $invoice_data['invoice_other_product'] = $otherProducts;
+            }
+        }
         return view('backend.invoice.view', [
-            'invoice_data' => $invoice_data[0],
+            'invoice_data' => $invoice_data,
             'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
@@ -118,17 +142,32 @@ class InvoiceController extends MainController
         $this->UpdateInvoice($id);
         $invoice = new Invoice();
         $invoice_data = $invoice->getInvoiceById($id);
-        if($invoice_data) {
+
+        if(!$invoice_data) {
             return response()->json([
                 'status' => true,
-                'data' => $invoice_data
+                'data' => []
             ]);
+        }
+
+        $common_helper = new CommonHelper();
+
+        if($invoice_data[0]['type'] == Invoice::TYPE_OUTSOURCE) {
+            $common_helper->decryptInvoice($invoice_data[0]);
+            if (!empty($invoice_data[0]['invoice_other_product'])) {
+                $otherProducts = [];
+                foreach ($invoice_data[0]['invoice_other_product'] as $product) {
+                    $otherProducts [] = $common_helper->decryptInvoiceProducts($product);
+                }
+                $invoice_data[0]['invoice_other_product'] = $otherProducts;
+            }
         }
 
         return response()->json([
             'status' => true,
-            'data' => []
+            'data' => $invoice_data
         ]);
+
     }
 
     public function UpdateInvoice($id) {
@@ -144,12 +183,18 @@ class InvoiceController extends MainController
 
     public function getInvoiceByVendor($vendor_id, Invoice $invoice) {
         $data = $invoice->getInvoiceByVendor($vendor_id);
-            return response()->json([
-                'status' => true,
-                'color_number' => 2,
-                'analysis_data' => $data['analysis_data'],
-                'data' => $data['invoice_data']
-            ]);
+
+        if($data['invoice_data'][0]['type'] == Invoice::TYPE_OUTSOURCE) {
+            $common_helper = new CommonHelper();
+            $common_helper->decryptInvoice($data['invoice_data'][0]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'color_number' => 2,
+            'analysis_data' => $data['analysis_data'],
+            'data' => $data['invoice_data']
+        ]);
     }
 
     public function getMyVendors () {
@@ -188,11 +233,22 @@ class InvoiceController extends MainController
 
     public function getMyinvoice () {
         $invoices = Invoice::myInvoices();
+
+        $invoice_data = [];
+        foreach ($invoices['my_invoices'] as $invoice) {
+            if($invoice['type'] == Invoice::TYPE_OUTSOURCE) {
+                $common_helper = new CommonHelper();
+                $common_helper->decryptInvoice($invoice);
+            }
+            unset($invoice['vendor']['access_key']);
+            $invoice_data [] = $invoice;
+        }
+
         return response()->json([
             'status' => true,
             'total' => $invoices['total'],
             'color_number' => 1,
-            'data' => $invoices['my_invoices']
+            'data' => $invoice_data
         ]);
     }
 
@@ -275,5 +331,103 @@ class InvoiceController extends MainController
             'status' => false,
             'message' => 'something wrong !!'
         ]);
+    }
+
+    public function generateInvoice(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $common_helper = new CommonHelper();
+            $products = $request->post();
+            if (!$common_helper->filterOtherProductSkeleton($products)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Messing parameters !"
+                ]);
+            }
+
+            $data = [];
+            $total_amount = 0;
+            foreach ($products as $product) {
+                $validator = Validator::make(
+                    $product,
+                    [
+                        'name' => 'required|string',
+                        'price' => 'required',
+                        'quantity' => 'required',
+                        'total_price' => 'required',
+                    ]
+                );
+
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => $validator->errors()
+                    ]);
+                }
+                $total_amount += $product['total_price'];
+                $data [] = $common_helper->encryptInvoiceProducts($product);
+            }
+
+            $accessKey = $request->header('accessKey');
+            $vendor = Vendor::where(['access_key' => $accessKey])->get()[0];
+            if (!$vendor) {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'message' => "Something wrong !!"
+                ]);
+            }
+
+            $qr_code_name = 'qrcode_' . time() . '.png';
+            $invoice = new Invoice();
+            $invoice->type = Invoice::TYPE_OUTSOURCE;
+            $invoice->vendor_id = $vendor->id;
+            $invoice->total_price = $common_helper->encrypt($total_amount);
+            $invoice->qr_code = $common_helper->encrypt($qr_code_name);
+
+            if (!$invoice->save()) {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'message' => "Something wrong !!"
+                ]);
+            }
+
+            $products = array_map(function ($product) use ($invoice) {
+                return $product + [
+                        'invoice_id' => $invoice->id,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'updated_at' => date("Y-m-d h:i:s"),
+                    ];
+            }, $data);
+
+            if (!InvoiceOtherProduct::insert($products)) {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'message' => "Something wrong !!"
+                ]);
+            }
+
+            QrCode::size(500)
+                ->format('png')
+                // ->generate(route('invoice.show', ['invoice_id' => $invoice->id]), public_path() . "/assets/images/uploads/qr/" . $invoice->qr_code);
+                ->generate(route('get-invoice-by-id', ['id' => $invoice->id]), public_path() . "/assets/images/uploads/qr/" . $qr_code_name);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => "success"
+            ]);
+
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => $exception->getMessage()
+            ]);
+        }
     }
 }

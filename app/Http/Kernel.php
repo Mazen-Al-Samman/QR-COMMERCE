@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckVendorAccessKey;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -66,5 +67,6 @@ class Kernel extends HttpKernel
         'login-auth' => \App\Http\Middleware\loginAuth::class,
         'auth-permissions' => \App\Http\Middleware\AuthPermissions::class,
         'vendor-auth' => \App\Http\Middleware\vendorAuth::class,
+        'vendor-access-key' => CheckVendorAccessKey::class
     ];
 }

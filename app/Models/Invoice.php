@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Helpers\CommonHelper;
 use Elibyy\TCPDF\TCPDF;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,9 @@ use MPDF;
 class Invoice extends Model
 {
     const ROLE_PREFIX = 'invoice';
+
+    const TYPE_OUTSOURCE = 'out-source';
+
     use HasFactory;
 
     /**
@@ -54,9 +58,14 @@ class Invoice extends Model
         return $this->hasMany(InvoiceProduct::class);
     }
 
+    public function invoiceOtherProduct()
+    {
+        return $this->hasMany(InvoiceOtherProduct::class);
+    }
+
     public static function getAllVendorInvoices()
     {
-        return Invoice::with(['user', 'vendor'])->where(['vendor_id' => auth('vendor')->user()->vendor_id])->get();
+        return Invoice::with(['user', 'vendor'])->where(['vendor_id' => auth('vendor')->user()->vendor_id])->orderBy('invoices.user_id')->get();
     }
 
     public static function getAllInvoices()
@@ -66,7 +75,7 @@ class Invoice extends Model
 
     public function getInvoiceById($invoice_id)
     {
-        $invoice_data = Invoice::with(['vendor','user','invoiceProduct','invoiceProduct.product'])->where(['invoices.id' => $invoice_id])->get();
+        $invoice_data = Invoice::with(['vendor','user','invoiceProduct','invoiceProduct.product', 'invoiceOtherProduct'])->where(['invoices.id' => $invoice_id])->get();
         $invoice_data = json_decode(json_encode($invoice_data), true);
         return $invoice_data;
     }
@@ -103,10 +112,23 @@ class Invoice extends Model
 
     public static function downloadPDF($invoice_id)
     {
-        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product', 'vendor'])->where(['invoices.id' => $invoice_id])->get()->toArray();
-        $invoice_data = json_decode(json_encode($invoice_data), true);
+        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product', 'invoiceOtherProduct', 'vendor'])->where(['invoices.id' => $invoice_id])->get()->toArray();
+        $invoice_data = json_decode(json_encode($invoice_data), true)[0];
+
+        $common_helper = new CommonHelper();
+        if($invoice_data['type'] == self::TYPE_OUTSOURCE) {
+            $common_helper->decryptInvoice($invoice_data);
+            if (!empty($invoice_data['invoice_other_product'])) {
+                $otherProducts = [];
+                foreach ($invoice_data['invoice_other_product'] as $product) {
+                    $otherProducts [] = $common_helper->decryptInvoiceProducts($product);
+                }
+                $invoice_data['invoice_other_product'] = $otherProducts;
+            }
+        }
+
         $pdf = MPDF::loadView('backend.invoice.pdf', [
-            'invoice_data' => $invoice_data[0],
+            'invoice_data' => $invoice_data,
             'pdf_option' => true
         ]);
         return $pdf->download('invoice.pdf');
@@ -238,15 +260,23 @@ class Invoice extends Model
 
     public static function streamPDF($invoice_id)
     {
-        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product', 'vendor'])->where(['invoices.id' => $invoice_id])->get()->toArray();
-        $opciones_ssl=array(
-            "ssl"=>array(
-                "verify_peer"=>false,
-                "verify_peer_name"=>false,
-            ),);
+        $invoice_data = Invoice::with(['user','invoiceProduct','invoiceProduct.product', 'invoiceOtherProduct', 'vendor'])->where(['invoices.id' => $invoice_id])->get()->toArray()[0];
+
+        if($invoice_data['type'] == self::TYPE_OUTSOURCE) {
+            $common_helper = new CommonHelper();
+            $common_helper->decryptInvoice($invoice_data);
+
+            if (!empty($invoice_data['invoice_other_product'])) {
+                $otherProducts = [];
+                foreach ($invoice_data['invoice_other_product'] as $product) {
+                    $otherProducts [] = $common_helper->decryptInvoiceProducts($product);
+                }
+                $invoice_data['invoice_other_product'] = $otherProducts;
+            }
+        }
 
         $pdf = MPDF::loadView('backend.invoice.pdf', [
-            'invoice_data' => $invoice_data[0],
+            'invoice_data' => $invoice_data,
             'pdf_option' => true
         ]);
         return $pdf->stream('document.pdf');
@@ -276,6 +306,17 @@ class Invoice extends Model
 
     public static function getAnalysisByMonth()
     {
+        $common_helper = new CommonHelper();
+        $outSourceInvoices = self::where(['type' => self::TYPE_OUTSOURCE])->select(['id', 'total_price'])->get();
+
+        DB::beginTransaction();
+        foreach ($outSourceInvoices as $invoice) {
+            $invoice->total_price = $common_helper->decrypt($invoice['total_price']);
+            if(!$invoice->save()) {
+                DB::rollBack();
+            }
+        }
+
         // To Get Year (Total & AVG) For User.
         $total_invoices = self::select(
             DB::raw('sum(total_price) as totalSum'),
@@ -355,16 +396,38 @@ class Invoice extends Model
         });
         $invoices = json_decode($invoices,true);
         $invoices = array_values($invoices);
+
+        DB::beginTransaction();
+        foreach ($outSourceInvoices as $invoice) {
+            $invoice->total_price = $common_helper->encrypt($invoice['total_price']);
+            if(!$invoice->save()) {
+                DB::rollBack();
+            }
+        }
+        DB::commit();
         return $invoices;
 
     }
 
 
-    public static function getVendorAnalysis($vendor_id) {
+    public static function getVendorAnalysis($vendor_id)
+    {
+        $common_helper = new CommonHelper();
+        $outSourceInvoices = self::where(['type' => self::TYPE_OUTSOURCE])->select(['id', 'total_price'])->get();
+
+        DB::beginTransaction();
+        foreach ($outSourceInvoices as $invoice) {
+            $invoice->total_price = $common_helper->decrypt($invoice['total_price']);
+            if (!$invoice->save()) {
+                DB::rollBack();
+            }
+        }
+
+        // To Get Year (Total & AVG) For User.
         $total_invoices = self::select(
             DB::raw('sum(total_price) as totalSum'),
             DB::raw('AVG(total_price) as totalAvg')
-            )
+        )
             ->where([
                 'user_id' => auth('api')->id()
             ])->get()->toArray();
@@ -374,7 +437,7 @@ class Invoice extends Model
             DB::raw('sum(total_price) as totalSum'),
             DB::raw('count(id) as `invoiceCount`'),
             DB::raw('id')
-            )
+        )
             ->where([
                 'user_id' => auth('api')->id(),
                 'vendor_id' => $vendor_id
@@ -392,42 +455,72 @@ class Invoice extends Model
 
         ];
 
+        DB::beginTransaction();
+        foreach ($outSourceInvoices as $invoice) {
+            $invoice->total_price = $common_helper->encrypt($invoice['total_price']);
+            if(!$invoice->save()) {
+                DB::rollBack();
+            }
+        }
+        DB::commit();
+
         return $data;
     }
 
-    public static function getVendorCategoryAnalysis($vendor_id, $category_id) {
+    public static function getVendorCategoryAnalysis($vendor_id, $category_id)
+    {
+        $common_helper = new CommonHelper();
+        $outSourceInvoices = self::where(['type' => self::TYPE_OUTSOURCE])->select(['id', 'total_price'])->get();
+
+        DB::beginTransaction();
+        foreach ($outSourceInvoices as $invoice) {
+            $invoice->total_price = $common_helper->decrypt($invoice['total_price']);
+            if(!$invoice->save()) {
+                DB::rollBack();
+            }
+        }
+
         $total_invoices = self::select(
             DB::raw('sum(total_price) as totalSum'),
             DB::raw('AVG(total_price) as totalAvg')
-            )->where([
-                'user_id' => auth('api')->id()
-            ])->get()->toArray();
+        )->where([
+            'user_id' => auth('api')->id()
+        ])->get()->toArray();
         $sum = $total_invoices[0]['totalSum'];
 
-        $invoices = self::join('invoice_products','invoices.id', '=', 'invoice_products.invoice_id')
-        ->join('products', function ($join) {
-            $join->on('invoice_products.product_id', '=', 'products.id');
-        })
-        ->select(
-            DB::raw('sum(products.price) as totalprice'),
-            DB::raw('count(products.id) as `productCount`'),
-            DB::raw('invoice_products.quantity as `quantity`'),
-            DB::raw('(sum(products.price) * invoice_products.quantity) as totalPriceWithQuantity'),
+        $invoices = self::join('invoice_products', 'invoices.id', '=', 'invoice_products.invoice_id')
+            ->join('products', function ($join) {
+                $join->on('invoice_products.product_id', '=', 'products.id');
+            })
+            ->select(
+                DB::raw('sum(products.price) as totalprice'),
+                DB::raw('count(products.id) as `productCount`'),
+                DB::raw('invoice_products.quantity as `quantity`'),
+                DB::raw('(sum(products.price) * invoice_products.quantity) as totalPriceWithQuantity'),
         )
-        ->where([
-            'invoices.vendor_id' => $vendor_id,
-            'products.vendor_id' => $vendor_id,
-            'products.category_id' => $category_id,
-            'invoices.user_id' => auth('api')->id()
-        ])->groupBy('products.id')->get();
+            ->where([
+                'invoices.vendor_id' => $vendor_id,
+                'products.vendor_id' => $vendor_id,
+                'products.category_id' => $category_id,
+                'invoices.user_id' => auth('api')->id()
+            ])->groupBy('products.id')->get();
 
         $invoices_sum = 0;
-        foreach($invoices as $invoice) {
+        foreach ($invoices as $invoice) {
             $invoices_sum += $invoice['totalPriceWithQuantity'];
         }
 
         $percentage = ($invoices_sum / $sum) * 100;
         $percentage = number_format((float)$percentage, 2, '.', '');
+
+        DB::beginTransaction();
+        foreach ($outSourceInvoices as $invoice) {
+            $invoice->total_price = $common_helper->encrypt($invoice['total_price']);
+            if(!$invoice->save()) {
+                DB::rollBack();
+            }
+        }
+        DB::commit();
 
         return [
             'sum' => $sum,
