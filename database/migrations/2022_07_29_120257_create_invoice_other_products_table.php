@@ -18,9 +18,9 @@ class CreateInvoiceOtherProductsTable extends Migration
             $table->integer("invoice_id")->unsigned()->nullable();
             $table->string('name');
             $table->string('description', 800)->nullable();
-            $table->double('price');
-            $table->integer('quantity');
-            $table->double('total_price');
+            $table->string('price');
+            $table->string('quantity');
+            $table->string('total_price');
             $table->timestamps();
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
         });
