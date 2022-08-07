@@ -65,7 +65,7 @@ class Invoice extends Model
 
     public static function getAllVendorInvoices()
     {
-        return Invoice::with(['user', 'vendor'])->where(['vendor_id' => auth('vendor')->user()->vendor_id])->get();
+        return Invoice::with(['user', 'vendor'])->where(['vendor_id' => auth('vendor')->user()->vendor_id])->orderBy('invoices.user_id')->get();
     }
 
     public static function getAllInvoices()
