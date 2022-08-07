@@ -26,13 +26,17 @@ class InvoiceController extends MainController
     public function index(Request $request)
     {
         $invoice_data = Invoice::getAllVendorInvoices();
-        if($invoice_data[0]['type'] == Invoice::TYPE_OUTSOURCE) {
+        $invoices = [];
+        foreach ($invoice_data as $invoice) {
             $common_helper = new CommonHelper();
-            $common_helper->decryptInvoice($invoice_data[0]);
+            if ($invoice['type'] == Invoice::TYPE_OUTSOURCE) {
+                $common_helper->decryptInvoice($invoice);
+            }
+            $invoices [] = $invoice;
         }
 
         return view('backend.invoice.index', [
-            'invoice_data' => $invoice_data,
+            'invoice_data' => $invoices,
             'userAuthPermission' => $this->getUserPermissionns($request),
         ]);
     }
