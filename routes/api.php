@@ -32,6 +32,8 @@ Route::group([
 
     Route::group(['middleware' => 'vendor-access-key'], function () {
         Route::post('invoice/generate-invoice', [\App\Http\Controllers\InvoiceController::class, 'generateInvoice']);
+        Route::post('invoice/out-products-link',[\App\Http\Controllers\InvoiceController::class,'outProductsLink'])->name('out-products-link-invoice');
+        Route::get('invoice/out-side-products',[\App\Http\Controllers\InvoiceController::class,'outSideProducts'])->name('out-side-products-invoice');
     });
 
     Route::group(['middleware' => 'auth:api'], function () {
@@ -41,7 +43,7 @@ Route::group([
 
         /* vendors Routes */
         Route::get('vendors', [\App\Http\Controllers\VendorsController::class, 'vendorsApi'])->name('vendor-api');
-        Route::get('vendors/featured', [\App\Http\Controllers\VendorsController::class, 'featuredVendorsSliders'])->name('vendor-api');
+        Route::get('vendors/featured', [\App\Http\Controllers\VendorsController::class, 'featuredVendorsSliders'])->name('vendor-featured-api');
         /* End vendors Routes */
 
         Route::get('invoice/get-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'getInvoiceById'])->name('get-invoice-by-id');
@@ -54,7 +56,7 @@ Route::group([
         Route::get('invoice/analysis',[\App\Http\Controllers\InvoiceController::class,'invoiceAnalysis'])->name('analysis-invoice');
         Route::get('invoice/analysis/{vendor_id}',[\App\Http\Controllers\InvoiceController::class,'invoiceVendorAnalysis'])->name('analysis-vendor-invoice');
         Route::get('invoice/analysis/category/{vendor_id}/{category_id}',[\App\Http\Controllers\InvoiceController::class,'invoiceVendorCategoryAnalysis'])->name('analysis-vendor-category-invoice');
-        Route::post('invoice/store-manual-invoice',[\App\Http\Controllers\InvoiceController::class,'storeManualInvoice'])->name('analysis-vendor-category-invoice');
+        Route::post('invoice/store-manual-invoice',[\App\Http\Controllers\InvoiceController::class,'storeManualInvoice'])->name('store-manual-invoice');
 //        Route::get('invoice/update-invoice/{id}',[\App\Http\Controllers\InvoiceController::class,'UpdateInvoice'])->name('update-invoice');
 
         /* categories Routes */
@@ -64,7 +66,7 @@ Route::group([
         /* products Routes */
         Route::get('vendor/products/{vendor_id}',[\App\Http\Controllers\ProductController::class,'vendorProductsApi'])->name('vendor-products-api');
         Route::get('product/details/{vendor_id}/{barcode}',[\App\Http\Controllers\ProductController::class,'productByBarcodeApi'])->name('barcode-products-api');
-        Route::get('products/{category_id?}', [\App\Http\Controllers\ProductController::class, 'productsApi'])->name('product-api');
+        Route::get('products/{category_id?}', [\App\Http\Controllers\ProductController::class, 'productsApi'])->name('category-product-api');
         /* End products Routes */
 
         /* feedback Routes */

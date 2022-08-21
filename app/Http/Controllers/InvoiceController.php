@@ -430,4 +430,105 @@ class InvoiceController extends MainController
             ]);
         }
     }
+
+    public function outSideProducts()
+    {
+        return [
+            [
+                "name" => "Iphone 13",
+                "description" => "Iphone 13",
+                "quantity" => 2,
+                "total_price" => 2000,
+                "price" => 1000
+            ],
+            [
+                "name" => "Mac",
+                "description" => "Mac",
+                "quantity" => 1,
+                "total_price" => 2000,
+                "price" => 2000
+            ],
+            [
+                "name" => "Huawei watch GT2",
+                "description" => "Huawei watch GT2",
+                "quantity" => 4,
+                "total_price" => 2000,
+                "price" => 500
+            ]
+        ];
+//        return response()->json([
+//            'status' => true,
+//            'data' => [
+//                [
+//                    "name" => "Iphone 13",
+//                    "description" => "Iphone 13",
+//                    "quantity" => 2,
+//                    "total_price" => 2000,
+//                    "price" => 1000
+//                ],
+//                [
+//                    "name" => "Mac",
+//                    "description" => "Mac",
+//                    "quantity" => 1,
+//                    "total_price" => 2000,
+//                    "price" => 2000
+//                ],
+//                [
+//                    "name" => "Huawei watch GT2",
+//                    "description" => "Huawei watch GT2",
+//                    "quantity" => 4,
+//                    "total_price" => 2000,
+//                    "price" => 500
+//                ]
+//            ]
+//        ]);
+    }
+
+    public function outProductsLink(Request $request)
+    {
+        try {
+            return response()->json([
+                'status' => true,
+                'data' => $this->outSideProducts()
+            ]);
+
+            $validation = Validator::make($request->all(), [
+                'url' => ['required', 'string'],
+            ]);
+
+            if ($validation->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validation->errors()
+                ]);
+            }
+            $url = $request->url;
+
+            $curl = curl_init();
+//            curl_setopt_array($curl, [
+//                CURLOPT_URL => $url,
+//                CURLOPT_RETURNTRANSFER => true,
+//                CURLOPT_ENCODING => '',
+//                CURLOPT_MAXREDIRS => 10,
+//                CURLOPT_TIMEOUT => 0,
+//                CURLOPT_FOLLOWLOCATION => true,
+//                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//                CURLOPT_CUSTOMREQUEST => 'GET',
+//                CURLOPT_HTTPHEADER => [
+//                    'accessKey: ' . $request->header('accessKey'),
+//                ],
+//            ]);
+//
+//            $response = curl_exec($curl);
+//            $errors = curl_error($curl);
+//            curl_close($curl);
+//            $response = json_decode($response, true);
+//            $data = $response['data'];
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => true,
+                'data' => $e->getMessage()
+            ]);
+        }
+    }
 }
