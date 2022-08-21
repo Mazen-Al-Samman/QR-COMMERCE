@@ -333,18 +333,23 @@ class InvoiceController extends MainController
         ]);
     }
 
-    public function generateInvoice(Request $request)
+    public function generateInvoice(Request $request, $productsData = null)
     {
         DB::beginTransaction();
         try {
             $common_helper = new CommonHelper();
-            $products = $request->post();
+            $products = !empty($request->post()) ? $request->post() : $productsData;
             if (!$common_helper->filterOtherProductSkeleton($products)) {
-                return response()->json([
+                return [
                     'status' => false,
                     'message' => "Messing parameters !"
-                ]);
+                ];
+//                return response()->json([
+//                    'status' => false,
+//                    'message' => "Messing parameters !"
+//                ]);
             }
+
 
             $data = [];
             $total_amount = 0;
@@ -360,25 +365,34 @@ class InvoiceController extends MainController
                 );
 
                 if ($validator->fails()) {
-                    return response()->json([
+                    return [
                         'status' => false,
                         'message' => $validator->errors()
-                    ]);
+                    ];
+//                    return response()->json([
+//                        'status' => false,
+//                        'message' => $validator->errors()
+//                    ]);
                 }
                 $total_amount += $product['total_price'];
                 $data [] = $common_helper->encryptInvoiceProducts($product);
             }
 
             $accessKey = $request->header('accessKey');
-            $vendor = Vendor::where(['access_key' => $accessKey])->get()[0];
-            if (!$vendor) {
+            $vendor = Vendor::where(['access_key' => $accessKey])->get();
+            if (!$vendor && !isset($vendor[0])) {
                 DB::rollBack();
-                return response()->json([
+                return [
                     'status' => false,
                     'message' => "Something wrong !!"
-                ]);
+                ];
+//                return response()->json([
+//                    'status' => false,
+//                    'message' => "Something wrong !!"
+//                ]);
             }
 
+            $vendor = $vendor[0];
             $qr_code_name = 'qrcode_' . time() . '.png';
             $invoice = new Invoice();
             $invoice->type = Invoice::TYPE_OUTSOURCE;
@@ -388,10 +402,14 @@ class InvoiceController extends MainController
 
             if (!$invoice->save()) {
                 DB::rollBack();
-                return response()->json([
+                return [
                     'status' => false,
                     'message' => "Something wrong !!"
-                ]);
+                ];
+//                return response()->json([
+//                    'status' => false,
+//                    'message' => "Something wrong !!"
+//                ]);
             }
 
             $products = array_map(function ($product) use ($invoice) {
@@ -404,10 +422,14 @@ class InvoiceController extends MainController
 
             if (!InvoiceOtherProduct::insert($products)) {
                 DB::rollBack();
-                return response()->json([
+                return [
                     'status' => false,
                     'message' => "Something wrong !!"
-                ]);
+                ];
+//                return response()->json([
+//                    'status' => false,
+//                    'message' => "Something wrong !!"
+//                ]);
             }
 
             QrCode::size(500)
@@ -417,17 +439,26 @@ class InvoiceController extends MainController
 
             DB::commit();
 
-            return response()->json([
+            return [
                 'status' => true,
                 'message' => "success"
-            ]);
+            ];
+
+//            return response()->json([
+//                'status' => true,
+//                'message' => "success"
+//            ]);
 
         } catch (\Exception $exception) {
             DB::rollBack();
-            return response()->json([
+            return [
                 'status' => false,
                 'message' => $exception->getMessage()
-            ]);
+            ];
+//            return response()->json([
+//                'status' => false,
+//                'message' => $exception->getMessage()
+//            ]);
         }
     }
 
@@ -487,6 +518,17 @@ class InvoiceController extends MainController
     public function outProductsLink(Request $request)
     {
         try {
+
+            $data = $this->outSideProducts();
+            $request->request->remove("url");
+            $response = $this->generateInvoice($request, $data);
+
+            if(!$response['status']) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $response['message']
+                ]);
+            }
             return response()->json([
                 'status' => true,
                 'data' => $this->outSideProducts()
