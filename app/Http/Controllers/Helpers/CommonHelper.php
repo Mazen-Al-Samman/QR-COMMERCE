@@ -15,7 +15,6 @@ class CommonHelper
     {
         $otherProductsFields = ["name", "description", "price", "quantity", "total_price"];
         foreach ($products as $product) {
-            $product = array_unique($product);
             if (!empty(array_diff_key(array_flip($otherProductsFields), $product)) && count($product) != count($otherProductsFields)) {
                 return false;
             }

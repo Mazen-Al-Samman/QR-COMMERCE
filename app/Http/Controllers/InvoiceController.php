@@ -200,7 +200,7 @@ class InvoiceController extends MainController
     public function getMyVendors () {
         $vendors  = Vendor::whereHas('invoice', function ($q) {
             $q->where(['user_id' => auth('api')->id()]);
-        })->get();
+        })->orderBy('created_at', 'DESC')->get();
         return response()->json([
             'status' => true,
             'data' => $vendors
@@ -224,7 +224,7 @@ class InvoiceController extends MainController
                     $q->where(['user_id' => auth('api')->id()]);
                 });
             });
-        })->get();
+        })->orderBy('created_at', 'DESC')->get();
         return response()->json([
             'status' => true,
             'data' => $vendors
@@ -419,7 +419,10 @@ class InvoiceController extends MainController
 
             return response()->json([
                 'status' => true,
-                'message' => "success"
+                'data' => [
+                    'invoice_id' => $invoice->id,
+                    'vendor_id' => $invoice->vendor_id
+                ]
             ]);
 
         } catch (\Exception $exception) {
