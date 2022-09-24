@@ -50,7 +50,7 @@ class AuthController extends Controller
             ]);
         }
 
-        if (!$token = auth('api')->attempt(['phone' => $request->input('phone'), 'password' => $request->input('password'), 'status' => User::STATUS_ACTIVE])) {
+        if (!$token = auth('api')->attempt(['phone' => $request->input('phone'), 'password' => $request->input('password'), 'status' => User::STATUS_ACTIVE, 'is_deleted' => 0])) {
             return response()->json([
                 'status' => false,
                 'error' => 'Unauthorized'

@@ -158,20 +158,24 @@ class InvoiceController extends MainController
                 $otherProducts = [];
                 foreach ($invoice_data[0]['invoice_other_product'] as $product) {
                     $dataInvoice = $common_helper->decryptInvoiceProducts($product);
+                    $invoice_id = (int)$dataInvoice['invoice_id'];
+                    $quantity = (int)$dataInvoice['quantity'];
+                    unset($dataInvoice['invoice_id']);
+                    unset($dataInvoice['quantity']);
                     $otherProducts [] = [
-                        'invoice_id' => $dataInvoice['invoice_id'],
+                        'invoice_id' => $invoice_id,
                         'product_id' => $dataInvoice['id'],
-                        'quantity' => $dataInvoice['quantity'],
+                        'quantity' => $quantity,
                         'created_at' => $dataInvoice['created_at'],
                         'updated_at' => $dataInvoice['updated_at'],
                         'product' => array_merge($dataInvoice, ['vendor_id' => $invoice_data[0]['vendor_id']])
                     ];
                 }
                 $invoice_data[0]['invoice_product'] = $otherProducts;
-                unset($invoice_data[0]['invoice_other_product']);
             }
         }
 
+        unset($invoice_data[0]['invoice_other_product']);
         return response()->json([
             'status' => true,
             'data' => $invoice_data

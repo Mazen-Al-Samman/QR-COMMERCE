@@ -38,7 +38,7 @@ Route::group([
 
         Route::get('profile', [\App\Http\Controllers\AuthController::class, 'profile']);
         Route::post('profile/update', [\App\Http\Controllers\AuthController::class, 'updateProfile']);
-        Route::post('user/delete-account', [\App\Http\Controllers\AuthController::class, 'deleteAccount']);
+        Route::get('user/delete-account', [\App\Http\Controllers\AuthController::class, 'deleteAccount']);
 
         /* vendors Routes */
         Route::get('vendors', [\App\Http\Controllers\VendorsController::class, 'vendorsApi'])->name('vendor-api');
