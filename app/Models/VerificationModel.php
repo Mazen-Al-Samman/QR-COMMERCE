@@ -33,6 +33,18 @@ class VerificationModel extends Model
         return null;
     }
 
+    public static function phoneWithCountryCodeAndValidate($phone, $countryCode = null)
+    {
+        if (!$countryCode == "+962" && (substr($phone, 0, 3) == "079" || substr($phone, 0, 3) == "078" || substr($phone, 0, 3) == "077")) {
+            return '+962' . substr($phone, 1);
+        }
+
+        if ($countryCode == "+966" && (substr($phone, 0, 2) == "05" || substr($phone, 0, 2) == "01" || substr($phone, 0, 2) == "08")) {
+            return '+966' . substr($phone, 1);
+        }
+        return null;
+    }
+
     private static function sendSmsMessage($message, $recipients) {
         $account_sid = getenv("TWILIO_SID");
         $auth_token = getenv("TWILIO_AUTH_TOKEN");

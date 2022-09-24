@@ -65,6 +65,7 @@ class AuthController extends Controller
         $validation = Validator::make($request->all(), [
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
+            'country_code' => ['required', 'string'],
             'phone' => ['required', 'unique:users', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
             'password' => ['required', 'string'],
             'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
@@ -77,13 +78,14 @@ class AuthController extends Controller
             ]);
         }
 
-        $formattedPhone = VerificationModel::phoneWithCountryCode($request->phone);
+        $formattedPhone = VerificationModel::phoneWithCountryCodeAndValidate($request->phone, $request->country_code);
         if (!$formattedPhone) {
             return response()->json([
                 'status' => false,
                 'message' => "Invalid Phone"
             ]);
         }
+
         $verificationCode = VerificationModel::generateRandomVerificationCode();
         VerificationModel::sendVerificationCode($verificationCode, $formattedPhone);
 
