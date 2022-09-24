@@ -22,7 +22,7 @@ class MyReportController extends Controller
 
         return response()->json([
             'status' => false,
-            'data' => 'there is no data'
+            'data' => $my_reports
         ]);
     }
 

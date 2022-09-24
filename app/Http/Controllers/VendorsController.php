@@ -174,7 +174,7 @@ class VendorsController extends MainController
 
     public function featuredVendorsSliders()
     {
-        $vendors =  Vendor::where(['is_featured' => 1])->select(['id', 'image', 'name'])->get();
+        $vendors =  Vendor::where(['is_featured' => 1])->select(['id', 'image', 'name'])->orderBy('created_at', 'DESC')->get();
         return response()->json([
             'status' => true,
             'data' => $vendors

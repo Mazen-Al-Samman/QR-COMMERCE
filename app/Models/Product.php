@@ -180,7 +180,7 @@ class Product extends Model
 
     public function getVendorProductsApi($vendor_id)
     {
-        $products = Product::where(['vendor_id' => $vendor_id])->get();
+        $products = Product::where(['vendor_id' => $vendor_id])->orderBy('created_at', 'DESC')->get();
 
         return $products;
     }

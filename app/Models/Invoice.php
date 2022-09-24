@@ -65,7 +65,12 @@ class Invoice extends Model
 
     public static function getAllVendorInvoices()
     {
-        return Invoice::with(['user', 'vendor'])->where(['vendor_id' => auth('vendor')->user()->vendor_id])->orderBy('invoices.user_id')->get();
+        return Invoice::with(['user', 'vendor'])
+            ->where(['vendor_id' => auth('vendor')
+            ->user()->vendor_id])
+            ->orderBy('invoices.user_id')
+            ->orderBy('created_at', 'DESC')
+            ->get();
     }
 
     public static function getAllInvoices()
@@ -184,7 +189,7 @@ class Invoice extends Model
             $q->whereHas('product', function ($q) use ($vendor_id, $category_id) {
                 $q->where(['category_id' => $category_id, 'vendor_id' => $vendor_id]);
             });
-        })->where(['user_id' => auth('api')->id()])->get();
+        })->where(['user_id' => auth('api')->id()])->orderBy('created_at', 'DESC')->get();
 
         $total_invoices = self::select(
             DB::raw('sum(total_price) as totalSum'),
@@ -200,7 +205,7 @@ class Invoice extends Model
             $join->on('invoice_products.product_id', '=', 'products.id');
         })
         ->select(
-            DB::raw('(products.price * invoice_products.quantity) as totalPriceWithQuantity'),
+            DB::raw('(products.price * invoice_products.quantity) as totalPriceWithQuantity')
         )
         ->where([
             'invoices.vendor_id' => $vendor_id,
@@ -248,7 +253,10 @@ class Invoice extends Model
     }
 
     public static function myInvoices () {
-        $my_invoices = self::with(['vendor'])->where(['user_id' => auth('api')->id()])->get()->toArray();
+        $my_invoices = self::with(['vendor'])
+            ->where(['user_id' => auth('api')->id()])
+            ->orderBy('created_at', 'DESC')
+            ->get()->toArray();
         $total = array_sum(array_column($my_invoices, 'total_price'));
         $total = number_format((float)$total, 2, '.', '');
         $data = [

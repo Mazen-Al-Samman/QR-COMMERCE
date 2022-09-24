@@ -374,4 +374,14 @@ class AuthController extends Controller
             'message' => "Done"
         ]);
     }
+
+    public function deleteAccount() {
+        $user = User::find(auth('api')->user()->id);
+        $user->is_deleted = 1;
+        $user->save();
+        auth('api')->logout();
+        return response()->json([
+            'status' => true,
+        ]);
+    }
 }

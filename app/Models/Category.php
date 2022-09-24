@@ -64,7 +64,7 @@ class Category extends Model
     {
         $categories = null;
         if ($vendor_id) {
-            $categories = Category::where(['vendor_id' => $vendor_id])->get();
+            $categories = Category::where(['vendor_id' => $vendor_id])->orderBy('created_at', 'DESC')->get();
         } else {
             $categories = Category::all();
         }

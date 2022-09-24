@@ -26,7 +26,7 @@ class MyReport extends Model
     public static function getMyReports($id)
     {
         if($id)
-            return MyReport::where(['user_id' => $id])->get();
+            return MyReport::where(['user_id' => $id])->orderBy('created_at', 'DESC')->get();
 
         return false;
     }
@@ -51,7 +51,7 @@ class MyReport extends Model
 
     public static function deleteReportApi($id)
     {
-        return MyReport::where(['id' => $id, ''])->delete();
+        return MyReport::where(['id' => $id])->delete();
     }
 
     public static function updateReportByID($request) {
