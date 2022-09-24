@@ -61,6 +61,11 @@ class CommonHelper
             'quantity' => $this->decrypt($data['quantity']),
             'total_price' => $this->decrypt($data['total_price']),
             'price' => $this->decrypt($data['price']),
+            "old_price" => 0,
+            "barcode"=> null,
+            "main_image"=> null,
+            "category_id"=> null,
+            "vendor_id"=> $data,
             'created_at' => $data['created_at'],
             'updated_at' => $data['updated_at'],
         ];

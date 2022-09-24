@@ -145,7 +145,7 @@ class InvoiceController extends MainController
 
         if(!$invoice_data) {
             return response()->json([
-                'status' => true,
+                'status' => false,
                 'data' => []
             ]);
         }
@@ -157,9 +157,18 @@ class InvoiceController extends MainController
             if (!empty($invoice_data[0]['invoice_other_product'])) {
                 $otherProducts = [];
                 foreach ($invoice_data[0]['invoice_other_product'] as $product) {
-                    $otherProducts [] = $common_helper->decryptInvoiceProducts($product);
+                    $dataInvoice = $common_helper->decryptInvoiceProducts($product);
+                    $otherProducts [] = [
+                        'invoice_id' => $dataInvoice['invoice_id'],
+                        'product_id' => $dataInvoice['id'],
+                        'quantity' => $dataInvoice['quantity'],
+                        'created_at' => $dataInvoice['created_at'],
+                        'updated_at' => $dataInvoice['updated_at'],
+                        'product' => array_merge($dataInvoice, ['vendor_id' => $invoice_data[0]['vendor_id']])
+                    ];
                 }
-                $invoice_data[0]['invoice_other_product'] = $otherProducts;
+                $invoice_data[0]['invoice_product'] = $otherProducts;
+                unset($invoice_data[0]['invoice_other_product']);
             }
         }
 
