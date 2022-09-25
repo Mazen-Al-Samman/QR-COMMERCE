@@ -197,11 +197,6 @@ class InvoiceController extends MainController
     public function getInvoiceByVendor($vendor_id, Invoice $invoice) {
         $data = $invoice->getInvoiceByVendor($vendor_id);
 
-        if($data['invoice_data'][0]['type'] == Invoice::TYPE_OUTSOURCE) {
-            $common_helper = new CommonHelper();
-            $common_helper->decryptInvoice($data['invoice_data'][0]);
-        }
-
         return response()->json([
             'status' => true,
             'color_number' => 2,
@@ -247,21 +242,11 @@ class InvoiceController extends MainController
     public function getMyinvoice () {
         $invoices = Invoice::myInvoices();
 
-        $invoice_data = [];
-        foreach ($invoices['my_invoices'] as $invoice) {
-            if($invoice['type'] == Invoice::TYPE_OUTSOURCE) {
-                $common_helper = new CommonHelper();
-                $common_helper->decryptInvoice($invoice);
-            }
-            unset($invoice['vendor']['access_key']);
-            $invoice_data [] = $invoice;
-        }
-
         return response()->json([
             'status' => true,
             'total' => $invoices['total'],
             'color_number' => 1,
-            'data' => $invoice_data
+            'data' => $invoices
         ]);
     }
 
@@ -296,7 +281,7 @@ class InvoiceController extends MainController
             'status' => true,
             'data' => $analysis
         ]);
-    }
+    } // **
 
     public function invoiceVendorAnalysis($vendor_id) {
         $analysis = Invoice::getVendorAnalysis($vendor_id);
