@@ -13,7 +13,7 @@ class CommonHelper
 
     public function filterOtherProductSkeleton($products)
     {
-        $otherProductsFields = ["name", "description", "price", "quantity", "total_price"];
+        $otherProductsFields = ["name", "description", "price", "quantity", "total_price", "category"];
         foreach ($products as $product) {
             if (!empty(array_diff_key(array_flip($otherProductsFields), $product)) && count($product) != count($otherProductsFields)) {
                 return false;

@@ -66,7 +66,9 @@ class AuthController extends Controller
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
             'country_code' => ['required', 'string'],
-            'phone' => ['required', 'unique:users', 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
+            'phone' => ['required', Rule::unique('users')->where(function ($query) {
+                return $query->where('is_deleted', 0);
+            }), 'min:10', 'max:15', 'regex:/(^(079|078|077)[0-9]{7})|(^(05|01|10)[0-9]{8})$/'],
             'password' => ['required', 'string'],
             'image' => ['file', 'mimes:jpg,png,jpeg,gif,svg', 'max:2048'],
         ]);
@@ -86,10 +88,21 @@ class AuthController extends Controller
             ]);
         }
 
+        $deleted_user = null;
+        if ($request->phone) {
+            $deleted_user = User::deletedUserByPhone($request->phone);
+            if ($deleted_user) {
+                $deleted_user->is_deleted = 0;
+                $deleted_user->actived = VerificationModel::DISABLED;
+                $deleted_user->save();
+            }
+        }
+
         $verificationCode = VerificationModel::generateRandomVerificationCode();
         VerificationModel::sendVerificationCode($verificationCode, $formattedPhone);
 
-        if ($user = User::registerUser($request)) {
+        $user = $deleted_user ? $deleted_user : User::registerUser($request);
+        if ($user) {
             VerificationModel::verificationSent($user->id, $verificationCode);
             $credentials = request(['phone', 'password']);
             $token = auth('api')->attempt($credentials);

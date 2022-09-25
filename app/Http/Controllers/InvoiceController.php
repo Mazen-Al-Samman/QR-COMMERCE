@@ -359,6 +359,16 @@ class InvoiceController extends MainController
                 ]);
             }
 
+            $accessKey = $request->header('accessKey');
+            $vendor = Vendor::where(['access_key' => $accessKey])->get()[0];
+            if (!$vendor) {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'message' => "Something wrong !!"
+                ]);
+            }
+
             $data = [];
             $total_amount = 0;
             foreach ($products as $product) {
@@ -367,6 +377,7 @@ class InvoiceController extends MainController
                     [
                         'name' => 'required|string',
                         'price' => 'required',
+                        'category' => 'required',
                         'quantity' => 'required',
                         'total_price' => 'required',
                     ]
@@ -379,17 +390,14 @@ class InvoiceController extends MainController
                     ]);
                 }
                 $total_amount += $product['total_price'];
-                $data [] = $common_helper->encryptInvoiceProducts($product);
-            }
-
-            $accessKey = $request->header('accessKey');
-            $vendor = Vendor::where(['access_key' => $accessKey])->get()[0];
-            if (!$vendor) {
-                DB::rollBack();
-                return response()->json([
-                    'status' => false,
-                    'message' => "Something wrong !!"
-                ]);
+                $category = Category::where(['title' => strtolower($product['category']), 'vendor_id' => $vendor->id])->first();
+                if(!$category) {
+                    $category = new Category();
+                    $category->title = strtolower($product['category']);
+                    $category->vendor_id = $vendor->id;
+                    $category->save();
+                }
+                $data [] = array_merge($common_helper->encryptInvoiceProducts($product), ['category_id' => $category->id]);
             }
 
             $qr_code_name = 'qrcode_' . time() . '.png';

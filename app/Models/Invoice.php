@@ -183,13 +183,32 @@ class Invoice extends Model
 
     }
 
-    public function getInvoiceByCategory($vendor_id, $category_id) {
+    public function getInvoiceByCategory($vendor_id, $category_id)
+    {
+        $common_helper = new CommonHelper();
+        $outSourceInvoices = self::join('invoice_other_products', 'invoices.id', '=', 'invoice_other_products.invoice_id')
+            ->where([
+                'invoices.vendor_id' => $vendor_id, // think should remove
+                'invoices.type' => self::TYPE_OUTSOURCE,
+                'invoice_other_products.category_id' => $category_id,
+            ])->select(['invoices.id', 'invoices.total_price', 'invoices.qr_code'])->get();
+
+        DB::beginTransaction();
+        foreach ($outSourceInvoices as $invoice) {
+            $invoice->total_price = $common_helper->decrypt($invoice['total_price']);
+            if (!$invoice->save()) {
+                DB::rollBack();
+            }
+        }
 
         $invoice_data  = Invoice::with(['vendor'])->whereHas('invoiceProduct', function ($q) use ($vendor_id, $category_id) {
             $q->whereHas('product', function ($q) use ($vendor_id, $category_id) {
-                $q->where(['category_id' => $category_id, 'vendor_id' => $vendor_id]);
+                $q->where(['category_id' => $category_id, 'vendor_id' => $vendor_id]); // think should remove (vendor_id => $vendor_id)
             });
-        })->where(['user_id' => auth('api')->id()])->orderBy('created_at', 'DESC')->get();
+        })->orWhereHas('invoiceOtherProduct', function ($q) use ($vendor_id, $category_id) {
+            $q->where(['category_id' => $category_id]);
+        })
+        ->where(['user_id' => auth('api')->id()])->orderBy('created_at', 'DESC')->get();
 
         $total_invoices = self::select(
             DB::raw('sum(total_price) as totalSum'),
@@ -201,6 +220,7 @@ class Invoice extends Model
         $sum = number_format((float)$sum, 2, '.', '');
 
         $category_invoices = self::join('invoice_products','invoices.id', '=', 'invoice_products.invoice_id')
+        ->join('invoice_other_products', 'invoices.id', '=', 'invoice_other_products.invoice_id')
         ->join('products', function ($join) {
             $join->on('invoice_products.product_id', '=', 'products.id');
         })
@@ -212,7 +232,12 @@ class Invoice extends Model
             'products.vendor_id' => $vendor_id,
             'products.category_id' => $category_id,
             'invoices.user_id' => auth('api')->id()
-        ])->get()->toArray();
+        ])->orWhere([
+                'invoice_other_products.category_id' => $category_id,
+                'invoices.vendor_id' => $vendor_id,
+                'invoices.user_id' => auth('api')->id()
+        ])
+        ->get()->toArray();
 
         $category_sum = 0;
         foreach($category_invoices as $invoice) {
@@ -235,6 +260,13 @@ class Invoice extends Model
         $vendor_percentage = ($vendor_invoices[0]['totalSum'] / $sum) * 100;
         $vendor_percentage = number_format((float)$vendor_percentage, 2, '.', '');
 
+        foreach ($outSourceInvoices as $invoice) {
+            $invoice->total_price = $common_helper->encrypt($invoice['total_price']);
+            if(!$invoice->save()) {
+                DB::rollBack();
+            }
+        }
+        DB::commit();
 
         $analysis_data = [
             'invoices_sum' => $sum,
@@ -315,7 +347,10 @@ class Invoice extends Model
     public static function getAnalysisByMonth()
     {
         $common_helper = new CommonHelper();
-        $outSourceInvoices = self::where(['type' => self::TYPE_OUTSOURCE])->select(['id', 'total_price'])->get();
+        $outSourceInvoices = self::where([
+            'user_id' => auth('api')->id(),
+            'type' => self::TYPE_OUTSOURCE
+        ])->select(['id', 'total_price'])->get();
 
         DB::beginTransaction();
         foreach ($outSourceInvoices as $invoice) {
@@ -405,7 +440,6 @@ class Invoice extends Model
         $invoices = json_decode($invoices,true);
         $invoices = array_values($invoices);
 
-        DB::beginTransaction();
         foreach ($outSourceInvoices as $invoice) {
             $invoice->total_price = $common_helper->encrypt($invoice['total_price']);
             if(!$invoice->save()) {
@@ -421,7 +455,7 @@ class Invoice extends Model
     public static function getVendorAnalysis($vendor_id)
     {
         $common_helper = new CommonHelper();
-        $outSourceInvoices = self::where(['type' => self::TYPE_OUTSOURCE])->select(['id', 'total_price'])->get();
+        $outSourceInvoices = self::where(['vendor_id' => $vendor_id, 'type' => self::TYPE_OUTSOURCE])->select(['id', 'total_price'])->get();
 
         DB::beginTransaction();
         foreach ($outSourceInvoices as $invoice) {
@@ -463,7 +497,6 @@ class Invoice extends Model
 
         ];
 
-        DB::beginTransaction();
         foreach ($outSourceInvoices as $invoice) {
             $invoice->total_price = $common_helper->encrypt($invoice['total_price']);
             if(!$invoice->save()) {
@@ -478,7 +511,14 @@ class Invoice extends Model
     public static function getVendorCategoryAnalysis($vendor_id, $category_id)
     {
         $common_helper = new CommonHelper();
-        $outSourceInvoices = self::where(['type' => self::TYPE_OUTSOURCE])->select(['id', 'total_price'])->get();
+        $outSourceInvoices = self::join('invoice_other_products', 'invoices.id', '=', 'invoice_other_products.invoice_id')
+            ->where([
+                'invoices.vendor_id' => $vendor_id,
+                'invoices.type' => self::TYPE_OUTSOURCE,
+                'invoice_other_products.category_id' => $category_id,
+            ])
+            ->select(['invoices.id', 'invoices.total_price', 'invoices.qr_code'])
+            ->get();
 
         DB::beginTransaction();
         foreach ($outSourceInvoices as $invoice) {
@@ -497,6 +537,7 @@ class Invoice extends Model
         $sum = $total_invoices[0]['totalSum'];
 
         $invoices = self::join('invoice_products', 'invoices.id', '=', 'invoice_products.invoice_id')
+            ->join('invoice_other_products', 'invoices.id', '=', 'invoice_other_products.invoice_id')
             ->join('products', function ($join) {
                 $join->on('invoice_products.product_id', '=', 'products.id');
             })
@@ -511,7 +552,8 @@ class Invoice extends Model
                 'products.vendor_id' => $vendor_id,
                 'products.category_id' => $category_id,
                 'invoices.user_id' => auth('api')->id()
-            ])->groupBy('products.id')->get();
+            ])
+            ->groupBy('products.id')->get();
 
         $invoices_sum = 0;
         foreach ($invoices as $invoice) {
@@ -521,7 +563,6 @@ class Invoice extends Model
         $percentage = ($invoices_sum / $sum) * 100;
         $percentage = number_format((float)$percentage, 2, '.', '');
 
-        DB::beginTransaction();
         foreach ($outSourceInvoices as $invoice) {
             $invoice->total_price = $common_helper->encrypt($invoice['total_price']);
             if(!$invoice->save()) {

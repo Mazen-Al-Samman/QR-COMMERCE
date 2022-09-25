@@ -35,7 +35,7 @@ class VerificationModel extends Model
 
     public static function phoneWithCountryCodeAndValidate($phone, $countryCode = null)
     {
-        if (!$countryCode == "+962" && (substr($phone, 0, 3) == "079" || substr($phone, 0, 3) == "078" || substr($phone, 0, 3) == "077")) {
+        if ($countryCode == "+962" && (substr($phone, 0, 3) == "079" || substr($phone, 0, 3) == "078" || substr($phone, 0, 3) == "077")) {
             return '+962' . substr($phone, 1);
         }
 
