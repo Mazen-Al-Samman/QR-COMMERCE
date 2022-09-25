@@ -246,7 +246,7 @@ class InvoiceController extends MainController
             'status' => true,
             'total' => $invoices['total'],
             'color_number' => 1,
-            'data' => $invoices
+            'data' => $invoices['my_invoices']
         ]);
     }
 
