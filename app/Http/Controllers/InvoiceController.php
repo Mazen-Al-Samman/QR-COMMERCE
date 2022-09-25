@@ -226,16 +226,22 @@ class InvoiceController extends MainController
     }
 
     public function getMyCategory($vendor_id) {
-        $vendors  = Category::whereHas('product', function ($q) use ($vendor_id) {
+        $categories  = Category::whereHas('product', function ($q) use ($vendor_id) {
             $q->where(['vendor_id' => $vendor_id])->whereHas('invoiceProduct', function ($q) {
                 $q->whereHas('invoice', function ($q) {
                     $q->where(['user_id' => auth('api')->id()]);
                 });
             });
-        })->orderBy('created_at', 'DESC')->get();
+        })->orWhereHas('otherProduct', function ($q) use ($vendor_id) {
+            $q->whereHas('invoice', function ($q) {
+                $q->where(['user_id' => auth('api')->id()]);
+            });
+        })
+        ->orderBy('created_at', 'DESC')->get();
+
         return response()->json([
             'status' => true,
-            'data' => $vendors
+            'data' => $categories
         ]);
     }
 

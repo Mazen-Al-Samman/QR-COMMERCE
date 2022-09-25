@@ -218,7 +218,8 @@ class Invoice extends Model
         $other_vendor_invoices = 0;
         foreach ($outSourceInvoices as $invoice) {
             $invoice->total_price = $common_helper->decrypt($invoice['total_price']);
-            if(count($invoice->invoiceOtherProduct) > 0) {
+            $invoice->qr_code = $common_helper->decrypt($invoice['qr_code']);
+            if(count($invoice->invoiceOtherProduct) > 0 && $invoice->vendor_id) {
                 foreach ($invoice->invoiceOtherProduct as $prod) {
                     if($prod->category_id == $category_id) {
                         $price = $common_helper->decrypt($prod['price']);
@@ -237,9 +238,12 @@ class Invoice extends Model
 
         $invoice_data  = Invoice::with(['vendor'])->whereHas('invoiceProduct', function ($q) use ($vendor_id, $category_id) {
             $q->whereHas('product', function ($q) use ($vendor_id, $category_id) {
-                $q->where(['category_id' => $category_id/*, 'vendor_id' => $vendor_id*/]); // think should remove (vendor_id => $vendor_id)
+                $q->where(['category_id' => $category_id, 'vendor_id' => $vendor_id]);
             });
-        })->where(['user_id' => auth('api')->id()])->orderBy('created_at', 'DESC')->get();
+        })->orWhereHas('invoiceOtherProduct', function ($q) use ($vendor_id, $category_id) {
+            $q->where(['category_id' => $category_id]);
+        })->where(['user_id' => auth('api')->id()])->orderBy('created_at', 'DESC')->get()->toArray();
+
 
         $total_invoices = self::select(
             DB::raw('sum(total_price) as totalSum'),
@@ -251,12 +255,12 @@ class Invoice extends Model
         $sum = number_format((float)$sum, 2, '.', '');
 
         $category_invoices = self::join('invoice_products','invoices.id', '=', 'invoice_products.invoice_id')
-        ->join('invoice_other_products', 'invoices.id', '=', 'invoice_other_products.invoice_id')
         ->join('products', function ($join) {
             $join->on('invoice_products.product_id', '=', 'products.id');
         })
         ->select(
-            DB::raw('(products.price * invoice_products.quantity) as totalPriceWithQuantity')
+            DB::raw('(invoices.total_price) as totalPriceWithQuantity')
+//            DB::raw('(products.price * invoice_products.quantity) as totalPriceWithQuantity')
         )
         ->where([
             'invoices.vendor_id' => $vendor_id,
