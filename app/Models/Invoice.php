@@ -325,7 +325,6 @@ class Invoice extends Model
 
         $invoice_data = [];
         foreach ($my_invoices as $key => $invoice) {
-            $invoice['type'] = '';
             if($invoice['type'] == Invoice::TYPE_OUTSOURCE) {
                 $common_helper = new CommonHelper();
                 $common_helper->decryptInvoice($invoice);

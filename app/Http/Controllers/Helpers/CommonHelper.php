@@ -8,7 +8,7 @@ class CommonHelper
 {
     const CIPHERING = "AES-128-CTR";
     const ENC_DEC_OPTIONS = 0;
-    const ENC_DEC_IV = "1234567891011121";
+    const ENC_DEC_IV = "1010101010101010";
     const ENC_DEC_KEY = "MYBill";
 
     public function filterOtherProductSkeleton($products)
