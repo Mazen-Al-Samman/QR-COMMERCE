@@ -188,7 +188,7 @@ class Invoice extends Model
 
         $vendor_sum = $invoices[0]['totalSum'];
         $vendor_sum = number_format((float)$vendor_sum, 2, '.', '');;
-        $percentage = ($invoices[0]['totalSum'] / $sum) * 100;
+        $percentage = $sum != 0 ? ($invoices[0]['totalSum'] / $sum) * 100 : 0;
         $percentage = number_format((float)$percentage, 2, '.', '');
 
         $analysis_data = [
@@ -277,7 +277,7 @@ class Invoice extends Model
         $category_sum += $other_invoice_sum;
         $category_sum = number_format((float)$category_sum, 2, '.', '');
 
-        $category_percentage = ($category_sum / $sum) * 100;
+        $category_percentage = $sum != 0  ? ($category_sum / $sum) * 100 : 0;
         $category_percentage = number_format((float)$category_percentage, 2, '.', '');
 
 
@@ -290,7 +290,7 @@ class Invoice extends Model
 
         $vendor_sum_main = $vendor_invoices[0]['totalSum'] + $other_vendor_invoices;
         $vendor_sum = number_format((float)$vendor_sum_main, 2, '.', '');
-        $vendor_percentage = ($vendor_sum_main / $sum) * 100;
+        $vendor_percentage = $sum != 0 ? ($vendor_sum_main / $sum) * 100 : 0;
         $vendor_percentage = number_format((float)$vendor_percentage, 2, '.', '');
 
         foreach ($outSourceInvoices as $invoice) {
@@ -537,7 +537,7 @@ class Invoice extends Model
             ])->get();
 
         $vendor_sum = $invoices[0]['totalSum'];
-        $percentage = ($invoices[0]['totalSum'] / $sum) * 100;
+        $percentage = $sum != 0 ? ($invoices[0]['totalSum'] / $sum) * 100 : 0;
         $percentage = number_format((float)$percentage, 2, '.', '');
 
         $data = [
@@ -619,7 +619,7 @@ class Invoice extends Model
         }
 
         $invoices_sum += $other_invoice_sum;
-        $percentage = ($invoices_sum / $sum) * 100;
+        $percentage = $sum != 0 ? ($invoices_sum / $sum) * 100 : 0;
         $percentage = number_format((float)$percentage, 2, '.', '');
 
         foreach ($outSourceInvoices as $invoice) {
