@@ -36,8 +36,8 @@ class CommonHelper
 
     public function decryptInvoice(&$data)
     {
-            $data['total_price'] = $this->decrypt($data['total_price']);
-            $data['qr_code'] = $this->decrypt($data['qr_code']);
+        $data['total_price'] = $this->decrypt($data['total_price']);
+        $data['qr_code'] = $this->decrypt($data['qr_code']);
     }
 
     public function encryptInvoiceProducts($data)

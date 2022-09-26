@@ -324,11 +324,13 @@ class Invoice extends Model
             ->get()->toArray();
 
         $invoice_data = [];
-        foreach ($my_invoices as $invoice) {
+        foreach ($my_invoices as $key => $invoice) {
+            $invoice['type'] = '';
             if($invoice['type'] == Invoice::TYPE_OUTSOURCE) {
                 $common_helper = new CommonHelper();
                 $common_helper->decryptInvoice($invoice);
             }
+            $invoice['qr_code'] = $invoice['qr_code'] ?? '';
             unset($invoice['vendor']['access_key']);
             $invoice_data [] = $invoice;
         }
