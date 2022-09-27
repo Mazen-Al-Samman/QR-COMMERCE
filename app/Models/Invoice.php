@@ -197,6 +197,15 @@ class Invoice extends Model
             'vendor_percentage' => $percentage
         ];
 
+        foreach ($outSourceInvoices as $invoice) {
+            $invoice->total_price = $common_helper->encrypt($invoice['total_price']);
+            $invoice->qr_code = $common_helper->encrypt($invoice['qr_code']);
+            if(!$invoice->save()) {
+                DB::rollBack();
+            }
+        }
+        DB::commit();
+
         return [
             'invoice_data' => $invoice_data,
             'analysis_data' => $analysis_data
@@ -260,7 +269,6 @@ class Invoice extends Model
         })
         ->select(
             DB::raw('(invoices.total_price) as totalPriceWithQuantity')
-//            DB::raw('(products.price * invoice_products.quantity) as totalPriceWithQuantity')
         )
         ->where([
             'invoices.vendor_id' => $vendor_id,
@@ -295,6 +303,7 @@ class Invoice extends Model
 
         foreach ($outSourceInvoices as $invoice) {
             $invoice->total_price = $common_helper->encrypt($invoice['total_price']);
+            $invoice->qr_code = $common_helper->encrypt($invoice['qr_code']);
             if(!$invoice->save()) {
                 DB::rollBack();
             }
@@ -498,6 +507,7 @@ class Invoice extends Model
             }
         }
         DB::commit();
+
         return $invoices;
 
     }
