@@ -178,4 +178,9 @@ class User extends Authenticatable implements JWTSubject
         }
         return $user->save();
     }
+
+    public static function deletedUserByPhone($phone)
+    {
+        return self::where(['phone' => $phone, 'is_deleted' => 1])->first();
+    }
 }

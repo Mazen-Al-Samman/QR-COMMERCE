@@ -15,6 +15,11 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function otherProduct()
+    {
+        return $this->hasMany(InvoiceOtherProduct::class);
+    }
+
     public function getallCategories(){
         $vendor_id = auth('vendor')->user()->vendor_id;
         return Category::where(['vendor_id' => $vendor_id])->paginate(15);

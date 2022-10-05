@@ -8,12 +8,12 @@ class CommonHelper
 {
     const CIPHERING = "AES-128-CTR";
     const ENC_DEC_OPTIONS = 0;
-    const ENC_DEC_IV = "1234567891011121";
+    const ENC_DEC_IV = "1010101010101010";
     const ENC_DEC_KEY = "MYBill";
 
     public function filterOtherProductSkeleton($products)
     {
-        $otherProductsFields = ["name", "description", "price", "quantity", "total_price"];
+        $otherProductsFields = ["name", "description", "price", "quantity", "total_price", "category"];
         foreach ($products as $product) {
             if (!empty(array_diff_key(array_flip($otherProductsFields), $product)) && count($product) != count($otherProductsFields)) {
                 return false;
@@ -36,8 +36,8 @@ class CommonHelper
 
     public function decryptInvoice(&$data)
     {
-            $data['total_price'] = $this->decrypt($data['total_price']);
-            $data['qr_code'] = $this->decrypt($data['qr_code']);
+        $data['total_price'] = $this->decrypt($data['total_price']);
+        $data['qr_code'] = $this->decrypt($data['qr_code']);
     }
 
     public function encryptInvoiceProducts($data)

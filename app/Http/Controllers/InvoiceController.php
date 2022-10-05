@@ -197,11 +197,6 @@ class InvoiceController extends MainController
     public function getInvoiceByVendor($vendor_id, Invoice $invoice) {
         $data = $invoice->getInvoiceByVendor($vendor_id);
 
-        if($data['invoice_data'][0]['type'] == Invoice::TYPE_OUTSOURCE) {
-            $common_helper = new CommonHelper();
-            $common_helper->decryptInvoice($data['invoice_data'][0]);
-        }
-
         return response()->json([
             'status' => true,
             'color_number' => 2,
@@ -231,37 +226,33 @@ class InvoiceController extends MainController
     }
 
     public function getMyCategory($vendor_id) {
-        $vendors  = Category::whereHas('product', function ($q) use ($vendor_id) {
+        $categories  = Category::whereHas('product', function ($q) use ($vendor_id) {
             $q->where(['vendor_id' => $vendor_id])->whereHas('invoiceProduct', function ($q) {
                 $q->whereHas('invoice', function ($q) {
                     $q->where(['user_id' => auth('api')->id()]);
                 });
             });
-        })->orderBy('created_at', 'DESC')->get();
+        })->orWhereHas('otherProduct', function ($q) use ($vendor_id) {
+            $q->whereHas('invoice', function ($q) {
+                $q->where(['user_id' => auth('api')->id()]);
+            });
+        })
+        ->orderBy('created_at', 'DESC')->get();
+
         return response()->json([
             'status' => true,
-            'data' => $vendors
+            'data' => $categories
         ]);
     }
 
     public function getMyinvoice () {
         $invoices = Invoice::myInvoices();
 
-        $invoice_data = [];
-        foreach ($invoices['my_invoices'] as $invoice) {
-            if($invoice['type'] == Invoice::TYPE_OUTSOURCE) {
-                $common_helper = new CommonHelper();
-                $common_helper->decryptInvoice($invoice);
-            }
-            unset($invoice['vendor']['access_key']);
-            $invoice_data [] = $invoice;
-        }
-
         return response()->json([
             'status' => true,
             'total' => $invoices['total'],
             'color_number' => 1,
-            'data' => $invoice_data
+            'data' => $invoices['my_invoices']
         ]);
     }
 
@@ -296,7 +287,7 @@ class InvoiceController extends MainController
             'status' => true,
             'data' => $analysis
         ]);
-    }
+    } // **
 
     public function invoiceVendorAnalysis($vendor_id) {
         $analysis = Invoice::getVendorAnalysis($vendor_id);
@@ -359,6 +350,16 @@ class InvoiceController extends MainController
                 ]);
             }
 
+            $accessKey = $request->header('accessKey');
+            $vendor = Vendor::where(['access_key' => $accessKey])->get()[0];
+            if (!$vendor) {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'message' => "Something wrong !!"
+                ]);
+            }
+
             $data = [];
             $total_amount = 0;
             foreach ($products as $product) {
@@ -367,6 +368,7 @@ class InvoiceController extends MainController
                     [
                         'name' => 'required|string',
                         'price' => 'required',
+                        'category' => 'required',
                         'quantity' => 'required',
                         'total_price' => 'required',
                     ]
@@ -379,17 +381,14 @@ class InvoiceController extends MainController
                     ]);
                 }
                 $total_amount += $product['total_price'];
-                $data [] = $common_helper->encryptInvoiceProducts($product);
-            }
-
-            $accessKey = $request->header('accessKey');
-            $vendor = Vendor::where(['access_key' => $accessKey])->get()[0];
-            if (!$vendor) {
-                DB::rollBack();
-                return response()->json([
-                    'status' => false,
-                    'message' => "Something wrong !!"
-                ]);
+                $category = Category::where(['title' => strtolower($product['category']), 'vendor_id' => $vendor->id])->first();
+                if(!$category) {
+                    $category = new Category();
+                    $category->title = strtolower($product['category']);
+                    $category->vendor_id = $vendor->id;
+                    $category->save();
+                }
+                $data [] = array_merge($common_helper->encryptInvoiceProducts($product), ['category_id' => $category->id]);
             }
 
             $qr_code_name = 'qrcode_' . time() . '.png';
