@@ -139,7 +139,7 @@
                             @endif
                         </td>
                         <td colspan="2" class="img">
-                            <img class="image" src="http://mybill-sa.com/assets/frontend/assets/img/my_bill_logo.jpg" alt="My Bill" />
+                            <img class="image" src="https://mybill-storage.s3.eu-central-1.amazonaws.com/1.jpeg" alt="My Bill" />
                         </td>
                     </tr>
                 </table>
@@ -251,10 +251,10 @@
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td colspan="2">
-                    <img class="app-store" src="http://mybill-sa.com/assets/frontend/assets/img/appStore.jpg" alt="My Bill" />
+                    <img class="app-store" src="https://mybill-storage.s3.eu-central-1.amazonaws.com/3.jpeg" alt="My Bill" />
                 </td>
                 <td colspan="2">
-                    <img class="go-play" src="http://mybill-sa.com/assets/frontend/assets/img/googlePlay.jpg" alt="My Bill" />
+                    <img class="go-play" src="https://mybill-storage.s3.eu-central-1.amazonaws.com/2.jpeg" alt="My Bill" />
                 </td>
             </tr>
         </table>
